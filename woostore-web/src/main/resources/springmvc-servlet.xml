@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress ALL -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   default-autowire="byName"
+	   xsi:schemaLocation="http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!--<import resource="classpath:/cache/applicationContext-cache-redis.xml"></import>-->
+	<context:annotation-config></context:annotation-config>
+	<!--<context:property-placeholder properties-ref="applicationProperties"></context:property-placeholder>-->
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+	<bean id="springContextUtil" class="com.woostore.common.util.SpringContextUtil"/>
+	<!--aop -->
+	<!--      扫描注解bean -->
+	<context:component-scan base-package="com.woostore.web.controler.*"></context:component-scan>
+	<mvc:resources mapping="/error/**" location="/error/" />
+	<!-- 解决@ResponseBody 的实现类其默认的编码是 iso-8859-1的问题 -->
+	<mvc:annotation-driven validator="validator">
+		<mvc:message-converters>
+			<!-- default StringHttpMessageConverter, solve encoding problem -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+				<property name="writeAcceptCharset" value="false" />
+			</bean>
+			<!--&lt;!&ndash; XMl及JSON视图解析器配置 &ndash;&gt;-->
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<!--<property name="objectMapper" value="#{jsonUtil.mapper}"/>-->
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=utf-8</value>
+						<value>text/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- 以下 validator  ConversionService 在使用 mvc:annotation-driven 会 自动注册-->
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
+		<!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->
+		<property name="validationMessageSource" ref="messageSource"/>
+	</bean>
+
+	<!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->
+				<value>classpath:/messageSource/ValidationMessages_zh_CN.properties</value>
+			</list>
+		</property>
+		<property name="useCodeAsDefaultMessage" value="false"/>
+		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="cacheSeconds" value="60"/>
+	</bean>
+	<mvc:interceptors>
+		<!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 -->
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		<!--实现防止表单重复提交-->
+	</mvc:interceptors>
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<map>
+				<entry key="ResourceNotFoundException" value="error/resourceNotFoundError" />
+				<entry key=".DataAccessException" value="error/dataAccessError" />
+			</map>
+		</property>
+		<property name="statusCodes">
+			<map>
+				<entry key="error/resourceNotFoundError" value="404" />
+				<entry key="error/dataAccessError" value="500" />
+			</map>
+		</property>
+	</bean>
+	<!-- 使用中间类解决RedisCache.jedisConnectionFactory的静态注入，从而使MyBatis实现第三方缓存 -->
+	<!--<bean id="redisCacheTransfer" class="com.woostore.common.dao.RedisCacheTransfer">
+		<property name="jedisConnectionFactory" ref="jedisConnectionFactory"/>
+	</bean>-->
+	<!-- 定义文件上传解析器 -->
+	<bean id="multipartResolver"
+		  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 设定默认编码 -->
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<!-- 设定文件上传的最大值5MB，5*1024*1024 -->
+		<property name="maxUploadSize" value="5242880"></property>
+	</bean>
+</beans>
