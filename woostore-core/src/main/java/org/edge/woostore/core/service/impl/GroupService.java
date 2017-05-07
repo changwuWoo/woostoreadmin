@@ -8,7 +8,7 @@ import java.sql.Connection;
 /**
  * Created by Administrator on 2017/4/24.
  */
-@Service
+@Service(value = "groupService")
 public class GroupService implements IGroupService {
     @Override
     public Connection queryByPkId(String pkid) {

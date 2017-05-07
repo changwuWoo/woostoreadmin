@@ -25,7 +25,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
             this.entityClass = (Class<T>) parameterizedType[0];
         }
     }
-
+    @Resource
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

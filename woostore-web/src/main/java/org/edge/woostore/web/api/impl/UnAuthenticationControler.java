@@ -33,7 +33,7 @@ public class UnAuthenticationControler extends AbstractControler implements ICon
     @Qualifier("authenticationServiceImpl")
     @Autowired
     private IAuthenticationService authenticationServiceImpl;
-    @Qualifier("userServiceimpl")
+    @Qualifier("userService")
     @Autowired
     private IUserService iUserService;
     @Autowired

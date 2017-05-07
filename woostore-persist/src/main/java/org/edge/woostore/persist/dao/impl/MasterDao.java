@@ -55,7 +55,7 @@ public class MasterDao extends AbstractCoreDao<Master,String> implements IMaster
 
     @Override
     public boolean isExistByUsername(String name) {
-        String hql = "from Master admin where lower(admin.username) = lower(?)";
+        String hql = "from Master admin where lower(admin.fname) = lower(?)";
         Master admin = (Master) getSession().createQuery(hql).setParameter(0, name).uniqueResult();
         if (admin != null) {
             return true;

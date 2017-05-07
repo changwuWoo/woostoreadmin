@@ -1,7 +1,9 @@
 package org.edge.woostore.web.api.impl;
 
 import org.edge.woostore.core.service.IGroupService;
+import org.edge.woostore.core.service.impl.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +20,8 @@ import java.util.Map;
 @RequestMapping
 public class FunctionControler {
     @Autowired
-    private IGroupService groupService;
+    @Qualifier(value = "groupService")
+    private GroupService groupService;
     public Map getPhotoList(){
         return null;
     }

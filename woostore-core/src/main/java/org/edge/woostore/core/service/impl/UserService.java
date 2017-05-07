@@ -1,15 +1,15 @@
 package org.edge.woostore.core.service.impl;
 
+import org.edge.woostore.core.service.ICoreService;
 import org.edge.woostore.core.service.IUserService;
 import org.edge.woostore.domain.entity.Master;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by Administrator on 2017/4/6.
  */
-@Service("userServiceimpl")
-public class UserServiceimpl extends CoreServiceImpl implements IUserService {
+@Service("userService")
+public class UserService implements IUserService, ICoreService {
     @Override
     public Master getUserByUserName(String name) {
         return null;
