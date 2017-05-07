@@ -33,12 +33,12 @@
             </dependency>
             <dependency>
                 <groupId>org.edge</groupId>
-                <artifactId>woostore-web</artifactId>
+                <artifactId>woostore-core</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.edge</groupId>
-                <artifactId>woostore-core</artifactId>
+                <artifactId>woostore-web</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
