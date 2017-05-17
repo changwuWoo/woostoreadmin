@@ -1,5 +1,7 @@
 package org.edge.woostore.web.api.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import io.jsonwebtoken.Claims;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.edge.woostore.core.service.IAuthenticationService;
@@ -7,6 +9,9 @@ import org.edge.woostore.core.service.ITokenService;
 import org.edge.woostore.core.service.IUserService;
 import org.edge.woostore.domain.dto.ResultDTO;
 import org.edge.woostore.domain.entity.Master;
+import org.edge.woostore.domain.entity.Token;
+import org.edge.woostore.utils.constant.Constants;
+import org.edge.woostore.utils.util.JwtUtil;
 import org.edge.woostore.web.api.AbstractControler;
 import org.edge.woostore.web.api.IControler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +43,8 @@ public class UnAuthenticationControler extends AbstractControler implements ICon
     private IUserService iUserService;
     @Autowired
     private ITokenService iTokenService;
+    @Autowired
+    private JwtUtil jwt;
     /** 
     * @Title: loginRequest 
     * @Description: TODO
@@ -56,7 +63,7 @@ public class UnAuthenticationControler extends AbstractControler implements ICon
     }
     
     /** 
-    * @Title: indexRequest 
+    * @Title: indexRequest
     * @Description: 对首页进行定制，推广一些东西
     * @param @return
     * @return Map<String,Object>
@@ -81,9 +88,8 @@ public class UnAuthenticationControler extends AbstractControler implements ICon
     @SuppressWarnings("finally")
     @RequestMapping(value = "/userlogin", method = RequestMethod.POST)
     public  @ResponseBody Map<String, Object> userLogin(
-            @Valid @RequestParam(value = "name") String name,
-            @Valid @RequestParam(value = "password") String pawword,
-            BindingResult bindingResult) {
+            @Valid @RequestBody Master master,
+            BindingResult bindingResult) throws Exception {
         Map<String, Object> reMap = new HashMap<String, Object>();
         List<ObjectError> errorList = bindingResult.getAllErrors();
         for(ObjectError error : errorList){
@@ -93,89 +99,57 @@ public class UnAuthenticationControler extends AbstractControler implements ICon
         if (bindingResult.hasErrors()) {
             reMap.put("errorMsg", bindingResult.getFieldError().getDefaultMessage());
         }
-        Master master=null;
-        logger.debug(master);
-        master=iUserService.getUserByUserName(name);
-        if(master!=null&&master.getFname().equalsIgnoreCase(master.getFname())){
-            if(pawword.equals(master.getFpassword())){
-                reMap.put("result", new ResultDTO().success(ResultDTO.LOGIN_SUCCESS));
-                reMap.put("token",authenticationServiceImpl.authenticate(master.getFname()));
+        Master remaster=null;
+        remaster=iUserService.getUserByUserName(master.getFname());
+        if(remaster!=null&&master.getFname().equalsIgnoreCase(remaster.getFname())){
+            if(master.getFpassword().equals(remaster.getFpassword())){
+                reMap.put("result", new ResultDTO().success(ResultDTO.LOGIN_SUCCESS,ResultDTO.RESCODE_SUCCESS));
+                //修改登录逻辑变化，如果用户名和用户信息验证通过直接替换掉服务器端保存的IP和token字符串
+                String subject = JwtUtil.generalSubject(remaster);
+
+                String token = jwt.createJWT(Constants.JWT_ID, subject, Constants.JWT_TTL);
+                String refreshToken = jwt.createJWT(Constants.JWT_ID, subject, Constants.JWT_REFRESH_TTL);
+                JSONObject jo = new JSONObject();
+                jo.put("token", token);
+                jo.put("refreshToken", refreshToken);
+                System.out.println(token.length());
+                reMap.put("token",token);
             }else{
-                reMap.put("result", new ResultDTO().failure(ResultDTO.LOGIN_FAILD));
+                reMap.put("result", new ResultDTO().failure(ResultDTO.LOGIN_FAILD,ResultDTO.RESCODE_EXCEPTION));
             }
         }else{
-            reMap.put("result", new ResultDTO().failure(ResultDTO.NO_THIS_USEERNAME));
+            reMap.put("result", new ResultDTO().failure(ResultDTO.NO_THIS_USEERNAME,ResultDTO.RESCODE_EXCEPTION));
         }
         logger.info("" + reMap);
         return reMap;
-
-        /*
-            System.out.println(name+"-----"+password);
-
-            *//**
-
-         * 判断是否登录成功
-
-         * 1.登录成功
-
-         *  1.1.成功生成对应的token并更新
-
-         *  1.2.失败就抛异常
-
-         *//*
-
-            String token=tokenMap.get(name);
-
-            UserInfo user=null;
-
-            if(token==null){
-
-                user=new UserInfo();
-
-                user.setFname(name);
-
-                user.setFpasswd(password);
-
-                System.out.println("新用户登录");
-
-            }else{
-
-                user=loginUserMap.get(token);
-
-                loginUserMap.remove(token);
-
-                System.out.println("更新用户登录token");
-
-            }
-
-            token= MD5Method.MD5(name + password + new Date().getTime());
-
-            loginUserMap.put(token, user);
-
-            tokenMap.put(name, token);
-
-            System.out.println("目前有"+tokenMap.size()+"个用户");
-
-            for(UserInfo u:loginUserMap.values()){
-
-                System.out.println(u.getFname()+":"+u.getFpasswd());
-
-            }
-
-            return token;*/
     }
     @RequestMapping(value = "/tokenLogin",method = RequestMethod.POST)
-    public Map tokenLogin(@Valid @RequestParam  String token,BindingResult bindingResult){
-        Map<String,String> reMap=null;
+    public @ResponseBody Map<String,String> tokenLogin(@Valid @RequestParam  String token,BindingResult bindingResult) throws Exception {
+        Map<String,String> reMap=new HashMap<String,String>();
         List<ObjectError> errorList = bindingResult.getAllErrors();
         for(ObjectError error : errorList){
             System.out.println(error.getDefaultMessage());
         }
-        super.getIpV4();
+        Token serverToken=null;
+        String ip=super.getIpV4();     //获取当前回话的发起请求的IP
         if (token!=null&&!"".equals(token)){
-
+            serverToken=iTokenService.getTokenByAccessToken(token);
+            if (serverToken!=null&&ip.equals(serverToken.getIp())){  //如果IP受信任，那么可以就绪下一步验证其他得信息
+                /*
+                * 对于IP已经验证通过的IP，然后验证token里面的信息，主要是对token的有效期进行验证,
+                * 然后根据有效期的判断结果返回相应的数据结果
+                * */
+                Claims claims = jwt.parseJWT(token);   //解析token结构
+                String json = claims.getSubject();
+                Master master = JSONObject.parseObject(json, Master.class);  //解析出数据信息
+                String subject = JwtUtil.generalSubject(master);
+                String refreshToken = jwt.createJWT(Constants.JWT_ID, subject, Constants.JWT_TTL);
+                reMap.put("refreshToken",refreshToken);
+            }else{
+                reMap.put("tokenip","您当前环境不受信任，请输入用户信息"); //IP不受信任，直接返回验证失败的结果并且要求验证用户名信息
+            }
         }else{
-
+            reMap.put("tokenmes","token无效");
         }
         return reMap;
     }

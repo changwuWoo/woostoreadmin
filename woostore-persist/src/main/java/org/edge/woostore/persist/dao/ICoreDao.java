@@ -1,7 +1,8 @@
 package org.edge.woostore.persist.dao;
 
 
-import org.edge.woostore.domain.entity.Master;
+
+import org.edge.woostore.domain.entity.Token;
 
 import java.io.Serializable;
 import java.util.List;
@@ -31,13 +32,13 @@ public interface ICoreDao<T, PK extends Serializable> {
     public boolean insert(T record);
     public  int insertSelective(T record);
 
-    public  T selectByPrimaryKey(String pkId);
+    public T selectByPrimaryKey(String pkId);
 
     public  int updateByPrimaryKeySelective(T record);
 
     public  boolean updateByPrimaryKey(T record);
 
-    public  Master selectByName(String name);
+    public T selectByName(String name);
 
     public  boolean insert(List<T> list);
     /**

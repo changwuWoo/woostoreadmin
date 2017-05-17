@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Before;
 import org.edge.woostore.core.service.ITokenService;
 import org.edge.woostore.domain.annotation.AccessTokenValidate;
 import org.edge.woostore.domain.dto.JwtToken;
+import org.edge.woostore.domain.entity.Token;
 import org.edge.woostore.utils.constant.Constants;
 import org.edge.woostore.utils.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class AccessTokenAspect {
         //从header中得到token
         String authorization = request.getHeader(Constants.AUTHORIZATION);
         //验证token这里只需要写一个条用函数就好返回验证结果
-        JwtToken model = iTokenService.getToken(authorization);
+        Token model = iTokenService.getTokenByAccessToken(authorization);
         if (TokenUtils.valid("","","","")) {
             //如果token验证成功，将token对应的用户id存在request中，便于之后注入
             request.setAttribute(Constants.CURRENT_USER_ID, model.hashCode());

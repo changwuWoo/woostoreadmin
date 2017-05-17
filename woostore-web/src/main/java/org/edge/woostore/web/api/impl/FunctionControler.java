@@ -1,6 +1,5 @@
 package org.edge.woostore.web.api.impl;
 
-import org.edge.woostore.core.service.IGroupService;
 import org.edge.woostore.core.service.impl.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -28,7 +28,7 @@ public class CORSFilter implements Filter {
 	 HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
 
-	 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+	 httpServletResponse.setHeader("Access-Control-Allow-Origin", "http://localhost:10608");
 
 
 	 httpServletResponse

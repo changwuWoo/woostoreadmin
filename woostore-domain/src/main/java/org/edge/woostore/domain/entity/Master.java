@@ -1,6 +1,8 @@
 package org.edge.woostore.domain.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -10,8 +12,11 @@ import java.math.BigDecimal;
 @Table(name = "TB_MASTER", schema = "WOOSTOREADMIN")
 public class Master {
     private String pkId;
+    @NotNull(message = "不能null")
+    @Size(max = 23,min = 6,message = "length is  6-23")
     private String fname;
     private String fnumber;
+    @NotNull(message = "不能null")
     private String fpassword;
     private BigDecimal fkStKey;
 
@@ -89,5 +94,16 @@ public class Master {
         result = 31 * result + (fpassword != null ? fpassword.hashCode() : 0);
         result = 31 * result + (fkStKey != null ? fkStKey.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Master{" +
+                "pkId='" + pkId + '\'' +
+                ", fname='" + fname + '\'' +
+                ", fnumber='" + fnumber + '\'' +
+                ", fpassword='" + fpassword + '\'' +
+                ", fkStKey=" + fkStKey +
+                '}';
     }
 }

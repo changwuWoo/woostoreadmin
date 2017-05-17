@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.edge.woostore.domain.entity;
+package org.edge.woostore.domain.dto;
 
 /** 
  * @ClassName: TokenType 

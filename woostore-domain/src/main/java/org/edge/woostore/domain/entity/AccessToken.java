@@ -1,14 +1,30 @@
 package org.edge.woostore.domain.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Created by Administrator on 2017/5/7.
+ * Created by Administrator on 2017/5/16.
  */
+@Entity
+@Table(name = "TB_TOKEN", schema = "WOOSTOREADMIN")
 public class AccessToken {
+    private String pkId;
     private String ip;
-    private String accessToken;
+    private String accesstoken;
 
+    @Id
+    @Column(name = "PK_ID")
+    public String getPkId() {
+        return pkId;
+    }
+
+    public void setPkId(String pkId) {
+        this.pkId = pkId;
+    }
+
+    @Basic
+    @Column(name = "IP")
     public String getIp() {
         return ip;
     }
@@ -17,25 +33,28 @@ public class AccessToken {
         this.ip = ip;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    @Basic
+    @Column(name = "ACCESSTOKEN")
+    public String getAccesstoken() {
+        return accesstoken;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setAccesstoken(String accesstoken) {
+        this.accesstoken = accesstoken;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AccessToken)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         AccessToken that = (AccessToken) o;
-        return Objects.equals(getIp(), that.getIp()) &&
-                Objects.equals(getAccessToken(), that.getAccessToken());
+        return Objects.equals(pkId, that.pkId) &&
+                Objects.equals(ip, that.ip) &&
+                Objects.equals(accesstoken, that.accesstoken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIp(), getAccessToken());
+        return Objects.hash(pkId, ip, accesstoken);
     }
 }

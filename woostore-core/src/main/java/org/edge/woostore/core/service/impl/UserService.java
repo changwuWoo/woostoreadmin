@@ -3,6 +3,9 @@ package org.edge.woostore.core.service.impl;
 import org.edge.woostore.core.service.ICoreService;
 import org.edge.woostore.core.service.IUserService;
 import org.edge.woostore.domain.entity.Master;
+import org.edge.woostore.persist.dao.IMasterDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,12 +13,15 @@ import org.springframework.stereotype.Service;
  */
 @Service("userService")
 public class UserService implements IUserService, ICoreService {
+    @Autowired
+    @Qualifier("masterDao")
+    private IMasterDao iMasterDao;
     @Override
     public Master getUserByUserName(String name) {
-        return null;
+        return iMasterDao.selectByName(name);
     }
     @Override
     public Master getUserByPkId(Master master) {
-        return null;
+        return iMasterDao.selectByPrimaryKey(master.getPkId());
     }
 }

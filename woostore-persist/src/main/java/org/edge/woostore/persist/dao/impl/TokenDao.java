@@ -1,10 +1,8 @@
 package org.edge.woostore.persist.dao.impl;
 
-import org.edge.woostore.domain.dto.JwtToken;
-import org.edge.woostore.domain.entity.Master;
+import org.edge.woostore.domain.entity.Token;
 import org.edge.woostore.persist.dao.AbstractCoreDao;
 import org.edge.woostore.persist.dao.ITokenDao;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
  * Created by Administrator on 2017/5/7.
  */
 @Repository
-public class TokenDao extends AbstractCoreDao<JwtToken,String> implements ITokenDao {
+public class TokenDao extends AbstractCoreDao<Token,String> implements ITokenDao {
 
 
     @Override
@@ -27,37 +25,37 @@ public class TokenDao extends AbstractCoreDao<JwtToken,String> implements IToken
     }
 
     @Override
-    public boolean insert(JwtToken record) {
+    public boolean insert(Token record) {
         return false;
     }
 
     @Override
-    public int insertSelective(JwtToken record) {
+    public int insertSelective(Token record) {
         return 0;
     }
 
     @Override
-    public JwtToken selectByPrimaryKey(String pkId) {
+    public Token selectByPrimaryKey(String pkId) {
         return null;
     }
 
     @Override
-    public int updateByPrimaryKeySelective(JwtToken record) {
+    public int updateByPrimaryKeySelective(Token record) {
         return 0;
     }
 
     @Override
-    public boolean updateByPrimaryKey(JwtToken record) {
+    public boolean updateByPrimaryKey(Token record) {
         return false;
     }
 
     @Override
-    public Master selectByName(String name) {
+    public Token selectByName(String name) {
         return null;
     }
 
     @Override
-    public boolean insert(List<JwtToken> list) {
+    public boolean insert(List<Token> list) {
         return false;
     }
 

@@ -2,6 +2,7 @@ package org.edge.woostore.core.service.impl;
 
 import org.edge.woostore.core.service.ITokenService;
 import org.edge.woostore.domain.dto.JwtToken;
+import org.edge.woostore.domain.entity.Token;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,17 @@ public class TokenService implements ITokenService{
     }
 
     @Override
-    public boolean getTokenBy(JwtToken token) throws InvalidJwtException {
+    public boolean vaildToken(Token token) throws InvalidJwtException {
         return false;
     }
 
     @Override
-    public JwtToken getToken(String appId) {
+    public Token getTokenByAccessToken(String AccessToken) {
+        return null;
+    }
+
+    @Override
+    public Token getTokenByIp(String ip) {
         return null;
     }
 

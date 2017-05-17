@@ -1,9 +1,9 @@
 package org.edge.woostore.persist.dao.impl;
 
 import org.edge.woostore.domain.entity.Master;
+import org.edge.woostore.domain.entity.Token;
 import org.edge.woostore.persist.dao.AbstractCoreDao;
 import org.edge.woostore.persist.dao.IMasterDao;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -45,7 +45,9 @@ public class MasterDao extends AbstractCoreDao<Master,String> implements IMaster
 
     @Override
     public Master selectByName(String name) {
-        return null;
+        String hql="from Master admin where lower(admin.fname) = lower(?)";
+        Master master = (Master)getSession().createQuery(hql).setParameter(0,name).uniqueResult();
+        return master;
     }
 
     @Override

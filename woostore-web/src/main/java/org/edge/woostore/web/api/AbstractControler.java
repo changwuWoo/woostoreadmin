@@ -18,7 +18,7 @@ public abstract class AbstractControler implements IControler{
         String ip=null;
         request=((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         try {
-            NetworkUtil.getIpAddress(request);
+            ip=NetworkUtil.getIpAddress(request);
         } catch (IOException e) {
             e.printStackTrace();
         }
