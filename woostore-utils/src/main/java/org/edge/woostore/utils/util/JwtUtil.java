@@ -8,12 +8,15 @@ import org.apache.commons.codec.binary.Base64;
 import org.edge.woostore.domain.entity.Master;
 import org.edge.woostore.utils.constant.Constants;
 import org.jose4j.json.internal.json_simple.JSONObject;
+import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/5/7.
@@ -40,7 +43,7 @@ public class JwtUtil {
      * @param subject
      * @param ttlMillis
      * @return
-     * @throws Exception
+     * @throws InvalidJwtException
      */
     public String createJWT(String id, String subject, long ttlMillis) throws Exception {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -64,9 +67,9 @@ public class JwtUtil {
      * 解密jwt
      * @param jwt
      * @return
-     * @throws Exception
+     * @throws InvalidJwtException
      */
-    public Claims parseJWT(String jwt) throws Exception{
+    public  Claims parseJWT(String jwt) throws Exception{
         SecretKey key = generalKey();
         Claims claims = Jwts.parser()
                 .setSigningKey(key)
@@ -76,12 +79,12 @@ public class JwtUtil {
 
     /**
      * 生成subject信息
-     * @param user
+     * @param map
      * @return
      */
-    public static String generalSubject(Master user){
+    public static String generalSubject(Map map){
         JSONObject jo = new JSONObject();
-        jo.put("userId", user.getFname());
+        jo.putAll(map);
         return jo.toJSONString();
     }
 }

@@ -16,6 +16,7 @@
 	<context:component-scan base-package="org.edge.woostore.persist.dao"></context:component-scan>
 	<context:component-scan base-package="org.edge.woostore.persist.dao.impl"></context:component-scan>
 	<context:component-scan base-package="org.edge.woostore.utils.util"></context:component-scan>
+	<context:component-scan base-package="org.edge.woostore.core.aspect"></context:component-scan>
 	<context:annotation-config></context:annotation-config>
 	<!--aop -->
 	<!--      扫描注解bean -->
@@ -24,14 +25,16 @@
 		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:/properties/app.properties</value>
+				<value>classpath:/properties/dbconfig.properties</value>
+				<value>classpath:/properties/hibernate.properties</value>
+				<value>classpath:/properties/redis.properties</value>
 			</list>
 		</property>
 	</bean>
 	<bean id="DataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		  destroy-method="close">
-		<property name="driverClassName" value="${driverClassName}"/>
-		<property name="url" value="${url}"/>
+		<property name="driverClassName" value="${oracle.driverClassName}"/>
+		<property name="url" value="${oracle.url}"/>
 		<property name="username" value="${username}"/>
 		<property name="password" value="${password}"/>
 		<!-- 初始化连接大小 -->
@@ -53,9 +56,9 @@
 			<props>
 				<!-- 定义Hibernate的方言 -->
 				<prop key="hibernate.dialect">
-					org.hibernate.dialect.MySQLDialect
+					${hibernate.dialect}
 				</prop>
-				<!-- 是否根据需要每次自动更新数据库 <prop key="hibernate.hbm2ddl.auto">update</prop> -->
+				 <prop key="hibernate.hbm2ddl.auto">update</prop>
 				<!-- 控制台显示SQL -->
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">true</prop>
@@ -93,4 +96,68 @@
 			<tx:method name="get*" propagation="SUPPORTS" read-only="true" />
 		</tx:attributes>
 	</tx:advice>
+
+
+	<!-- 连接池配置  最大连接数 最大空闲数  最长等待时间 连接是否可用-->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal" value="${redis.maxActive}" />
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+		<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+		<property name="testOnReturn" value="${redis.testOnReturn}" />
+		<property name="blockWhenExhausted" value="${redis.blockWhenExhausted}" />
+	</bean>
+	<bean id="jedisShardInfo1" class="redis.clients.jedis.JedisShardInfo">
+		<constructor-arg index="0" value="${redis.host}" />
+		<constructor-arg index="1" value="${redis.port}" type="int" />
+		<constructor-arg index="2" value="${redis.instance}"/>
+	</bean>
+	<bean id="jedisShardInfo2" class="redis.clients.jedis.JedisShardInfo">
+		<constructor-arg index="0" value="${redis.host2}" />
+		<constructor-arg index="1" value="${redis.port2}" type="int"/>
+		<constructor-arg index="2" value="${redis.instance2}"/>
+	</bean>
+	<bean id="jedisShardInfo3" class="redis.clients.jedis.JedisShardInfo">
+		<constructor-arg index="0" value="${redis.host3}" />
+		<constructor-arg index="1" value="${redis.port3}" type="int"/>
+		<constructor-arg index="2" value="${redis.instance3}"/>
+	</bean>
+	<bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1">
+			<list>
+				<ref bean="jedisShardInfo1"/>
+				<ref bean="jedisShardInfo2"/>
+				<ref bean="jedisShardInfo3"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	<!--同步sentinel的信息，将主从信息同步到客户端来-->
+	<!--<bean class="redis.clients.jedis.JedisSentinelPool">
+		<constructor-arg index="0" value="mymaster"/>
+		<constructor-arg index="1">
+			<set>
+				<value>${redis.sentinel.host}</value>
+			</set>
+		</constructor-arg>
+		<constructor-arg index="2" ref="jedisPoolConfig"/>
+	</bean>-->
+	<!-- 分片池 end -->
+	<!-- redis服务器中心 -->
+	<bean id="connectionFactory"  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
+		<property name="poolConfig" ref="jedisPoolConfig" />
+		<property name="port" value="${redis.port}" />
+		<property name="hostName" value="${redis.host}" />
+		<!--<property name="password" value="${redis.password}" />-->
+		<property name="timeout" value="${redis.timeout}" ></property>
+	</bean >
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="keySerializer" >
+			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="valueSerializer" >
+			<bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+		</property>
+	</bean >
 </beans>

@@ -1,44 +1,39 @@
 package org.edge.woostore.core.service.impl;
 
 import org.edge.woostore.core.service.ITokenService;
-import org.edge.woostore.domain.dto.JwtToken;
-import org.edge.woostore.domain.entity.Token;
-import org.jose4j.jwt.consumer.InvalidJwtException;
+import org.edge.woostore.persist.dao.ITokenDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by Administrator on 2017/5/7.
+ * Created by Administrator on 2017/6/21.
  */
-@Service("tokenService")
+@Service
 public class TokenService implements ITokenService{
-
+    @Autowired
+    private ITokenDao iTokenDao;
     @Override
-    public String insert(String userName) {
-        return null;
+    public Object getTokenByMaterId(String masterId) {
+        return iTokenDao.get(masterId);
     }
 
     @Override
-    public boolean vaildToken(Token token) throws InvalidJwtException {
-        return false;
+    public boolean updateToken(String key, String accessToken) {
+        if(!key.isEmpty()&&!accessToken.isEmpty()){
+            iTokenDao.set(key,accessToken);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
-    public Token getTokenByAccessToken(String AccessToken) {
-        return null;
-    }
-
-    @Override
-    public Token getTokenByIp(String ip) {
-        return null;
-    }
-
-    @Override
-    public void deleteToken(String userId) {
-
-    }
-
-    @Override
-    public void updateTokneByIp(String ip) {
-
+    public boolean removeToken(String masterId) {
+        if (iTokenDao.exists(masterId)){
+            iTokenDao.remove(masterId);
+            return true;
+        }else {
+            return false;
+        }
     }
 }

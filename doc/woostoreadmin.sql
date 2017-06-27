@@ -66,11 +66,9 @@ CREATE TABLE TB_ACTIONLOG
    FK_USER_ID           VARCHAR2(32 CHAR)    NOT NULL,
    FOPVALUETABLE        VARCHAR2(80 CHAR)    NOT NULL,
    FOPTIME              TIMESTAMP,
-   FMAINTAINTIME        DECIMAL(1,0)
+   FMAINTAINTIME        DECIMAL(1,0),
+   CONSTRAINT PK_TB_ACTIONLOG PRIMARY KEY (PK_ID)
 );
-
-ALTER TABLE TB_ACTIONLOG
-   ADD CONSTRAINT PK_TB_ACTIONLOG PRIMARY KEY (PK_LOGINLOG_ID);
 
 /*==============================================================*/
 /* Table: TB_BASESTATUS                                         */
@@ -79,24 +77,10 @@ CREATE TABLE TB_BASESTATUS
 (
    PK_ID                VARCHAR2(32 CHAR)    NOT NULL,
    FKEY                 DECIMAL(1, 0)        NOT NULL,
-   FVALUE               VARCHAR2(80 CHAR)    NOT NULL
+   FVALUE               VARCHAR2(80 CHAR)    NOT NULL,
+   CONSTRAINT PK_TB_BASESTATUS PRIMARY KEY (PK_ID)
 );
 
-ALTER TABLE TB_BASESTATUS
-   ADD CONSTRAINT PK_TB_BASESTATUS PRIMARY KEY (PK_ID);
-
-/*==============================================================*/
-/* Table: TB_BUTTON                                             */
-/*==============================================================*/
-CREATE TABLE TB_BUTTON
-(
-   PK_ID                VARCHAR2(32 CHAR)    NOT NULL,
-   FNAME                VARCHAR2(80 CHAR)    NOT NULL,
-   FNUMBER              VARCHAR2(18 CHAR)    NOT NULL
-);
-
-ALTER TABLE TB_BUTTON
-   ADD CONSTRAINT PK_TB_BUTTON PRIMARY KEY (PK_ID);
 
 /*==============================================================*/
 /* Table: TB_GRANT                                              */
@@ -109,11 +93,10 @@ CREATE TABLE TB_GRANT
    PRIVILEGEACCESS      VARCHAR2(80 CHAR)    NOT NULL,
    PRIVILEGEACCESSVALUE VARCHAR2(32 CHAR)    NOT NULL,
    PRIVILEGEOPERATION   DECIMAL(1,0)         NOT NULL,
-   FKPOWERID            VARCHAR2(32 CHAR)    NOT NULL
+   FKPOWERID            VARCHAR2(32 CHAR)    NOT NULL,
+   CONSTRAINT PK_TB_GRANT PRIMARY KEY (PK_ID)
 );
 
-ALTER TABLE TB_GRANT
-   ADD CONSTRAINT PK_TB_GRANT PRIMARY KEY (PK_ID);
 
 /*==============================================================*/
 /* Table: TB_LOGINLOG                                           */
@@ -124,11 +107,9 @@ CREATE TABLE TB_LOGINLOG
    FIP                  VARCHAR2(32 CHAR)    NOT NULL,
    FLOGINTIME           TIMESTAMP            NOT NULL,
    FENDTIME             TIMESTAMP            NOT NULL,
-   FMAINTAINTIME        NUMBER(8,4)
+   FMAINTAINTIME        NUMBER(8,4),
+   CONSTRAINT PK_TB_LOGINLOG PRIMARY KEY (PK_ID)
 );
-
-ALTER TABLE TB_LOGINLOG
-   ADD CONSTRAINT PK_TB_LOGINLOG PRIMARY KEY (PK_ID);
 
 /*==============================================================*/
 /* Table: TB_MASTER                                             */
@@ -141,11 +122,9 @@ CREATE TABLE TB_MASTER
    FEMAIL               VARCHAR(120),
    FSTATUS              DECIMAL(1,0)         DEFAULT 1 NOT NULL,
    FKROLEKEY            DECIMAL(1, 0)        NOT NULL,
-   FKTYPEKEY            DECIMAL(1, 0)        NOT NULL
+   FKTYPEKEY            DECIMAL(1, 0)        NOT NULL,
+   CONSTRAINT PK_TB_MASTER PRIMARY KEY (PK_ID)
 );
-
-ALTER TABLE TB_MASTER
-   ADD CONSTRAINT PK_TB_MASTER PRIMARY KEY (PK_ID);
 
 /*==============================================================*/
 /* Table: TB_MASTERTYPE                                         */
@@ -154,11 +133,9 @@ CREATE TABLE TB_MASTERTYPE
 (
    PK_ID                VARCHAR2(32 CHAR)    NOT NULL,
    FKEY                 DECIMAL(1, 0)        NOT NULL,
-   FVALUE               VARCHAR2(18 CHAR)    NOT NULL
+   FVALUE               VARCHAR2(18 CHAR)    NOT NULL,
+   CONSTRAINT PK_TB_MASTERTYPE PRIMARY KEY (PK_ID)
 );
-
-ALTER TABLE TB_MASTERTYPE
-   ADD CONSTRAINT PK_TB_MASTERTYPE PRIMARY KEY (PK_ID);
 
 /*==============================================================*/
 /* Table: TB_MENU                                               */
@@ -169,11 +146,10 @@ CREATE TABLE TB_MENU
    FPARENT_ID           VARCHAR2(32 CHAR),
    FNAME                VARCHAR2(60 CHAR)    NOT NULL,
    FNUMBER              VARCHAR2(18 CHAR)    NOT NULL,
-   FSTATUS              DECIMAL(1,0)         NOT NULL
+   FSTATUS              DECIMAL(1,0)         NOT NULL,
+   CONSTRAINT PK_TB_MENU PRIMARY KEY (PK_ID)
 );
 
-ALTER TABLE TB_MENU
-   ADD CONSTRAINT PK_TB_MENU PRIMARY KEY (PK_ID);
 
 /*==============================================================*/
 /* Table: TB_POWER                                              */
@@ -182,11 +158,10 @@ CREATE TABLE TB_POWER
 (
    PK_ID                VARCHAR2(32 CHAR)    NOT NULL,
    FNUMBER              VARCHAR2(18 CHAR)    NOT NULL,
-   FVALUE               VARCHAR2(18 CHAR)    NOT NULL
+   FVALUE               VARCHAR2(18 CHAR)    NOT NULL,
+   CONSTRAINT PK_TB_POWER PRIMARY KEY (PK_ID)
 );
 
-ALTER TABLE TB_POWER
-   ADD CONSTRAINT PK_TB_POWER PRIMARY KEY (PK_ID);
 
 /*==============================================================*/
 /* Table: TB_ROLE                                               */
@@ -196,11 +171,10 @@ CREATE TABLE TB_ROLE
    PK_ID                VARCHAR2(32 CHAR)    NOT NULL,
    FKEY                 DECIMAL(1, 0)        NOT NULL,
    FVALUE               VARCHAR2(18 CHAR)    NOT NULL,
-   FNUMBER              VARCHAR2(16 CHAR)    NOT NULL
+   FNUMBER              VARCHAR2(16 CHAR)    NOT NULL,
+   CONSTRAINT PK_TB_ROLE PRIMARY KEY (PK_ID)
 );
 
-ALTER TABLE TB_ROLE
-   ADD CONSTRAINT PK_TB_ROLE PRIMARY KEY (PK_ID);
 
 ALTER TABLE TB_MENU
    ADD CONSTRAINT FK_TB_MENU_REFERENCE_TB_MENU FOREIGN KEY (FPARENT_ID)

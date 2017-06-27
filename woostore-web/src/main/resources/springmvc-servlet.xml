@@ -22,6 +22,7 @@
 	<!--      扫描注解bean -->
 	<context:component-scan base-package="org.edge.woostore.web.api.impl"></context:component-scan>
 	<context:component-scan base-package="org.edge.woostore.web.api"></context:component-scan>
+	<context:component-scan base-package="org.edge.woostore.core.aspect"></context:component-scan>
 	<!-- 解决@ResponseBody 的实现类其默认的编码是 iso-8859-1的问题 -->
 	<mvc:annotation-driven validator="validator">
 		<mvc:message-converters>

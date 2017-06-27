@@ -1,101 +1,97 @@
-/**
- * 
- */
 package org.edge.woostore.domain.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
+
 /**
- * <p>Description: </p>
- * @method 
- * @author Administrator
- * 权限数据
+ * Created by Administrator on 2017/5/19.
  */
-public class Power {
-	private String id;
-	private String name;
-	private String number;
-	private boolean status;
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
+@Entity
+@Table(name = "TB_POWER", schema = "WOOSTOREADMIN")
+public class Power implements Serializable{
+    private String pkId;
+    @NotBlank
+    private String fnumber;
+    @NotBlank
+    private String fname;
+    private boolean fstatus;
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+    @Basic
+    @Column(name = "FSTATUS",updatable = false)
+    public boolean isFstatus() {
+        return fstatus;
+    }
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+    public void setFstatus(boolean fstatus) {
+        this.fstatus = fstatus;
+    }
 
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    private Collection<Role> roleCollection = new ArrayList<>();
+    @Transient
+    public Collection<Role> getRoleCollection() {
+        return roleCollection;
+    }
 
-	/**
-	 * @return the number
-	 */
-	public String getNumber() {
-		return number;
-	}
+    public void setRoleCollection(Collection<Role> roleCollection) {
+        this.roleCollection = roleCollection;
+    }
 
-	/**
-	 * @param number the number to set
-	 */
-	public void setNumber(String number) {
-		this.number = number;
-	}
+    @Override
+    public String toString() {
+        return "Power{" +
+                "pkId='" + pkId + '\'' +
+                ", fnumber='" + fnumber + '\'' +
+                ", fname='" + fname + '\'' +
+                '}';
+    }
 
-	/**
-	 * @return the status
-	 */
-	public boolean isStatus() {
-		return status;
-	}
+    @Id
+    @Column(name = "PK_ID")
+    public String getPkId() {
+        return pkId;
+    }
 
-	/**
-	 * @param status the status to set
-	 */
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
+    public void setPkId(String pkId) {
+        this.pkId = pkId;
+    }
 
-	public String getRoleName() {
-		return roleName;
-	}
+    @Basic
+    @Column(name = "FNUMBER")
+    public String getFnumber() {
+        return fnumber;
+    }
 
-	private String roleName;
-	private String url;
+    public void setFnumber(String fnumber) {
+        this.fnumber = fnumber;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    @Basic
+    @Column(name = "FNAME")
+    public String getFname() {
+        return fname;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
 
-	public Power(String roleName) {
-		this.roleName = roleName;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Power power = (Power) o;
+        return Objects.equals(pkId, power.pkId) &&
+                Objects.equals(fnumber, power.fnumber) &&
+                Objects.equals(fname, power.fname);
+    }
 
-	public Power(String roleName, String url) {
-		this.roleName = roleName;
-		this.url = url;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(pkId, fnumber, fname);
+    }
 }

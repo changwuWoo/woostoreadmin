@@ -1,48 +1,71 @@
 package org.edge.woostore.persist.dao;
 
-
-
-import org.edge.woostore.domain.entity.Token;
+import org.hibernate.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Administrator on 2017/5/7.
+ * Created by Administrator on 2017/4/12.
  */
-public interface ICoreDao<T, PK extends Serializable> {
-
+public interface ICoreDao<T, PK extends Serializable>{
     /**
      * 根据ID获取实体对象.
      *
-     * @param id 记录ID
+     * @param id
+     *  记录ID
      * @return 实体对象
      */
-    public T get(PK id);
+
+    @Transactional
+    T get(PK id);
 
     /**
      * 保存实体对象.
      *
-     * @param entity 对象
+     * @param entity
+     *            对象
      * @return ID
      */
-    public PK save(T entity);
+    @Transactional
+    PK save(T entity);
 
-    public int deleteByPrimaryKey(String pkId);
-    public boolean insert(T record);
-    public  int insertSelective(T record);
+    //分页查询
+    @Transactional
+    Collection<T> queryForPage(final int offset, final int length,String hql,Map map);
 
-    public T selectByPrimaryKey(String pkId);
-
-    public  int updateByPrimaryKeySelective(T record);
-
-    public  boolean updateByPrimaryKey(T record);
-
-    public T selectByName(String name);
-
-    public  boolean insert(List<T> list);
-    /**
-     * 根据用户名判断此用户是否存在（不区分大小写）
-     */
-    public boolean isExistByUsername(String name);
+    //总记录条数
+    @Transactional
+    int getCount(String hql);
+    @Transactional
+    boolean isExistByname(String hql,Map map);
+    @Transactional
+    int deleteByPrimaryKey(String hql,Map map);
+    @Transactional
+    int deleteByPrimaryKey(List<String> pkIds);
+    @Transactional
+    int insert(String sql,Map map);
+    @Transactional
+    int batchinsert(List<T> records);
+    @Transactional
+    int insertSelective(T record);
+    @Transactional
+    int updateByPrimaryKeySelective(T record);
+    @Transactional
+    int updateByPrimaryKey(String sql,Map map);
+    @Transactional
+    Collection<T> selectAll(String hql);
+    @Transactional
+    Query hqlGenter(String hql, Map map);
+    @Transactional
+    Query sqlGenter(String sql, Map map);
+    @Transactional
+    Collection<T> selectByFiled(String hql,Map map);
+    @Transactional
+    T selectByUniqueFiled(String hql,Map map);
+    @Transactional
+    String getSeq(String sql);
 }
