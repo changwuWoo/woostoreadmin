@@ -1,5 +1,6 @@
 package org.edge.woostore.web.api.impl;
 
+import org.edge.woostore.web.api.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,8 +16,8 @@ import java.util.Map;
  * Created by Administrator on 2017/3/25.
  */
 @RestController
-@RequestMapping
-public class FunctionController {
+@RequestMapping(value = "fun")
+public class FunctionController extends AbstractController{
     @Autowired
     @Qualifier(value = "groupService")
     public Map getPhotoList(){

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Claims;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.edge.woostore.core.service.IAuthenticationService;
 import org.edge.woostore.core.service.ITokenHistoryService;
 import org.edge.woostore.core.service.IMasterService;
 import org.edge.woostore.core.service.ITokenService;
@@ -33,11 +32,8 @@ import java.util.Map;
  */
 @RequestMapping("ua")
 @RestController
-public class UnAuthenticationController extends AbstractController implements IController {
+public class UnAuthenticationController extends AbstractController{
     private Log logger = LogFactory.getLog(UnAuthenticationController.class);
-    @Qualifier("authenticationServiceImpl")
-    @Autowired
-    private IAuthenticationService authenticationServiceImpl;
     @Autowired
     private IMasterService iMasterService;
     @Autowired
@@ -139,62 +135,62 @@ public class UnAuthenticationController extends AbstractController implements IC
         return reMap;
     }
 
-    @RequestMapping(value = "/tokenLogin", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Map loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHistory,
-                        HttpServletRequest httpRequest) {
-        Map reMap = new HashMap<>();
-        TokenHistory serverTokenHistory = new TokenHistory();
-        Claims claims = null;   //解析loginTokenHistory结构
-        String refushToken = null;
-        try {
-            claims = jwt.parseJWT(loginTokenHistory);//解析loginTokenHistory结构
-        } catch (Exception e) {
-            e.printStackTrace();
-            e.getMessage();
-            reMap.put(KEY_EXCEPTION, e.getMessage());
-            reMap.put(KEY_CODE, RESCODE_EXCEPTION);
-            reMap.put(KEY_MSG, AUTH_FAILD_EXP);
-            return reMap;
-        }
-        if (claims != null) {
-            String json = claims.getSubject();
-            Master master = JSONObject.parseObject(json, Master.class);
-            String accessToken = (String) iTokenService.getTokenByMaterId(master.getPkId());
-            TokenHistory tokenHistory = null;
-            tokenHistory = iTokenHistoryService.getTokenByAccessToken(accessToken);
-            if (loginTokenHistory.equals(accessToken)) {
-                if (tokenHistory != null && tokenHistory.getFip() != null && tokenHistory.getFip().length() > 0 && super.getIpV4().equals(tokenHistory.getFip())) {
-                    Map map = new HashMap();
-                    map.put("pkId", master.getPkId());
-                    String subject = JwtUtil.generalSubject(map);
-                    try {
-                        refushToken = jwt.createJWT(Constants.JWT_ID, subject, Constants.JWT_TTL);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    if (iTokenService.updateToken(master.getPkId(), refushToken)) {
-                        serverTokenHistory.setPkId(iTokenHistoryService.getSeq());
-                        serverTokenHistory.setFkMasterId(master.getPkId());
-                        serverTokenHistory.setFip(super.getIpV4());
-                        serverTokenHistory.setFaccesstoken(refushToken);
-                        iTokenHistoryService.insert(serverTokenHistory);
-                    }
-                    reMap.put(KEY_CODE, RESCODE_SUCCESS);
-                    reMap.put(KEY_AUTH, refushToken);
-                    reMap.put(KEY_MSG, AUTH_SUCCESS_MSG);
-                } else {
-                    reMap.put(KEY_CODE,RESCODE_FAILD);
-                    reMap.put(KEY_MSG,AUTH_FAILD_IP);
-                }
-            } else {
-                reMap.put(KEY_CODE,RESCODE_FAILD);
-                reMap.put(KEY_MSG,LOGIN_OTHERDEC);
-            }
-        }
+@RequestMapping(value = "/tokenLogin", method = RequestMethod.GET)
+public
+@ResponseBody
+Map loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHistory,
+                    HttpServletRequest httpRequest) {
+    Map reMap = new HashMap<>();
+    TokenHistory serverTokenHistory = new TokenHistory();
+    Claims claims = null;   //解析loginTokenHistory结构
+    String refushToken = null;
+    try {
+        claims = jwt.parseJWT(loginTokenHistory);//解析loginTokenHistory结构
+    } catch (Exception e) {
+        e.printStackTrace();
+        e.getMessage();
+        reMap.put(KEY_EXCEPTION, e.getMessage());
+        reMap.put(KEY_CODE, RESCODE_EXCEPTION);
+        reMap.put(KEY_MSG, AUTH_FAILD_EXP);
         return reMap;
     }
+    if (claims != null) {
+        String json = claims.getSubject();
+        Master master = JSONObject.parseObject(json, Master.class);
+        String accessToken = (String) iTokenService.getTokenByMaterId(master.getPkId());
+        TokenHistory tokenHistory = null;
+        tokenHistory = iTokenHistoryService.getTokenByAccessToken(accessToken);
+        if (loginTokenHistory.equals(accessToken)) {
+            if (tokenHistory != null && tokenHistory.getFip() != null && tokenHistory.getFip().length() > 0 && super.getIpV4().equals(tokenHistory.getFip())) {
+                Map map = new HashMap();
+                map.put("pkId", master.getPkId());
+                String subject = JwtUtil.generalSubject(map);
+                try {
+                    refushToken = jwt.createJWT(Constants.JWT_ID, subject, Constants.JWT_TTL);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (iTokenService.updateToken(master.getPkId(), refushToken)) {
+                    serverTokenHistory.setPkId(iTokenHistoryService.getSeq());
+                    serverTokenHistory.setFkMasterId(master.getPkId());
+                    serverTokenHistory.setFip(super.getIpV4());
+                    serverTokenHistory.setFaccesstoken(refushToken);
+                    iTokenHistoryService.insert(serverTokenHistory);
+                }
+                reMap.put(KEY_CODE, RESCODE_SUCCESS);
+                reMap.put(KEY_AUTH, refushToken);
+                reMap.put(KEY_MSG, AUTH_SUCCESS_MSG);
+            } else {
+                reMap.put(KEY_CODE,RESCODE_FAILD);
+                reMap.put(KEY_MSG,AUTH_FAILD_IP);
+            }
+        } else {
+            reMap.put(KEY_CODE,RESCODE_FAILD);
+            reMap.put(KEY_MSG,LOGIN_OTHERDEC);
+        }
+    }
+    return reMap;
+}
 
     /**
      * @param @return

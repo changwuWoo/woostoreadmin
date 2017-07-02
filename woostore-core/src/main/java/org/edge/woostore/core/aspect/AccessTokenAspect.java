@@ -37,10 +37,9 @@ public class AccessTokenAspect {
     public boolean doAccessCheck(JoinPoint joinPoint)throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpServletResponse response = null;
-        String accessToken = request.getParameter(Constants.AUTHORIZATION).trim().toString();
-        if(accessToken!=null&&accessToken.length()>0){
+        String authorization = request.getParameter(Constants.AUTHORIZATION).trim().toString();
+        if(authorization!=null&&authorization.length()>0){
             //从header中得到token
-            String authorization = request.getHeader(Constants.AUTHORIZATION);
             //验证token这里只需要写一个条用函数就好返回验证结果
             Claims claims = null;   //解析loginTokenHistory结构
             claims=jwt.parseJWT(authorization);
