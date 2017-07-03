@@ -1,7 +1,6 @@
 package org.edge.woostore.core.service;
 
 import org.edge.woostore.domain.entity.Master;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
@@ -14,6 +13,6 @@ public interface IMasterService extends ICoreService<Master>{
     Collection<Master> getUsers();
     Master queryByUserName(String name);
     boolean updateMasterInfo(Master master);
-    Master getMater(String pkId);
-    boolean insertMater(Master master);
+    Master getMaster(String pkId);
+    boolean insertMaster(Master master);
 }

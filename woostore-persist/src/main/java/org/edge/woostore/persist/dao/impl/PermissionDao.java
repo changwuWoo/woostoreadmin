@@ -2,7 +2,7 @@ package org.edge.woostore.persist.dao.impl;
 
 import org.edge.woostore.domain.entity.Permission;
 import org.edge.woostore.persist.dao.AbstractCoreDao;
-import org.edge.woostore.persist.dao.IPowerDao;
+import org.edge.woostore.persist.dao.IPermissionDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -13,7 +13,12 @@ import java.util.Map;
  * Created by Administrator on 2017/5/19.
  */
 @Repository
-public class PowerDaoImpl extends AbstractCoreDao<Permission,String> implements IPowerDao {
+public class PermissionDao extends AbstractCoreDao<Permission,String> implements IPermissionDao {
+    @Override
+    public boolean isExistByName(String hql, Map map) {
+        return false;
+    }
+
     @Override
     public int deleteByPrimaryKey(String hql, Map map) {
         return 0;
@@ -24,8 +29,9 @@ public class PowerDaoImpl extends AbstractCoreDao<Permission,String> implements 
         return 0;
     }
 
+
     @Override
-    public int batchinsert(List<Permission> records) {
+    public int batchInsert(List<Permission> records) {
         return 0;
     }
 
@@ -38,6 +44,7 @@ public class PowerDaoImpl extends AbstractCoreDao<Permission,String> implements 
     public int updateByPrimaryKeySelective(Permission record) {
         return 0;
     }
+
 
     @Override
     public Collection<Permission> selectListByPrivilegeMaster(String privileMasterValue) {

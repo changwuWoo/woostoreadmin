@@ -41,7 +41,7 @@ public interface ICoreDao<T, PK extends Serializable>{
     @Transactional
     int getCount(String hql);
     @Transactional
-    boolean isExistByname(String hql,Map map);
+    boolean isExistByName(String hql, Map map);
     @Transactional
     int deleteByPrimaryKey(String hql,Map map);
     @Transactional
@@ -49,7 +49,7 @@ public interface ICoreDao<T, PK extends Serializable>{
     @Transactional
     int insert(String sql,Map map);
     @Transactional
-    int batchinsert(List<T> records);
+    int batchInsert(List<T> records);
     @Transactional
     int insertSelective(T record);
     @Transactional
@@ -57,11 +57,11 @@ public interface ICoreDao<T, PK extends Serializable>{
     @Transactional
     int updateByPrimaryKey(String sql,Map map);
     @Transactional
-    Collection<T> selectAll(String hql);
+    Collection<T> selectAll(String hql,Map map);
     @Transactional
-    Query hqlGenter(String hql, Map map);
+    Query hqlQueryBuilder(String hql, Map map);
     @Transactional
-    Query sqlGenter(String sql, Map map);
+    Query sqlQueryBuilder(String sql, Map map);
     @Transactional
     Collection<T> selectByFiled(String hql,Map map);
     @Transactional

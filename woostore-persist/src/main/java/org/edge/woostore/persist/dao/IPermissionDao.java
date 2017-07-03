@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * Created by Administrator on 2017/5/19.
  */
-public interface IPowerDao extends CoreDao<Permission,String>{
+public interface IPermissionDao extends ICoreDao<Permission,String>{
     @Transactional
-    Collection<Permission> selectListByPrivilegeMaster(String privileMasterValue);
+    Collection<Permission> selectListByPrivilegeMaster(String masterValue);
 }

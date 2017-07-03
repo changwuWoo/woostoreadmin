@@ -39,7 +39,7 @@ public class UserController extends AbstractController {
     public @ResponseBody Map getUser(@RequestParam(value = "pkId") String pkId){
         Map reMap =new HashMap();
         if (pkId!=null&&!"".equals(pkId.trim())){
-            reMap=super.resultEUtil(userService.getMater(pkId));
+            reMap=super.resultEUtil(userService.getMaster(pkId));
         }else{
             reMap.put(KEY_CODE,RESCODE_FAILD);
             reMap.put(KEY_MSG,RESDATA_REQERR);

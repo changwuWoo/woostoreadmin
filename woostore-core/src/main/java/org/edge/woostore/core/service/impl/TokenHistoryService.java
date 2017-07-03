@@ -2,6 +2,7 @@ package org.edge.woostore.core.service.impl;
 
 import org.edge.woostore.core.service.ITokenHistoryService;
 import org.edge.woostore.domain.entity.TokenHistory;
+import org.edge.woostore.domain.repository.Page;
 import org.edge.woostore.persist.dao.ITokenHistoryDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,17 +15,17 @@ import java.util.Map;
  * Created by Administrator on 2017/5/7.
  */
 @Service
-public class TokenHistoryHistoryService implements ITokenHistoryService {
+public class TokenHistoryService implements ITokenHistoryService {
     @Autowired
     private ITokenHistoryDao iTokenHistoryDao;
 
     @Override
-    public TokenHistory getTokenByAccessToken(String accessToken) {
+    public TokenHistory getTokenByAccessToken(String AccessToken) {
         StringBuffer sql = new StringBuffer();
         Map map = new LinkedHashMap();
         sql.append("FROM TokenHistory tokenHistory ");
-        if (accessToken!=null&&accessToken.length()>0){
-            map.put("tokenHistory.accessToken",accessToken);
+        if (AccessToken !=null&& AccessToken.length()>0){
+            map.put("tokenHistory.accessToken", AccessToken);
             sql.append(" WHERE tokenHistory.accessToken = ? ");
         }
         Object tokenHistory=iTokenHistoryDao.selectByUniqueFiled(sql.toString(),map);
@@ -33,7 +34,7 @@ public class TokenHistoryHistoryService implements ITokenHistoryService {
     }
 
     @Override
-    public TokenHistory QueryTokenByMasterId(String masterId) {
+    public TokenHistory queryTokenByMasterId(String masterId) {
         return  iTokenHistoryDao.get(masterId);
     }
 
@@ -72,6 +73,11 @@ public class TokenHistoryHistoryService implements ITokenHistoryService {
         }else {
             return false;
         }
+    }
+
+    @Override
+    public Page getListByPage(int pageSize, int page, TokenHistory tokenHistory) {
+        return null;
     }
 
     @Override

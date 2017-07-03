@@ -19,7 +19,7 @@ public class MasterDao extends AbstractCoreDao<Master,String> implements IMaster
     }
 
     @Override
-    public int batchinsert(List<Master> records) {
+    public int batchInsert(List<Master> records) {
         return 0;
     }
 

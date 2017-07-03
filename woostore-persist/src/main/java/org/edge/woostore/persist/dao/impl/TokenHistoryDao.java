@@ -18,7 +18,7 @@ public class TokenHistoryDao extends AbstractCoreDao<TokenHistory,String> implem
     }
 
     @Override
-    public int batchinsert(List<TokenHistory> records) {
+    public int batchInsert(List<TokenHistory> records) {
         return 0;
     }
 

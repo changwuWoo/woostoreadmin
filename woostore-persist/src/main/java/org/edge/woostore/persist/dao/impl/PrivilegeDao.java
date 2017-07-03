@@ -3,7 +3,10 @@ package org.edge.woostore.persist.dao.impl;
 import org.edge.woostore.domain.entity.Privilege;
 import org.edge.woostore.persist.dao.AbstractCoreDao;
 import org.edge.woostore.persist.dao.IPrivilegeDao;
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +17,7 @@ import java.util.Map;
 public class PrivilegeDao extends AbstractCoreDao<Privilege,String> implements IPrivilegeDao {
 
     @Override
-    public boolean isExistByname(String hql, Map map) {
+    public boolean isExistByName(String hql, Map map) {
         return false;
     }
 
@@ -28,9 +31,8 @@ public class PrivilegeDao extends AbstractCoreDao<Privilege,String> implements I
         return 0;
     }
 
-
     @Override
-    public int batchinsert(List<Privilege> records) {
+    public int batchInsert(List<Privilege> records) {
         return 0;
     }
 

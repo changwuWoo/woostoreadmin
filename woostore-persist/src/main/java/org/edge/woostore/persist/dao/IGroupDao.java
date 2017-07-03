@@ -8,11 +8,11 @@ import java.util.Collection;
 /**
  * Created by Administrator on 2017/5/20.
  */
-public interface IGroupDao extends CoreDao<Group,String>{
+public interface IGroupDao extends ICoreDao<Group,String>{
     @Transactional
     Collection<Group> getRootNode();
     @Transactional
-    Collection<Group> getChildNode(String pkid);
+    Collection<Group> getChildNode(String pkId);
     @Transactional
-    Boolean isRootNode(String pkid);
+    Boolean isRootNode(String pkId);
 }

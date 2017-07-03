@@ -26,7 +26,7 @@ public class MasterService implements IMasterService {
     @Autowired
     private IRoleDao iRoleDao;
     @Autowired
-    private IPowerDao iPowerDao;
+    private IPermissionDao iPermissionDao;
     @Autowired
     private IGroupDao iGroupDao;
     @Autowired
@@ -48,7 +48,7 @@ public class MasterService implements IMasterService {
                 master.setRole(role);
             }
             Collection<Permission> powerCollection = new ArrayList<>();
-            powerCollection = iPowerDao.selectListByPrivilegeMaster(master.getFkRoleId());
+            powerCollection = iPermissionDao.selectListByPrivilegeMaster(master.getFkRoleId());
             if (powerCollection != null && powerCollection.size() > 0) {
                 master.setPowerCollection(powerCollection);
             }
@@ -74,7 +74,8 @@ public class MasterService implements IMasterService {
     @Override
     public Collection<Master> getUsers() {
         String hql = "";
-        return iMasterDao.selectAll(hql);
+        Map map = new LinkedHashMap();
+        return iMasterDao.selectAll(hql,map);
     }
 
     @Override
@@ -129,12 +130,12 @@ public class MasterService implements IMasterService {
     }
 
     @Override
-    public Master getMater(String pkId) {
+    public Master getMaster(String pkId) {
         return iMasterDao.get(pkId);
     }
 
     @Override
-    public boolean insertMater(Master master) {
+    public boolean insertMaster(Master master) {
         StringBuffer sql = new StringBuffer();
         Map map = new LinkedHashMap();
         sql.append("INSERT INTO TB_MASTER(PK_ID,FNAME,FPASSWD,FK_GROUP_ID,FK_ROLE_ID) VALUES (");
@@ -211,11 +212,6 @@ public class MasterService implements IMasterService {
         Page.setCollection(list);
         Page.init();
         return Page;
-    }
-
-    @Override
-    public Map resultUtil(Page<Master> page) {
-        return null;
     }
 
     @Override

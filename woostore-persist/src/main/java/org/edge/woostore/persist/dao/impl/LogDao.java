@@ -3,9 +3,12 @@ package org.edge.woostore.persist.dao.impl;
 import org.edge.woostore.domain.entity.Log;
 import org.edge.woostore.persist.dao.AbstractCoreDao;
 import org.edge.woostore.persist.dao.ILogDao;
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/5/23.
@@ -13,10 +16,14 @@ import java.util.List;
 @Repository
 public class LogDao extends AbstractCoreDao<Log,String> implements ILogDao {
 
-
     @Override
     public String save(Log entity) {
         return null;
+    }
+
+    @Override
+    public boolean isExistByName(String hql, Map map) {
+        return false;
     }
 
     @Override
@@ -24,8 +31,9 @@ public class LogDao extends AbstractCoreDao<Log,String> implements ILogDao {
         return 0;
     }
 
+
     @Override
-    public int batchinsert(List<Log> records) {
+    public int batchInsert(List<Log> records) {
         return 0;
     }
 
@@ -38,4 +46,5 @@ public class LogDao extends AbstractCoreDao<Log,String> implements ILogDao {
     public int updateByPrimaryKeySelective(Log record) {
         return 0;
     }
+
 }

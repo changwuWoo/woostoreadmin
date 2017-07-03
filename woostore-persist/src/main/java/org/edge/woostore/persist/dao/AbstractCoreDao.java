@@ -66,12 +66,13 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
 
     @Override
     public int insert(String sql, Map map) {
-        return  sqlGenter(sql,map).executeUpdate();
+        return sqlQueryBuilder(sql, map).executeUpdate();
     }
+
     @Override
     public Collection<T> queryForPage(int offset, int length, String hql, Map map) {
         Collection<T> result = null;
-        Query query = hqlGenter(hql, map);
+        Query query = hqlQueryBuilder(hql, map);
         query.setFirstResult(offset);
         query.setMaxResults(length);
         result = query.list();
@@ -79,8 +80,8 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public boolean isExistByname(String hql, Map map) {
-        T t = (T) hqlGenter(hql, map).uniqueResult();
+    public boolean isExistByName(String hql, Map map) {
+        T t = (T) hqlQueryBuilder(hql, map).uniqueResult();
         if (t != null) {
             return true;
         } else {
@@ -89,7 +90,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public Query hqlGenter(String hql, Map map) {
+    public Query hqlQueryBuilder(String hql, Map map) {
         Query query;
         try {
             query = this.getSession().createQuery(hql);
@@ -108,7 +109,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public Query sqlGenter(String sql, Map map){
+    public Query sqlQueryBuilder(String sql, Map map) {
         Query query;
         try {
             query = this.getSession().createSQLQuery(sql);
@@ -125,29 +126,34 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
         }
         return query;
     }
+
     @Override
-    public Collection<T> selectAll(String hql) {
+    public Collection<T> selectAll(String hql, Map map) {
         Collection<T> tCollection = null;
-        tCollection= getSession().createQuery(hql).list();
+        tCollection = getSession().createQuery(hql).list();
         return tCollection;
     }
+
     @Override
     public Collection<T> selectByFiled(String hql, Map map) {
         Collection<T> tCollection = null;
-        tCollection = hqlGenter(hql, map).list();
+        tCollection = hqlQueryBuilder(hql, map).list();
         return tCollection;
     }
-    public T selectByUniqueFiled(String hql, Map map){
-        T t=(T)hqlGenter(hql,map).uniqueResult();
-        return (T)hqlGenter(hql,map).uniqueResult();
+
+    public T selectByUniqueFiled(String hql, Map map) {
+        T t = (T) hqlQueryBuilder(hql, map).uniqueResult();
+        return (T) hqlQueryBuilder(hql, map).uniqueResult();
     }
+
     @Override
-    public int updateByPrimaryKey(String sql,Map map) {
-        int resultFlag=sqlGenter(sql,map).executeUpdate();
+    public int updateByPrimaryKey(String sql, Map map) {
+        int resultFlag = sqlQueryBuilder(sql, map).executeUpdate();
         return resultFlag;
     }
+
     @Override
-    public String getSeq(String sql){
+    public String getSeq(String sql) {
         return getSession().createSQLQuery(sql).uniqueResult().toString();
     }
 }
