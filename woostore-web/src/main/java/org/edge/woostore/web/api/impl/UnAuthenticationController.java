@@ -104,9 +104,9 @@ public class UnAuthenticationController extends AbstractController{
         }
         Master reMaster = null;
         TokenHistory serverTokenHistory = new TokenHistory();
-        reMaster = iMasterService.queryByUserName(master.getFname());
-        if (reMaster != null && master.getFname().equalsIgnoreCase(reMaster.getFname())) {
-            if (master.getFpasswd().equals(reMaster.getFpasswd())) {
+        reMaster = iMasterService.queryByUserName(master.getLoginName());
+        if (reMaster != null && master.getLoginName().equalsIgnoreCase(reMaster.getLoginName())) {
+            if (master.getLoginPassWord().equals(reMaster.getLoginPassWord())) {
                 reMap.put(KEY_CODE, RESCODE_SUCCESS);
                 reMap.put(KEY_DATA, reMaster);
                 reMap.put(KEY_MSG, LOGIN_SUCCESS);
@@ -117,8 +117,8 @@ public class UnAuthenticationController extends AbstractController{
                 String loginTokenHistory = jwt.createJWT(Constants.JWT_ID, subject, Constants.JWT_TTL);
                 if (iTokenService.updateToken(reMaster.getPkId(), loginTokenHistory)) {
                     serverTokenHistory.setPkId(iTokenHistoryService.getSeq());
-                    serverTokenHistory.setFip(super.getIpV4());
-                    serverTokenHistory.setFaccesstoken(loginTokenHistory);
+                    serverTokenHistory.setLoginIp(super.getIpV4());
+                    serverTokenHistory.setAccessToken(loginTokenHistory);
                     serverTokenHistory.setFkMasterId(reMaster.getPkId());
                     iTokenHistoryService.insert(serverTokenHistory);
                 }
@@ -161,7 +161,7 @@ Map loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHist
         TokenHistory tokenHistory = null;
         tokenHistory = iTokenHistoryService.getTokenByAccessToken(accessToken);
         if (loginTokenHistory.equals(accessToken)) {
-            if (tokenHistory != null && tokenHistory.getFip() != null && tokenHistory.getFip().length() > 0 && super.getIpV4().equals(tokenHistory.getFip())) {
+            if (tokenHistory != null && tokenHistory.getLoginIp() != null && tokenHistory.getLoginIp().length() > 0 && super.getIpV4().equals(tokenHistory.getLoginIp())) {
                 Map map = new HashMap();
                 map.put("pkId", master.getPkId());
                 String subject = JwtUtil.generalSubject(map);
@@ -173,8 +173,8 @@ Map loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHist
                 if (iTokenService.updateToken(master.getPkId(), refushToken)) {
                     serverTokenHistory.setPkId(iTokenHistoryService.getSeq());
                     serverTokenHistory.setFkMasterId(master.getPkId());
-                    serverTokenHistory.setFip(super.getIpV4());
-                    serverTokenHistory.setFaccesstoken(refushToken);
+                    serverTokenHistory.setLoginIp(super.getIpV4());
+                    serverTokenHistory.setAccessToken(refushToken);
                     iTokenHistoryService.insert(serverTokenHistory);
                 }
                 reMap.put(KEY_CODE, RESCODE_SUCCESS);

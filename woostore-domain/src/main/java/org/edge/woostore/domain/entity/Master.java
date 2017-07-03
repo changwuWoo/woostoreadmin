@@ -1,65 +1,25 @@
 package org.edge.woostore.domain.entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Objects;
 
 /**
- * Created by Administrator on 2017/5/19.
+ * Created by Administrator on 2017/7/2.
  */
 @Entity
 @Table(name = "TB_MASTER", schema = "WOOSTOREADMIN")
-public class Master implements Serializable{
+public class Master {
     private String pkId;
-    @NotBlank
-    private String fname;
-    private String fpasswd;
-    private boolean fstatus;
-    private String pkGroupId;
-    private String pkRoleId;
-    private Group group=new Group();
-    @Transient
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    private Collection<Group> groupCollection=new ArrayList<>();
-    private Role role=new Role();
-    private Collection<Power> powerCollection = new ArrayList<>();
-    @Transient
-    public Collection<Power> getPowerCollection() {
-        return powerCollection;
-    }
-
-    public void setPowerCollection(Collection<Power> powerCollection) {
-        this.powerCollection = powerCollection;
-    }
-
-    @Transient
-    public Collection<Group> getGroupCollection() {
-        return groupCollection;
-    }
-
-    public void setGroupCollection(Collection<Group> groupCollection) {
-        this.groupCollection = groupCollection;
-    }
-
-    @Transient
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
+    private String loginName;
+    private String loginPassWord;
+    private BigDecimal baseStatus;
+    private String fkGroupId;
+    private String fkRoleId;
+    private Collection<Group> groupCollection;
+    private Collection<Permission> powerCollection;
+    private Role role;
 
     @Id
     @Column(name = "PK_ID")
@@ -72,53 +32,53 @@ public class Master implements Serializable{
     }
 
     @Basic
-    @Column(name = "FNAME")
-    public String getFname() {
-        return fname;
+    @Column(name = "LOGINNAME")
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-
-    @Basic
-    @Column(name = "FPASSWD")
-    public String getFpasswd() {
-        return fpasswd;
-    }
-
-    public void setFpasswd(String fpasswd) {
-        this.fpasswd = fpasswd;
+    public void setLoginName(String loginname) {
+        this.loginName = loginname;
     }
 
     @Basic
-    @Column(name = "FSTATUS")
-    public boolean isFstatus() {
-        return fstatus;
+    @Column(name = "PASSWORD")
+    public String getLoginPassWord() {
+        return loginPassWord;
     }
 
-    public void setFstatus(boolean fstatus) {
-        this.fstatus = fstatus;
-    }
-
-    @Basic
-    @Column(name = "FK_GROUP_ID")
-    public String getPkGroupId() {
-        return pkGroupId;
-    }
-
-    public void setPkGroupId(String pkGroupId) {
-        this.pkGroupId = pkGroupId;
+    public void setLoginPassWord(String loginpassword) {
+        this.loginPassWord = loginpassword;
     }
 
     @Basic
-    @Column(name = "FK_ROLE_ID")
-    public String getPkRoleId() {
-        return pkRoleId;
+    @Column(name = "BASESTATUS")
+    public BigDecimal getBaseStatus() {
+        return baseStatus;
     }
 
-    public void setPkRoleId(String pkRoleId) {
-        this.pkRoleId = pkRoleId;
+    public void setBaseStatus(BigDecimal basestatus) {
+        this.baseStatus = basestatus;
+    }
+
+    @Basic
+    @Column(name = "FKGROUPID")
+    public String getFkGroupId() {
+        return fkGroupId;
+    }
+
+    public void setFkGroupId(String fkgroupid) {
+        this.fkGroupId = fkgroupid;
+    }
+
+    @Basic
+    @Column(name = "FKROLEID")
+    public String getFkRoleId() {
+        return fkRoleId;
+    }
+
+    public void setFkRoleId(String fkroleid) {
+        this.fkRoleId = fkroleid;
     }
 
     @Override
@@ -126,30 +86,41 @@ public class Master implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Master master = (Master) o;
-        return fstatus == master.fstatus &&
-                Objects.equals(pkId, master.pkId) &&
-                Objects.equals(fname, master.fname) &&
-                Objects.equals(fpasswd, master.fpasswd) &&
-                Objects.equals(pkGroupId, master.pkGroupId) &&
-                Objects.equals(pkRoleId, master.pkRoleId);
+        return Objects.equals(pkId, master.pkId) &&
+                Objects.equals(loginName, master.loginName) &&
+                Objects.equals(loginPassWord, master.loginPassWord) &&
+                Objects.equals(baseStatus, master.baseStatus) &&
+                Objects.equals(fkGroupId, master.fkGroupId) &&
+                Objects.equals(fkRoleId, master.fkRoleId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pkId, fname, fpasswd, fstatus, pkGroupId, pkRoleId);
+        return Objects.hash(pkId, loginName, loginPassWord, baseStatus, fkGroupId, fkRoleId);
     }
 
-    @Override
-    public String toString() {
-        return "Master{" +
-                "pkId='" + pkId + '\'' +
-                ", fname='" + fname + '\'' +
-                ", fpasswd='" + fpasswd + '\'' +
-                ", fstatus=" + fstatus +
-                ", pkGroupId='" + pkGroupId + '\'' +
-                ", pkRoleId='" + pkRoleId + '\'' +
-                ", groupCollection=" + groupCollection +
-                ", role=" + role +
-                '}';
+    public void setGroupCollection(Collection<Group> groupCollection) {
+        this.groupCollection = groupCollection;
+    }
+
+    @Transient
+    public Collection<Group> getGroupCollection() {
+        return groupCollection;
+    }
+  
+    public void setRole(Role role) {
+        this.role = role;
+    }
+    @Transient
+    public Role getRole() {
+        return role;
+    }
+    @Transient
+    public Collection<Permission> getPowerCollection() {
+        return powerCollection;
+    }
+
+    public void setPowerCollection(Collection<Permission> powerCollection) {
+        this.powerCollection = powerCollection;
     }
 }

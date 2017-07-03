@@ -1,102 +1,20 @@
 package org.edge.woostore.domain.entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
 
 /**
- * Created by Administrator on 2017/5/20.
+ * Created by Administrator on 2017/7/2.
  */
 @Entity
 @Table(name = "TB_GROUP", schema = "WOOSTOREADMIN")
-public class Group implements Serializable{
+public class Group {
     private String pkId;
-    @NotNull
     private String parentId;
-    @NotBlank
-    private String fnumber;
-    @NotBlank
-    private String fname;
+    private String number;
+    private String name;
     private boolean isLeaf;
     private boolean isRoot;
-
-    @Basic
-    @Column(name = "ISROOT")
-    public boolean isRoot() {
-        return isRoot;
-    }
-
-    public void setRoot(boolean root) {
-        isRoot = root;
-    }
-
-    private Collection<Group> children =new ArrayList<Group>();
-    private Collection<Master> masterCollection=new ArrayList<Master>();
-
-    @Basic
-    @Column(name = "ISLEAF")
-    public boolean isLeaf() {
-        return isLeaf;
-    }
-
-    public void setLeaf(boolean leaf) {
-        isLeaf = leaf;
-    }
-
-    @Transient
-    public Collection<Master> getMasterCollection() {
-        return masterCollection;
-    }
-
-    public void setMasterCollection(Collection<Master> masterCollection) {
-        this.masterCollection = masterCollection;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Group)) return false;
-        Group group = (Group) o;
-        return isLeaf() == group.isLeaf() &&
-                Objects.equals(getPkId(), group.getPkId()) &&
-                Objects.equals(getParentId(), group.getParentId()) &&
-                Objects.equals(getFnumber(), group.getFnumber()) &&
-                Objects.equals(getFname(), group.getFname()) &&
-                Objects.equals(getChildren(), group.getChildren()) &&
-                Objects.equals(getMasterCollection(), group.getMasterCollection());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getPkId(), getParentId(), getFnumber(), getFname(), isLeaf(), getChildren(), getMasterCollection());
-    }
-
-    @Override
-    public String toString() {
-        return "Group{" +
-                "pkId='" + pkId + '\'' +
-                ", parentId='" + parentId + '\'' +
-                ", fnumber='" + fnumber + '\'' +
-                ", fname='" + fname + '\'' +
-                ", isLeaf=" + isLeaf +
-                ", children=" + children +
-                ", masterCollection=" + masterCollection +
-                '}';
-    }
-
-    @Transient
-    public Collection<Group> getChildren() {
-        return children;
-    }
-
-    public void setChildren(Collection<Group> children) {
-        this.children = children;
-    }
 
     @Id
     @Column(name = "PK_ID")
@@ -109,7 +27,7 @@ public class Group implements Serializable{
     }
 
     @Basic
-    @Column(name = "PARENT_ID")
+    @Column(name = "FKPARENTID")
     public String getParentId() {
         return parentId;
     }
@@ -120,22 +38,59 @@ public class Group implements Serializable{
 
     @Basic
     @Column(name = "FNUMBER")
-    public String getFnumber() {
-        return fnumber;
+    public String getNumber() {
+        return number;
     }
 
-    public void setFnumber(String fnumber) {
-        this.fnumber = fnumber;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Basic
     @Column(name = "FNAME")
-    public String getFname() {
-        return fname;
+    public String getName() {
+        return name;
     }
 
-    public void setFname(String fname) {
-        this.fname = fname;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    @Basic
+    @Column(name = "ISLEAF")
+    public boolean isIsLeaf() {
+        return isLeaf;
+    }
+
+    public void setIsLeaf(boolean isleaf) {
+        this.isLeaf = isleaf;
+    }
+
+    @Basic
+    @Column(name = "ISROOT")
+    public boolean isIsRoot() {
+        return isRoot;
+    }
+
+    public void setIsRoot(boolean isroot) {
+        this.isRoot = isroot;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Group group = (Group) o;
+        return isLeaf == group.isLeaf &&
+                isRoot == group.isRoot &&
+                Objects.equals(pkId, group.pkId) &&
+                Objects.equals(parentId, group.parentId) &&
+                Objects.equals(number, group.number) &&
+                Objects.equals(name, group.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pkId, parentId, number, name, isLeaf, isRoot);
+    }
 }

@@ -8,11 +8,10 @@ import java.util.Objects;
  * Created by Administrator on 2017/7/2.
  */
 @Entity
-@Table(name = "TB_ROLE", schema = "WOOSTOREADMIN")
-public class Role {
+@Table(name = "TB_ORDERDELIVERYINFO", schema = "WOOSTOREADMIN")
+public class OrderDeliveryInfo {
     private String pkId;
-    private String name;
-    private String number;
+    private String fkDeliveryId;
     private BigDecimal baseStatus;
 
     @Id
@@ -26,23 +25,13 @@ public class Role {
     }
 
     @Basic
-    @Column(name = "FNAME")
-    public String getName() {
-        return name;
+    @Column(name = "FKDELIVERYID")
+    public String getFkDeliveryId() {
+        return fkDeliveryId;
     }
 
-    public void setName(String fname) {
-        this.name = fname;
-    }
-
-    @Basic
-    @Column(name = "FNUMBER")
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String fnumber) {
-        this.number = fnumber;
+    public void setFkDeliveryId(String fkdeliveryid) {
+        this.fkDeliveryId = fkdeliveryid;
     }
 
     @Basic
@@ -59,15 +48,14 @@ public class Role {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return Objects.equals(pkId, role.pkId) &&
-                Objects.equals(name, role.name) &&
-                Objects.equals(number, role.number) &&
-                Objects.equals(baseStatus, role.baseStatus);
+        OrderDeliveryInfo that = (OrderDeliveryInfo) o;
+        return Objects.equals(pkId, that.pkId) &&
+                Objects.equals(fkDeliveryId, that.fkDeliveryId) &&
+                Objects.equals(baseStatus, that.baseStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pkId, name, number, baseStatus);
+        return Objects.hash(pkId, fkDeliveryId, baseStatus);
     }
 }

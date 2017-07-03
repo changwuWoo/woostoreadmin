@@ -1,19 +1,18 @@
 package org.edge.woostore.domain.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
  * Created by Administrator on 2017/7/2.
  */
 @Entity
-@Table(name = "TB_ROLE", schema = "WOOSTOREADMIN")
-public class Role {
+@Table(name = "TB_PERMISSION", schema = "WOOSTOREADMIN")
+public class Permission {
     private String pkId;
-    private String name;
     private String number;
-    private BigDecimal baseStatus;
+    private String name;
+    private boolean baseStatus;
 
     @Id
     @Column(name = "PK_ID")
@@ -23,16 +22,6 @@ public class Role {
 
     public void setPkId(String pkId) {
         this.pkId = pkId;
-    }
-
-    @Basic
-    @Column(name = "FNAME")
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String fname) {
-        this.name = fname;
     }
 
     @Basic
@@ -46,12 +35,22 @@ public class Role {
     }
 
     @Basic
+    @Column(name = "FNAME")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String fname) {
+        this.name = fname;
+    }
+
+    @Basic
     @Column(name = "BASESTATUS")
-    public BigDecimal getBaseStatus() {
+    public boolean isBaseStatus() {
         return baseStatus;
     }
 
-    public void setBaseStatus(BigDecimal basestatus) {
+    public void setBaseStatus(boolean basestatus) {
         this.baseStatus = basestatus;
     }
 
@@ -59,15 +58,15 @@ public class Role {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return Objects.equals(pkId, role.pkId) &&
-                Objects.equals(name, role.name) &&
-                Objects.equals(number, role.number) &&
-                Objects.equals(baseStatus, role.baseStatus);
+        Permission that = (Permission) o;
+        return baseStatus == that.baseStatus &&
+                Objects.equals(pkId, that.pkId) &&
+                Objects.equals(number, that.number) &&
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pkId, name, number, baseStatus);
+        return Objects.hash(pkId, number, name, baseStatus);
     }
 }

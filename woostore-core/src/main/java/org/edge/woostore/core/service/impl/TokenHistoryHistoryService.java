@@ -24,8 +24,8 @@ public class TokenHistoryHistoryService implements ITokenHistoryService {
         Map map = new LinkedHashMap();
         sql.append("FROM TokenHistory tokenHistory ");
         if (accessToken!=null&&accessToken.length()>0){
-            map.put("tokenHistory.faccesstoken",accessToken);
-            sql.append(" WHERE tokenHistory.faccesstoken = ? ");
+            map.put("tokenHistory.accessToken",accessToken);
+            sql.append(" WHERE tokenHistory.accessToken = ? ");
         }
         Object tokenHistory=iTokenHistoryDao.selectByUniqueFiled(sql.toString(),map);
         System.out.println("Kkjhdkfgjk");
@@ -41,27 +41,27 @@ public class TokenHistoryHistoryService implements ITokenHistoryService {
     public boolean insert(TokenHistory token) {
         StringBuffer sql = new StringBuffer();
         Map map = new LinkedHashMap();
-        sql.append("INSERT INTO TB_TOKENHISTORY(PK_ID,FACCESSTOKEN,FIP,FK_MASTER_ID) VALUES (");
+        sql.append("INSERT INTO TB_TOKENHISTORY(PK_ID,ACCESSTOKEN,LOGINIP,FKMASTERID) VALUES (");
         if (token.getPkId()!=null&&token.getPkId().length()>0){
             map.put("pkId",token.getPkId());
             sql.append("?, ");
         }else{
             return false;
         }
-        if(token.getFaccesstoken()!=null&&token.getFaccesstoken().length()>0){
-            map.put("FACCESSTOKEN",token.getFaccesstoken());
+        if(token.getAccessToken()!=null&&token.getAccessToken().length()>0){
+            map.put("ACCESSTOKEN",token.getAccessToken());
             sql.append("?, ");
         }else {
             return false;
         }
-        if (token.getFip()!=null&&token.getFip().length()>0){
-            map.put("FIP",token.getFip());
+        if (token.getLoginIp()!=null&&token.getLoginIp().length()>0){
+            map.put("LOGINIP",token.getLoginIp());
             sql.append("?, ");
         }else {
             return false;
         }
         if (token.getFkMasterId()!=null&&token.getFkMasterId().length()>0){
-            map.put("FK_MASTER_ID",token.getFkMasterId());
+            map.put("FKMASTERID",token.getFkMasterId());
             sql.append("?)");
         }
         else {

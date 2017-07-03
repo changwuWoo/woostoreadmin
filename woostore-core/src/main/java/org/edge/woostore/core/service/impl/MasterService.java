@@ -6,7 +6,7 @@ import org.edge.woostore.core.service.IMasterService;
 import org.edge.woostore.domain.annotation.Loggable;
 import org.edge.woostore.domain.entity.Group;
 import org.edge.woostore.domain.entity.Master;
-import org.edge.woostore.domain.entity.Power;
+import org.edge.woostore.domain.entity.Permission;
 import org.edge.woostore.domain.entity.Role;
 import org.edge.woostore.domain.repository.Page;
 import org.edge.woostore.persist.dao.*;
@@ -41,20 +41,20 @@ public class MasterService implements IMasterService {
     @Override
     public Master getMasterInfoById(String pkId) {
         Master master = iMasterDao.get(pkId);
-        if (master != null && (master.getPkGroupId() != null || master.getPkGroupId() != null)) {
+        if (master != null && (master.getFkGroupId() != null || master.getFkGroupId() != null)) {
             Role role = new Role();
-            role = iRoleDao.get(master.getPkRoleId());
+            role = iRoleDao.get(master.getFkGroupId());
             if (role != null) {
                 master.setRole(role);
             }
-            Collection<Power> powerCollection = new ArrayList<>();
-            powerCollection = iPowerDao.selectListByPrivilegeMaster(master.getPkRoleId());
+            Collection<Permission> powerCollection = new ArrayList<>();
+            powerCollection = iPowerDao.selectListByPrivilegeMaster(master.getFkRoleId());
             if (powerCollection != null && powerCollection.size() > 0) {
                 master.setPowerCollection(powerCollection);
             }
             Collection<Group> groupCollection = new ArrayList<>();
             Group group = new Group();
-            group.setParentId(master.getPkGroupId());
+            group.setParentId(master.getFkGroupId());
             do {
                 Group temp = new Group();
                 temp = iGroupDao.get(group.getParentId() == null ? "-1" : group.getParentId());
@@ -85,8 +85,8 @@ public class MasterService implements IMasterService {
         Map map = new LinkedHashMap();
         hql.append("from Master where 1=1 ");
         if (name != null) {
-            map.put("FNAME", "" + name + "");
-            hql.append("and lower(FNAME) = lower(?) ");
+            map.put("LOGINNAME", "" + name + "");
+            hql.append("and lower(LOGINNAME) = lower(?) ");
         }
         masterCollection = iMasterDao.selectByFiled(hql.toString(), map);
         if (masterCollection != null && masterCollection.size() > 0) {
@@ -104,12 +104,12 @@ public class MasterService implements IMasterService {
         Map map = new LinkedHashMap();
         hql.append("UPDATE TB_MASTER ");
         if (master != null) {
-            if (master.getPkRoleId() != null && master.getPkRoleId().length() > 0) {
-                map.put("PK_ROLE_ID", master.getPkRoleId());
+            if (master.getFkRoleId() != null && master.getFkRoleId().length() > 0) {
+                map.put("PK_ROLE_ID", master.getFkRoleId());
                 hql.append(" set PK_ROLE_ID = ? ,");
             }
-            if (master.getFname() != null && master.getFname().length() > 0) {
-                map.put("FNAME", master.getFname());
+            if (master.getLoginName() != null && master.getLoginName().length() > 0) {
+                map.put("FNAME", master.getLoginName());
                 hql.append(" FNAME = ? ");
             }
             if (master.getPkId() != null && master.getPkId().length() > 0) {
@@ -144,26 +144,26 @@ public class MasterService implements IMasterService {
         } else {
             return false;
         }
-        if (master.getFname() != null && master.getFname().length() > 0) {
-            map.put("FNAME", master.getFname());
+        if (master.getLoginName() != null && master.getLoginName().length() > 0) {
+            map.put("FNAME", master.getLoginName());
             sql.append("?, ");
         } else {
             return false;
         }
-        if (master.getFpasswd() != null && master.getFpasswd().length() > 0) {
-            map.put("FPASSWD", master.getFpasswd());
+        if (master.getLoginPassWord() != null && master.getLoginPassWord().length() > 0) {
+            map.put("FPASSWD", master.getLoginPassWord());
             sql.append("?, ");
         } else {
             return false;
         }
-        if (master.getPkGroupId() != null && master.getPkGroupId().length() > 0) {
-            map.put("FK_GROUP_ID", master.getPkGroupId());
+        if (master.getFkGroupId() != null && master.getFkGroupId().length() > 0) {
+            map.put("FK_GROUP_ID", master.getFkGroupId());
             sql.append("?, ");
         } else {
             return false;
         }
-        if (master.getPkRoleId() != null && master.getPkRoleId().length() > 0) {
-            map.put("", master.getPkRoleId());
+        if (master.getFkRoleId() != null && master.getFkRoleId().length() > 0) {
+            map.put("", master.getFkRoleId());
             sql.append("?)");
         } else {
             return false;
@@ -187,16 +187,16 @@ public class MasterService implements IMasterService {
         Map map = new HashMap();
         hql.append("from Master master where 1=1 ");
         if (master != null) {
-            if (master.getFname() != null && master.getFname().length() > 0) {
-                map.put("master.fname", "%" + master.getFname() + "%");
+            if (master.getLoginName() != null && master.getLoginName().length() > 0) {
+                map.put("master.fname", "%" + master.getLoginName() + "%");
                 hql.append("and master.fname like ? ");
             }
-            if (master.getPkGroupId() != null && master.getPkGroupId().length() > 0) {
-                map.put("master.pkGroupId", "" + master.getPkGroupId() + "");
+            if (master.getFkGroupId() != null && master.getFkGroupId().length() > 0) {
+                map.put("master.pkGroupId", "" + master.getFkGroupId() + "");
                 hql.append("and master.pkGroupId = ? ");
             }
-            if (master.getPkRoleId() != null && master.getPkRoleId().length() > 0) {
-                map.put("master.pkRoleId", "" + master.getPkRoleId() + "");
+            if (master.getFkRoleId() != null && master.getFkRoleId().length() > 0) {
+                map.put("master.pkRoleId", "" + master.getFkRoleId() + "");
                 hql.append("and master.pkRoleId = ? ");
             }
         }

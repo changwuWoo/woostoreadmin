@@ -41,7 +41,7 @@ public class AccessPrivilegeAspect {
                 isAccessed=true;
                 break;
             }
-            if(frimPrivilege.getPrivilegeaccessvalue()!=null&&frimPrivilege.getPrivilegeaccessvalue().equalsIgnoreCase(methodAccess)){
+            if(frimPrivilege.getPrivilegeAccessValue()!=null&&frimPrivilege.getPrivilegeAccessValue().equalsIgnoreCase(methodAccess)){
                 isAccessed=true;
                 break;
             }

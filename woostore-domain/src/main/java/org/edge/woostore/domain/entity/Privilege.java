@@ -1,27 +1,21 @@
 package org.edge.woostore.domain.entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import javax.persistence.*;
-import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
- * Created by Administrator on 2017/5/20.
+ * Created by Administrator on 2017/7/2.
  */
 @Entity
 @Table(name = "TB_PRIVILEGE", schema = "WOOSTOREADMIN")
-public class Privilege implements Serializable{
+public class Privilege {
     private String pkId;
-    @NotBlank
-    private String privilegemaster;
-    @NotBlank
-    private String privilegemastervalue;
-    @NotBlank
-    private String privilegeaccess;
-    @NotBlank
-    private String privilegeaccessvalue;
-    private boolean privilegeoperation;
+    private String privilegeMaster;
+    private String privilegeMasterValue;
+    private String privilegeAccess;
+    private String privilegeAccessValue;
+    private BigDecimal privilegeOperation;
 
     @Id
     @Column(name = "PK_ID")
@@ -35,52 +29,52 @@ public class Privilege implements Serializable{
 
     @Basic
     @Column(name = "PRIVILEGEMASTER")
-    public String getPrivilegemaster() {
-        return privilegemaster;
+    public String getPrivilegeMaster() {
+        return privilegeMaster;
     }
 
-    public void setPrivilegemaster(String privilegemaster) {
-        this.privilegemaster = privilegemaster;
+    public void setPrivilegeMaster(String privilegemaster) {
+        this.privilegeMaster = privilegemaster;
     }
 
     @Basic
     @Column(name = "PRIVILEGEMASTERVALUE")
-    public String getPrivilegemastervalue() {
-        return privilegemastervalue;
+    public String getPrivilegeMasterValue() {
+        return privilegeMasterValue;
     }
 
-    public void setPrivilegemastervalue(String privilegemastervalue) {
-        this.privilegemastervalue = privilegemastervalue;
+    public void setPrivilegeMasterValue(String privilegemastervalue) {
+        this.privilegeMasterValue = privilegemastervalue;
     }
 
     @Basic
     @Column(name = "PRIVILEGEACCESS")
-    public String getPrivilegeaccess() {
-        return privilegeaccess;
+    public String getPrivilegeAccess() {
+        return privilegeAccess;
     }
 
-    public void setPrivilegeaccess(String privilegeaccess) {
-        this.privilegeaccess = privilegeaccess;
+    public void setPrivilegeAccess(String privilegeaccess) {
+        this.privilegeAccess = privilegeaccess;
     }
 
     @Basic
     @Column(name = "PRIVILEGEACCESSVALUE")
-    public String getPrivilegeaccessvalue() {
-        return privilegeaccessvalue;
+    public String getPrivilegeAccessValue() {
+        return privilegeAccessValue;
     }
 
-    public void setPrivilegeaccessvalue(String privilegeaccessvalue) {
-        this.privilegeaccessvalue = privilegeaccessvalue;
+    public void setPrivilegeAccessValue(String privilegeaccessvalue) {
+        this.privilegeAccessValue = privilegeaccessvalue;
     }
 
     @Basic
     @Column(name = "PRIVILEGEOPERATION")
-    public boolean isPrivilegeoperation() {
-        return privilegeoperation;
+    public BigDecimal getPrivilegeOperation() {
+        return privilegeOperation;
     }
 
-    public void setPrivilegeoperation(boolean privilegeoperation) {
-        this.privilegeoperation = privilegeoperation;
+    public void setPrivilegeOperation(BigDecimal privilegeoperation) {
+        this.privilegeOperation = privilegeoperation;
     }
 
     @Override
@@ -88,16 +82,16 @@ public class Privilege implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Privilege privilege = (Privilege) o;
-        return privilegeoperation == privilege.privilegeoperation &&
-                Objects.equals(pkId, privilege.pkId) &&
-                Objects.equals(privilegemaster, privilege.privilegemaster) &&
-                Objects.equals(privilegemastervalue, privilege.privilegemastervalue) &&
-                Objects.equals(privilegeaccess, privilege.privilegeaccess) &&
-                Objects.equals(privilegeaccessvalue, privilege.privilegeaccessvalue);
+        return Objects.equals(pkId, privilege.pkId) &&
+                Objects.equals(privilegeMaster, privilege.privilegeMaster) &&
+                Objects.equals(privilegeMasterValue, privilege.privilegeMasterValue) &&
+                Objects.equals(privilegeAccess, privilege.privilegeAccess) &&
+                Objects.equals(privilegeAccessValue, privilege.privilegeAccessValue) &&
+                Objects.equals(privilegeOperation, privilege.privilegeOperation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pkId, privilegemaster, privilegemastervalue, privilegeaccess, privilegeaccessvalue, privilegeoperation);
+        return Objects.hash(pkId, privilegeMaster, privilegeMasterValue, privilegeAccess, privilegeAccessValue, privilegeOperation);
     }
 }

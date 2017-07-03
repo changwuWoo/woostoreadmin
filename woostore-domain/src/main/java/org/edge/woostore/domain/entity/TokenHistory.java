@@ -5,16 +5,16 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * Created by Administrator on 2017/6/22.
+ * Created by Administrator on 2017/7/2.
  */
 @Entity
 @Table(name = "TB_TOKENHISTORY", schema = "WOOSTOREADMIN")
 public class TokenHistory {
     private String pkId;
-    private Timestamp ftime;
-    private String faccesstoken;
+    private Timestamp addTime;
+    private String accessToken;
     private String fkMasterId;
-    private String fip;
+    private String loginIp;
 
     @Id
     @Column(name = "PK_ID")
@@ -27,43 +27,43 @@ public class TokenHistory {
     }
 
     @Basic
-    @Column(name = "FTIME")
-    public Timestamp getFtime() {
-        return ftime;
+    @Column(name = "ADDTIME")
+    public Timestamp getAddTime() {
+        return addTime;
     }
 
-    public void setFtime(Timestamp ftime) {
-        this.ftime = ftime;
-    }
-
-    @Basic
-    @Column(name = "FACCESSTOKEN")
-    public String getFaccesstoken() {
-        return faccesstoken;
-    }
-
-    public void setFaccesstoken(String faccesstoken) {
-        this.faccesstoken = faccesstoken;
+    public void setAddTime(Timestamp addtime) {
+        this.addTime = addtime;
     }
 
     @Basic
-    @Column(name = "FK_MASTER_ID")
+    @Column(name = "ACCESSTOKEN")
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accesstoken) {
+        this.accessToken = accesstoken;
+    }
+
+    @Basic
+    @Column(name = "FKMASTERID")
     public String getFkMasterId() {
         return fkMasterId;
     }
 
-    public void setFkMasterId(String fkMasterId) {
-        this.fkMasterId = fkMasterId;
+    public void setFkMasterId(String fkmasterid) {
+        this.fkMasterId = fkmasterid;
     }
 
     @Basic
-    @Column(name = "FIP")
-    public String getFip() {
-        return fip;
+    @Column(name = "LOGINIP")
+    public String getLoginIp() {
+        return loginIp;
     }
 
-    public void setFip(String fip) {
-        this.fip = fip;
+    public void setLoginIp(String loginip) {
+        this.loginIp = loginip;
     }
 
     @Override
@@ -72,25 +72,14 @@ public class TokenHistory {
         if (o == null || getClass() != o.getClass()) return false;
         TokenHistory that = (TokenHistory) o;
         return Objects.equals(pkId, that.pkId) &&
-                Objects.equals(ftime, that.ftime) &&
-                Objects.equals(faccesstoken, that.faccesstoken) &&
+                Objects.equals(addTime, that.addTime) &&
+                Objects.equals(accessToken, that.accessToken) &&
                 Objects.equals(fkMasterId, that.fkMasterId) &&
-                Objects.equals(fip, that.fip);
+                Objects.equals(loginIp, that.loginIp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pkId, ftime, faccesstoken, fkMasterId, fip);
-    }
-
-    @Override
-    public String toString() {
-        return "TokenHistory{" +
-                "pkId='" + pkId + '\'' +
-                ", ftime=" + ftime +
-                ", faccesstoken='" + faccesstoken + '\'' +
-                ", fkMasterId='" + fkMasterId + '\'' +
-                ", fip='" + fip + '\'' +
-                '}';
+        return Objects.hash(pkId, addTime, accessToken, fkMasterId, loginIp);
     }
 }
