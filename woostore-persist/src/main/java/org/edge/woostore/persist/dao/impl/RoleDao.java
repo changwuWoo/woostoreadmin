@@ -3,10 +3,8 @@ package org.edge.woostore.persist.dao.impl;
 import org.edge.woostore.domain.entity.Role;
 import org.edge.woostore.persist.dao.AbstractCoreDao;
 import org.edge.woostore.persist.dao.IRoleDao;
-import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ import java.util.Map;
  * Created by Administrator on 2017/5/28.
  */
 @Repository
-public class RoleDaoImpl extends AbstractCoreDao<Role,String> implements IRoleDao {
+public class RoleDao extends AbstractCoreDao<Role,String> implements IRoleDao {
 
     @Override
     public boolean isExistByName(String hql, Map map) {

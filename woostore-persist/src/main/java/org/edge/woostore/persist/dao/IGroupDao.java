@@ -4,15 +4,16 @@ import org.edge.woostore.domain.entity.Group;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/5/20.
  */
 public interface IGroupDao extends ICoreDao<Group,String>{
     @Transactional
-    Collection<Group> getRootNode();
+    Collection<Group> getRootNode(String hql, Map map);
     @Transactional
-    Collection<Group> getChildNode(String pkId);
+    Collection<Group> getChildNode(String hql, Map map);
     @Transactional
-    Boolean isRootNode(String pkId);
+    Boolean isRootNode(String hql, Map map);
 }

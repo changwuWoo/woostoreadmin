@@ -53,7 +53,7 @@ public class LogServiceImpl implements ILogService {
     }
 
     @Override
-    public Log queryLog(String pkId) {
+    public Log getEntityByPkId(String pkId) {
         return logDao.get(pkId);
     }
 

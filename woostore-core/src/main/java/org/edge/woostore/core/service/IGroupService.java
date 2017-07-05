@@ -10,7 +10,6 @@ import java.util.Collection;
 public interface IGroupService extends ICoreService<Group>{
     Collection<Group> queryListByPkId(String pkId);
     Collection<Group> queryGroupList();
-    Group queryGroup(String pkId);
     boolean updateGroup(Group group);
     boolean insertGroup(Group group);
 }

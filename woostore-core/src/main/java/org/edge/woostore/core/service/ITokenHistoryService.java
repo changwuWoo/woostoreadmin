@@ -10,5 +10,4 @@ public interface ITokenHistoryService extends ICoreService<TokenHistory>{
     TokenHistory queryTokenByMasterId(String masterId);
     boolean insert(TokenHistory token);
     String getSeq();
-    TokenHistory getTokenHistory(String pkId);
 }

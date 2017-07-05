@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Administrator on 2017/6/10.
  */
 @Component
-public class AbstractRedisDao implements RedisDao{
+public class AbstractRedisDao implements IRedisDao {
     private static final Logger log = Logger.getLogger(AbstractRedisDao.class);
     @Autowired
     private RedisTemplate<Serializable, Object> redisTemplate;

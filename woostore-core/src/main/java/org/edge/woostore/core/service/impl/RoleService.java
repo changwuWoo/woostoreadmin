@@ -36,15 +36,8 @@ public class RoleService implements IRoleService {
     }
 
     @Override
-    public Role getByPkId(String pkid) {
-        Role role = null;
-        role = iRoleDao.get(pkid);
-        if (role != null) {
-            Collection<Permission> powerCollection = iPermissionDao.selectListByPrivilegeMaster(role.getPkId());
-            if (powerCollection != null && powerCollection.size() > 0) {
-            }
-        }
-        return role;
+    public Role getEntityByPkId(String pkId) {
+        return iRoleDao.get(pkId);
     }
 
     @Override

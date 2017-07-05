@@ -44,11 +44,17 @@ public class MasterService implements IMasterService {
         if (master != null && (master.getFkGroupId() != null || master.getFkGroupId() != null)) {
             Role role = new Role();
             role = iRoleDao.get(master.getFkGroupId());
+            StringBuffer sql =new StringBuffer();
+            Map map = new LinkedHashMap();
+            sql.append("SELECT  tpower.PK_ID AS pkId,tpower.FNAME AS fname,tpower.FNUMBER AS fnumber from STSM2017S.TB_POWER tpower " +
+                    "LEFT OUTER JOIN STSM2017S.TB_PRIVILEGE tpri ON tpower.PK_ID=tpri.PRIVILEGEACCESSVALUE " +
+                    "WHERE tpri.PRIVILEGEMASTERVALUE = ?");
+
             if (role != null) {
                 master.setRole(role);
             }
             Collection<Permission> powerCollection = new ArrayList<>();
-            powerCollection = iPermissionDao.selectListByPrivilegeMaster(master.getFkRoleId());
+            powerCollection = iPermissionDao.selectListByPrivilegeMaster(sql.toString(),map);
             if (powerCollection != null && powerCollection.size() > 0) {
                 master.setPowerCollection(powerCollection);
             }
@@ -129,10 +135,6 @@ public class MasterService implements IMasterService {
         }
     }
 
-    @Override
-    public Master getMaster(String pkId) {
-        return iMasterDao.get(pkId);
-    }
 
     @Override
     public boolean insertMaster(Master master) {
@@ -218,6 +220,11 @@ public class MasterService implements IMasterService {
     public String getSeq() {
         String sql = "SELECT WOOSTOREADMIN.SEQ_MASTER.nextval FROM dual";
         return iMasterDao.getSeq(sql);
+    }
+
+    @Override
+    public Master getEntityByPkId(String pkId) {
+        return iMasterDao.get(pkId);
     }
 
 }

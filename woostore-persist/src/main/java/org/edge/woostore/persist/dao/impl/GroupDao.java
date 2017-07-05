@@ -3,8 +3,8 @@ package org.edge.woostore.persist.dao.impl;
 import org.edge.woostore.domain.entity.Group;
 import org.edge.woostore.persist.dao.AbstractCoreDao;
 import org.edge.woostore.persist.dao.IGroupDao;
-import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -43,23 +43,17 @@ public class GroupDao extends AbstractCoreDao<Group,String> implements IGroupDao
     }
 
     @Override
-    public Collection<Group> getRootNode() {
-        String hql="from Group group where group.parentId = null ";
-        Collection<Group> groupCollection=getSession().createQuery(hql).list();
-        return groupCollection;
+    public Collection<Group> getRootNode(String hql, Map map) {
+        return null;
     }
 
     @Override
-    public Collection<Group> getChildNode(String pkId) {
-        String hql="from Group group where group.parentId = ? ";
-        Collection<Group> groupCollection=getSession().createQuery(hql).setParameter(0, pkId).list();
-        return groupCollection;
+    public Collection<Group> getChildNode(String hql, Map map) {
+        return null;
     }
 
     @Override
-    public Boolean isRootNode(String pkId) {
-        String hql="from Group group where group.pkId = ? ";
-        Collection<Group> groupCollection=getSession().createQuery(hql).setParameter(0, pkId).list();
-        return groupCollection.size()==1?true:false;
+    public Boolean isRootNode(String hql, Map map) {
+        return null;
     }
 }

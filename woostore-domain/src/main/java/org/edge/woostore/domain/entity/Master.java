@@ -1,6 +1,7 @@
 package org.edge.woostore.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Objects;
@@ -10,7 +11,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "TB_MASTER", schema = "WOOSTOREADMIN")
-public class Master {
+public class Master implements Serializable {
     private String pkId;
     private String loginName;
     private String loginPassWord;
@@ -32,7 +33,7 @@ public class Master {
     }
 
     @Basic
-    @Column(name = "LOGINNAME")
+    @Column(name = "MASTERNAME")
     public String getLoginName() {
         return loginName;
     }
@@ -42,7 +43,7 @@ public class Master {
     }
 
     @Basic
-    @Column(name = "PASSWORD")
+    @Column(name = "MASTERPASSWORD")
     public String getLoginPassWord() {
         return loginPassWord;
     }

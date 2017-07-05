@@ -11,9 +11,8 @@ import java.util.Collection;
  * Created by Administrator on 2017/5/19.
  */
 public interface IPermissionService extends ICoreService<Permission>{
-    Permission getByPkId(String pkId);
-    Collection<Permission> getPowers();
+    Collection<Permission> getPermissions();
     Page getListByPage(int pageSize, int page, String filter);
-    boolean updatePower(Permission power);
-    boolean insertPower(Permission power);
+    boolean updatePermission(Permission permission);
+    boolean insertPermission(Permission permission);
 }

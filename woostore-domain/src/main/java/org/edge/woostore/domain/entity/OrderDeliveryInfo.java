@@ -1,6 +1,7 @@
 package org.edge.woostore.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "TB_ORDERDELIVERYINFO", schema = "WOOSTOREADMIN")
-public class OrderDeliveryInfo {
+public class OrderDeliveryInfo implements Serializable {
     private String pkId;
     private String fkDeliveryId;
     private BigDecimal baseStatus;

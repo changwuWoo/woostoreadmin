@@ -7,11 +7,10 @@ import org.edge.woostore.domain.annotation.Loggable;
 import org.edge.woostore.domain.entity.Group;
 import org.edge.woostore.domain.exception.BizException;
 import org.edge.woostore.domain.repository.Page;
-import org.edge.woostore.persist.dao.impl.GroupDao;
+import org.edge.woostore.persist.dao.IGroupDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -25,25 +24,26 @@ import java.util.Map;
 public class GroupService implements IGroupService {
     private Log logger = LogFactory.getLog(GroupService.class);
     @Autowired
-    private GroupDao groupDao;
+    private IGroupDao iGroupDao;
     @Override
     @Transactional(readOnly = false, rollbackFor = BizException.class)
     public Collection<Group> queryListByPkId(String pkId) {
+        StringBuffer hql = new StringBuffer();
+        Map map = new LinkedHashMap();
+        hql.append("from Group group where 1=1 ");
         if(pkId !=null){
-            return  groupDao.getChildNode(pkId);
+            hql.append("and group.parentId = null ");
+            return  iGroupDao.getChildNode(hql.toString(),map);
         }else {
-            return groupDao.getRootNode();
+            map.put("FKPARENTID",pkId);
+            hql.append("and group.parentId = ? ");
+            return iGroupDao.getRootNode(hql.toString(),map);
         }
     }
 
     @Override
     public Collection<Group> queryGroupList() {
         return null;
-    }
-
-    @Override
-    public Group queryGroup(String pkId) {
-        return groupDao.get(pkId);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class GroupService implements IGroupService {
         }else {
             return false;
         }
-        if(groupDao.updateByPrimaryKey(sql.toString(),map)>=0){
+        if(iGroupDao.updateByPrimaryKey(sql.toString(),map)>=0){
             return true;
         }
         else {
@@ -105,7 +105,7 @@ public class GroupService implements IGroupService {
         }else {
             return false;
         }
-        if(groupDao.insert(sql.toString(),map)>=0){
+        if(iGroupDao.insert(sql.toString(),map)>=0){
             return true;
         }else {
             return false;
@@ -120,6 +120,11 @@ public class GroupService implements IGroupService {
     @Override
     public String getSeq() {
         String sql = "SELECT SEQ_GROUP.nextval FROM dual";
-        return groupDao.getSeq(sql);
+        return iGroupDao.getSeq(sql);
+    }
+
+    @Override
+    public Group getEntityByPkId(String pkId) {
+        return iGroupDao.get(pkId);
     }
 }

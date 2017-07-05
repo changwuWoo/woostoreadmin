@@ -1,6 +1,7 @@
 package org.edge.woostore.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "TB_GOODS", schema = "WOOSTOREADMIN")
-public class Goods {
+public class Goods implements Serializable {
     private String pkId;
     private String name;
     private String number;

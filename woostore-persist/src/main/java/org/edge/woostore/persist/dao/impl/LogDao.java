@@ -3,10 +3,8 @@ package org.edge.woostore.persist.dao.impl;
 import org.edge.woostore.domain.entity.Log;
 import org.edge.woostore.persist.dao.AbstractCoreDao;
 import org.edge.woostore.persist.dao.ILogDao;
-import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

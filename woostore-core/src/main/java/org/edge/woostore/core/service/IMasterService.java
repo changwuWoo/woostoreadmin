@@ -13,6 +13,5 @@ public interface IMasterService extends ICoreService<Master>{
     Collection<Master> getUsers();
     Master queryByUserName(String name);
     boolean updateMasterInfo(Master master);
-    Master getMaster(String pkId);
     boolean insertMaster(Master master);
 }

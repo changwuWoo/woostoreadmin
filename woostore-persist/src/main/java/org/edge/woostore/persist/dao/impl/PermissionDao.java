@@ -47,11 +47,8 @@ public class PermissionDao extends AbstractCoreDao<Permission,String> implements
 
 
     @Override
-    public Collection<Permission> selectListByPrivilegeMaster(String privileMasterValue) {
-        String sql = "SELECT  tpower.PK_ID AS pkId,tpower.FNAME AS fname,tpower.FNUMBER AS fnumber from STSM2017S.TB_POWER tpower " +
-                "LEFT OUTER JOIN STSM2017S.TB_PRIVILEGE tpri ON tpower.PK_ID=tpri.PRIVILEGEACCESSVALUE " +
-                "WHERE tpri.PRIVILEGEMASTERVALUE = ?";
-        Collection<Permission> privilegeCollection = getSession().createSQLQuery(sql).setParameter(0,privileMasterValue).list();
+    public Collection<Permission> selectListByPrivilegeMaster(String sql,Map map) {
+        Collection<Permission> privilegeCollection = sqlQueryBuilder(sql,map).list();
         return privilegeCollection;
     }
 }

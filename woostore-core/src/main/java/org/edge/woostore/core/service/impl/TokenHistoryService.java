@@ -87,8 +87,8 @@ public class TokenHistoryService implements ITokenHistoryService {
     }
 
     @Override
-    public TokenHistory getTokenHistory(String pkId) {
-        return  iTokenHistoryDao.get(pkId);
+    public TokenHistory getEntityByPkId(String pkId) {
+        return iTokenHistoryDao.get(pkId);
     }
 
 }

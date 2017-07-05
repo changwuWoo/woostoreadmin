@@ -1,6 +1,7 @@
 package org.edge.woostore.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -10,7 +11,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "TB_ORDER", schema = "WOOSTOREADMIN")
-public class Order {
+public class Order implements Serializable {
     private String pkId;
     private Timestamp addTime;
     private Timestamp payTime;

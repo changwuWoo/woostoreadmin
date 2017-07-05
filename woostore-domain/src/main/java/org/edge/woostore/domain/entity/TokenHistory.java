@@ -1,6 +1,7 @@
 package org.edge.woostore.domain.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "TB_TOKENHISTORY", schema = "WOOSTOREADMIN")
-public class TokenHistory {
+public class TokenHistory implements Serializable {
     private String pkId;
     private Timestamp addTime;
     private String accessToken;

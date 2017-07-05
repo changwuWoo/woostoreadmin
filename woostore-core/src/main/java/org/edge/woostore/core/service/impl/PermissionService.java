@@ -4,7 +4,7 @@ import org.edge.woostore.core.service.IPermissionService;
 import org.edge.woostore.domain.annotation.Loggable;
 import org.edge.woostore.domain.entity.Permission;
 import org.edge.woostore.domain.repository.Page;
-import org.edge.woostore.persist.dao.impl.PermissionDao;
+import org.edge.woostore.persist.dao.IPermissionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,35 +18,31 @@ import java.util.Map;
 @Service
 public class PermissionService implements IPermissionService {
     @Autowired
-    private PermissionDao permissionDao;
+    private IPermissionDao iPermissionDao;
+    
 
     @Override
-    public Permission getByPkId(String pkid) {
-        return permissionDao.get(pkid);
-    }
-
-    @Override
-    public Collection<Permission> getPowers() {
+    public Collection<Permission> getPermissions() {
         return null;
     }
 
     @Override
     public Page getListByPage(int pageSize, int page, String filter) {
-        String countsql = "select count(*) from Power permission";
-        int count = permissionDao.getCount(countsql); // 总记录数
+        String countSql = "select count(*) from Permission permission";
+        int count = iPermissionDao.getCount(countSql); // 总记录数
         System.out.println(count);
         int totalPage = Page.countTotalPage(pageSize, count); // 总页数
         int offset = Page.countOffset(pageSize, page); // 当前页开始记录
         int length = pageSize; // 每页记录数
         int currentPage = Page.countCurrentPage(page);
         StringBuffer sql = new StringBuffer();
-        sql.append("from Power permission where 1=1 ");
+        sql.append("from Permission permission where 1=1 ");
         Map map = new LinkedHashMap();
         if (filter != null && !"".equals(filter.trim())) {
             map.put("permission.fname", "%" + filter.trim() + "%");
             sql.append("and permission.fname like ? ");
         }
-        Collection<Permission> list = permissionDao.queryForPage(offset, length, sql.toString(), map); // 该分页的记录
+        Collection<Permission> list = iPermissionDao.queryForPage(offset, length, sql.toString(), map); // 该分页的记录
         // 把分页信息保存到Bean中
         Page Page = new Page();
         Page.setPageSize(pageSize);
@@ -60,10 +56,10 @@ public class PermissionService implements IPermissionService {
 
     @Override
     @Loggable(optType = "update", describe = "更新权限信息", tableName = "TB_POWER")
-    public boolean updatePower(Permission permission) {
+    public boolean updatePermission(Permission permission) {
         StringBuffer sql = new StringBuffer();
         Map map = new LinkedHashMap();
-        sql.append("UPDATE TB_POWER ");
+        sql.append("UPDATE TB_PERMISSION ");
         if (permission != null) {
             if (permission.getName() != null && permission.getName().length() > 0) {
                 map.put("FNAME", permission.getName());
@@ -82,7 +78,7 @@ public class PermissionService implements IPermissionService {
         } else {
             return false;
         }
-        if (permissionDao.updateByPrimaryKey(sql.toString(), map) >= 0) {
+        if (iPermissionDao.updateByPrimaryKey(sql.toString(), map) >= 0) {
             return true;
         } else {
             return false;
@@ -91,7 +87,7 @@ public class PermissionService implements IPermissionService {
 
     @Override
     @Loggable(optType = "insert", describe = "插入权限信息", tableName = "TB_POWER")
-    public boolean insertPower(Permission permission) {
+    public boolean insertPermission(Permission permission) {
         StringBuffer sql = new StringBuffer();
         Map map = new LinkedHashMap();
         sql.append("insert into TB_POWER(PK_ID,FNAME,FNUMBER) values(");
@@ -113,7 +109,7 @@ public class PermissionService implements IPermissionService {
         } else {
             return false;
         }
-        if (permissionDao.insert(sql.toString(), map) >= 0) {
+        if (iPermissionDao.insert(sql.toString(), map) >= 0) {
             return true;
         } else {
             return false;
@@ -128,7 +124,12 @@ public class PermissionService implements IPermissionService {
 
     @Override
     public String getSeq() {
-        String sql = "SELECT STSM2017S.SEQ_POWER.nextval FROM dual";
-        return permissionDao.getSeq(sql);
+        String sql = "SELECT WOOSTOREADMIN.SEQ_POWER.nextval FROM dual";
+        return iPermissionDao.getSeq(sql);
+    }
+
+    @Override
+    public Permission getEntityByPkId(String pkId) {
+        return iPermissionDao.get(pkId);
     }
 }
