@@ -3,8 +3,6 @@ package org.edge.woostore.core.aspect;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.log4j.Logger;
-import org.edge.woostore.persist.dao.AbstractRedisDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -20,8 +18,6 @@ import java.util.Properties;
 @Component
 public class MethodCacheInterceptor implements MethodInterceptor {
     private Logger logger = Logger.getLogger(MethodCacheInterceptor.class);
-    @Autowired
-    private AbstractRedisDao abstractRedisDao;
     private List<String> targetNamesList; // 不加入缓存的service名称
     private List<String> methodNamesList; // 不加入缓存的方法名称
     private Long defaultCacheExpireTime; // 缓存默认的过期时间
@@ -84,10 +80,6 @@ public class MethodCacheInterceptor implements MethodInterceptor {
         System.out.println(key);
 
         try {
-            // 判断是否有缓存
-            if (abstractRedisDao.exists(key)) {
-                return abstractRedisDao.get(key);
-            }
             // 写入缓存
             value = invocation.proceed();
             if (value != null) {
@@ -97,11 +89,10 @@ public class MethodCacheInterceptor implements MethodInterceptor {
                     @Override
                     public void run() {
                         if (tkey.startsWith("com.service.impl.xxxRecordManager")) {
-                            abstractRedisDao.set(tkey, tvalue, xxxRecordManagerTime);
+
                         } else if (tkey.startsWith("com.service.impl.xxxSetRecordManager")) {
-                            abstractRedisDao.set(tkey, tvalue, xxxSetRecordManagerTime);
+
                         } else {
-                            abstractRedisDao.set(tkey, tvalue, defaultCacheExpireTime);
                         }
                     }
                 }).start();
@@ -146,9 +137,5 @@ public class MethodCacheInterceptor implements MethodInterceptor {
             }
         }
         return sbu.toString();
-    }
-
-    public void setRedisUtil(AbstractRedisDao abstractRedisDao) {
-        this.abstractRedisDao = abstractRedisDao;
     }
 }

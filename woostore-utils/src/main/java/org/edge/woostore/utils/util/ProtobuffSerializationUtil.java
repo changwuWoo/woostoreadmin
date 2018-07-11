@@ -4,7 +4,6 @@ import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.ProtobufIOUtil;
 import com.dyuproject.protostuff.ProtostuffIOUtil;
 import com.dyuproject.protostuff.Schema;
-import com.dyuproject.protostuff.runtime.RuntimeSchema;
 import org.springframework.objenesis.Objenesis;
 import org.springframework.objenesis.ObjenesisStd;
 
@@ -25,7 +24,6 @@ public class ProtobuffSerializationUtil {
         @SuppressWarnings("unchecked")
         Schema<T> schema = (Schema<T>) cachedSchema.get(clazz);
         if (schema == null) {
-            schema = RuntimeSchema.getSchema(clazz);
             if (schema != null) {
                 cachedSchema.put(clazz, schema);
             }
