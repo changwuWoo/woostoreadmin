@@ -12,7 +12,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "TB_MASTER", schema = "WOOSTOREADMIN")
 public class Master implements Serializable {
-    private String pkId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -819205826453419843L;
+	private String pkId;
     private String loginName;
     private String loginPassWord;
     private BigDecimal baseStatus;

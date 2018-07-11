@@ -11,9 +11,9 @@ import java.util.Map;
  */
 public interface IGroupDao extends ICoreDao<Group,String>{
     @Transactional
-    Collection<Group> getRootNode(String hql, Map map);
+    Collection<Group> getRootNode(String hql, Map<String,Object> map);
     @Transactional
-    Collection<Group> getChildNode(String hql, Map map);
+    Collection<Group> getChildNode(String hql, Map<String,Object> map);
     @Transactional
-    Boolean isRootNode(String hql, Map map);
+    Boolean isRootNode(String hql, Map<String,Object> map);
 }

@@ -10,7 +10,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "TB_GROUP", schema = "WOOSTOREADMIN")
 public class Group implements Serializable {
-    private String pkId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7199457800308046542L;
+	private String pkId;
     private String parentId;
     private String number;
     private String name;

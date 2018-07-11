@@ -11,7 +11,7 @@ package org.edge.woostore.domain.dto;
  *  
  */
 public enum TokenType {
-	 /*TokenUser
+	 TokenUser,
 			  TokenGroups,
 			  TokenPrivileges,
 			  TokenOwner,
@@ -51,5 +51,5 @@ public enum TokenType {
 			  TokenRestrictedDeviceGroups,
 			  TokenSecurityAttributes,
 			  TokenIsRestricted,
-			  MaxTokenInfoClass*/
+			  MaxTokenInfoClass
 }

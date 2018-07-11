@@ -15,12 +15,12 @@ import java.util.Map;
 public class RoleDao extends AbstractCoreDao<Role,String> implements IRoleDao {
 
     @Override
-    public boolean isExistByName(String hql, Map map) {
+    public boolean isExistByName(String hql, Map<String,Object> map) {
         return false;
     }
 
     @Override
-    public int deleteByPrimaryKey(String hql, Map map) {
+    public int deleteByPrimaryKey(String hql, Map<String,Object> map) {
         return 0;
     }
 

@@ -10,7 +10,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "TB_PERMISSION", schema = "WOOSTOREADMIN")
 public class Permission implements Serializable {
-    private String pkId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2338014032246735164L;
+	private String pkId;
     private String number;
     private String name;
     private boolean baseStatus;

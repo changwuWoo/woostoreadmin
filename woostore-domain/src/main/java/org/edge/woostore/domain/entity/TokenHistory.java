@@ -11,7 +11,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "TB_TOKENHISTORY", schema = "WOOSTOREADMIN")
 public class TokenHistory implements Serializable {
-    private String pkId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1995230191309875522L;
+	private String pkId;
     private Timestamp addTime;
     private String accessToken;
     private String fkMasterId;

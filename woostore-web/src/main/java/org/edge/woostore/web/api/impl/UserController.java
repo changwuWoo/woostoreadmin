@@ -27,17 +27,18 @@ public class UserController extends AbstractController {
     @RequestMapping(value = "/getUsers",method = RequestMethod.GET)
     @AccessTokenValidate
     public @ResponseBody
-    Map getUserList(@RequestParam(value = "pageSize",required = false) @Valid String pageSize,
+    Map<String,Object> getUserList(@RequestParam(value = "pageSize",required = false) @Valid String pageSize,
                     @RequestParam(value = "currentPage",required = false)String currentPage){
         int ps=Integer.parseInt(pageSize);
         int cp=Integer.parseInt(currentPage);
-        Page<Object> masterPage=userService.getListByPage(ps,cp,new Master());
+        @SuppressWarnings("unchecked")
+		Page<Object> masterPage=userService.getListByPage(ps,cp,new Master());
         return super.resultPageUtil(masterPage);
     }
     @AccessTokenValidate
     @RequestMapping(value = "/getUser",method = RequestMethod.GET)
-    public @ResponseBody Map getUser(@RequestParam(value = "pkId") String pkId){
-        Map reMap =new HashMap();
+    public @ResponseBody Map<String,Object> getUser(@RequestParam(value = "pkId") String pkId){
+        Map<String,Object> reMap =new HashMap<String,Object>();
         if (pkId!=null&&!"".equals(pkId.trim())){
             reMap=super.resultEUtil(userService.getEntityByPkId(pkId));
         }else{
@@ -48,8 +49,8 @@ public class UserController extends AbstractController {
     }
     @AccessTokenValidate
     @RequestMapping(value = "/updateUsrInfo")
-    public @ResponseBody Map updateUserInfo(@RequestBody @Valid Master master, BindingResult bindingResult){
-        Map reMap = new HashMap();
+    public @ResponseBody Map<String,Object> updateUserInfo(@RequestBody @Valid Master master, BindingResult bindingResult){
+        Map<String,Object> reMap = new HashMap<String,Object>();
         if (bindingResult.hasErrors()) {
             reMap.put("errorMsg", bindingResult.getFieldError().getDefaultMessage());
         }

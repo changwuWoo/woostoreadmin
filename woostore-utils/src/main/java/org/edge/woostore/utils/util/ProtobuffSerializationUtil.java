@@ -24,9 +24,6 @@ public class ProtobuffSerializationUtil {
         @SuppressWarnings("unchecked")
         Schema<T> schema = (Schema<T>) cachedSchema.get(clazz);
         if (schema == null) {
-            if (schema != null) {
-                cachedSchema.put(clazz, schema);
-            }
         }
         return schema;
     }

@@ -20,7 +20,7 @@ public class LogDao extends AbstractCoreDao<Log,String> implements ILogDao {
     }
 
     @Override
-    public boolean isExistByName(String hql, Map map) {
+    public boolean isExistByName(String hql, Map<String,Object> map) {
         return false;
     }
 

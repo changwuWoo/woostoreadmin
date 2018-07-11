@@ -35,19 +35,19 @@ public interface ICoreDao<T, PK extends Serializable>{
 
     //分页查询
     @Transactional
-    Collection<T> queryForPage(final int offset, final int length,String hql,Map map);
+    Collection<T> queryForPage(final int offset, final int length,String hql,Map<String,Object> map);
 
     //总记录条数
     @Transactional
     int getCount(String hql);
     @Transactional
-    boolean isExistByName(String hql, Map map);
+    boolean isExistByName(String hql, Map<String,Object> map);
     @Transactional
-    int deleteByPrimaryKey(String hql,Map map);
+    int deleteByPrimaryKey(String hql,Map<String,Object> map);
     @Transactional
     int deleteByPrimaryKey(List<String> pkIds);
     @Transactional
-    int insert(String sql,Map map);
+    int insert(String sql,Map<String,Object> map);
     @Transactional
     int batchInsert(List<T> records);
     @Transactional
@@ -55,17 +55,17 @@ public interface ICoreDao<T, PK extends Serializable>{
     @Transactional
     int updateByPrimaryKeySelective(T record);
     @Transactional
-    int updateByPrimaryKey(String sql,Map map);
+    int updateByPrimaryKey(String sql,Map<String,Object> map);
     @Transactional
-    Collection<T> selectAll(String hql,Map map);
+    Collection<T> selectAll(String hql,Map<String,Object> map);
     @Transactional
-    Query hqlQueryBuilder(String hql, Map map);
+    Query hqlQueryBuilder(String hql, Map<String,Object> map);
     @Transactional
-    Query sqlQueryBuilder(String sql, Map map);
+    Query sqlQueryBuilder(String sql, Map<String,Object> map);
     @Transactional
-    Collection<T> selectByFiled(String hql,Map map);
+    Collection<T> selectByFiled(String hql,Map<String,Object> map);
     @Transactional
-    T selectByUniqueFiled(String hql,Map map);
+    T selectByUniqueFiled(String hql,Map<String,Object> map);
     @Transactional
     String getSeq(String sql);
 }

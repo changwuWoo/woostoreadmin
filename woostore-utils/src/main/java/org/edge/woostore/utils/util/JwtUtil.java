@@ -80,7 +80,7 @@ public class JwtUtil {
      * @param map
      * @return
      */
-    public static String generalSubject(Map map) {
+    public static String generalSubject(Map<String,Object> map) {
         JSONObject jo = new JSONObject();
         jo.putAll(map);
         return jo.toJSONString();

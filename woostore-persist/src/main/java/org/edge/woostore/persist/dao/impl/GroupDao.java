@@ -17,7 +17,7 @@ public class GroupDao extends AbstractCoreDao<Group,String> implements IGroupDao
 
 
     @Override
-    public boolean isExistByName(String hql, Map map) {
+    public boolean isExistByName(String hql, Map<String,Object> map) {
         return false;
     }
 
@@ -43,17 +43,17 @@ public class GroupDao extends AbstractCoreDao<Group,String> implements IGroupDao
     }
 
     @Override
-    public Collection<Group> getRootNode(String hql, Map map) {
+    public Collection<Group> getRootNode(String hql, Map<String,Object> map) {
         return null;
     }
 
     @Override
-    public Collection<Group> getChildNode(String hql, Map map) {
+    public Collection<Group> getChildNode(String hql, Map<String,Object> map) {
         return null;
     }
 
     @Override
-    public Boolean isRootNode(String hql, Map map) {
+    public Boolean isRootNode(String hql, Map<String,Object> map) {
         return null;
     }
 }

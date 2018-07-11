@@ -10,7 +10,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "TB_GOODS", schema = "WOOSTOREADMIN")
 public class Goods implements Serializable {
-    private String pkId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2342305611011667881L;
+	private String pkId;
     private String name;
     private String number;
 

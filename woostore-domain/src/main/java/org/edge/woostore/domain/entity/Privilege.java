@@ -11,7 +11,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "TB_PRIVILEGE", schema = "WOOSTOREADMIN")
 public class Privilege implements Serializable {
-    private String pkId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7742385905417275472L;
+	private String pkId;
     private String privilegeMaster;
     private String privilegeMasterValue;
     private String privilegeAccess;

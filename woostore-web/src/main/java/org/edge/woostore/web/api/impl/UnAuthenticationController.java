@@ -1,29 +1,35 @@
 package org.edge.woostore.web.api.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import io.jsonwebtoken.Claims;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.edge.woostore.core.service.ITokenHistoryService;
 import org.edge.woostore.core.service.IMasterService;
+import org.edge.woostore.core.service.ITokenHistoryService;
 import org.edge.woostore.core.service.ITokenService;
 import org.edge.woostore.domain.entity.Master;
 import org.edge.woostore.domain.entity.TokenHistory;
 import org.edge.woostore.utils.constant.Constants;
 import org.edge.woostore.utils.util.JwtUtil;
 import org.edge.woostore.web.api.AbstractController;
-import org.edge.woostore.web.api.IController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.fastjson.JSONObject;
+
+import io.jsonwebtoken.Claims;
 
 /**
  * @author Administrator
@@ -85,7 +91,6 @@ public class UnAuthenticationController extends AbstractController{
      * @Description: TODO
      * @time 2017年3月8日上午10:59:12
      */
-    @SuppressWarnings("finally")
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -110,7 +115,7 @@ public class UnAuthenticationController extends AbstractController{
                 reMap.put(KEY_DATA, reMaster);
                 reMap.put(KEY_MSG, LOGIN_SUCCESS);
                 //修改登录逻辑变化，如果用户名和用户信息验证通过直接替换掉服务器端保存的IP和loginTokenHistory字符串
-                Map map = new HashMap();
+                Map<String,Object> map = new HashMap<String,Object>();
                 map.put("pkId", reMaster.getPkId());
                 String subject = JwtUtil.generalSubject(map);
                 String loginTokenHistory = jwt.createJWT(Constants.JWT_ID, subject, Constants.JWT_TTL);
@@ -137,9 +142,9 @@ public class UnAuthenticationController extends AbstractController{
 @RequestMapping(value = "/tokenLogin", method = RequestMethod.GET)
 public
 @ResponseBody
-Map loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHistory,
+Map<String,Object> loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHistory,
                     HttpServletRequest httpRequest) {
-    Map reMap = new HashMap<>();
+    Map<String,Object> reMap = new HashMap<String,Object>();
     TokenHistory serverTokenHistory = new TokenHistory();
     Claims claims = null;   //解析loginTokenHistory结构
     String refushToken = null;
@@ -161,7 +166,7 @@ Map loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHist
         tokenHistory = iTokenHistoryService.getTokenByAccessToken(accessToken);
         if (loginTokenHistory.equals(accessToken)) {
             if (tokenHistory != null && tokenHistory.getLoginIp() != null && tokenHistory.getLoginIp().length() > 0 && super.getIpV4().equals(tokenHistory.getLoginIp())) {
-                Map map = new HashMap();
+                Map<String,Object> map = new HashMap<String,Object>();
                 map.put("pkId", master.getPkId());
                 String subject = JwtUtil.generalSubject(map);
                 try {
@@ -221,7 +226,7 @@ Map loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHist
     }
 
     @RequestMapping(value = "/loginOut", method = RequestMethod.GET)
-    public Map loginOut() {
+    public Map<String,Object> loginOut() {
         return null;
     }
 }

@@ -11,7 +11,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "TB_LOG", schema = "WOOSTOREADMIN")
 public class Log implements Serializable {
-    private String pkId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 206516946609764989L;
+	private String pkId;
     private String fkMasterName;
     private String tableName;
     private String opType;

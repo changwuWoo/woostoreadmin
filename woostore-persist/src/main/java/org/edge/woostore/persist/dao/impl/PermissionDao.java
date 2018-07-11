@@ -15,12 +15,12 @@ import java.util.Map;
 @Repository
 public class PermissionDao extends AbstractCoreDao<Permission,String> implements IPermissionDao {
     @Override
-    public boolean isExistByName(String hql, Map map) {
+    public boolean isExistByName(String hql, Map<String,Object> map) {
         return false;
     }
 
     @Override
-    public int deleteByPrimaryKey(String hql, Map map) {
+    public int deleteByPrimaryKey(String hql, Map<String,Object> map) {
         return 0;
     }
 
@@ -47,7 +47,7 @@ public class PermissionDao extends AbstractCoreDao<Permission,String> implements
 
 
     @Override
-    public Collection<Permission> selectListByPrivilegeMaster(String sql,Map map) {
+    public Collection<Permission> selectListByPrivilegeMaster(String sql,Map<String,Object> map) {
         Collection<Permission> privilegeCollection = sqlQueryBuilder(sql,map).list();
         return privilegeCollection;
     }

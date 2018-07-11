@@ -18,6 +18,10 @@ public class BusinessException extends Exception {
 	
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1952806623443397751L;
+	/**
 	  * <p> ErrorInfo ErrorInfo：异常对象</p>
 	 */
 	private ErrorInfo ErrorInfo;

@@ -12,7 +12,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "TB_ORDER", schema = "WOOSTOREADMIN")
 public class Order implements Serializable {
-    private String pkId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4656391976061236970L;
+	private String pkId;
     private Timestamp addTime;
     private Timestamp payTime;
     private BigDecimal baseStatus;

@@ -11,7 +11,11 @@ import java.util.Objects;
 @Entity
 @Table(name = "TB_ROLE", schema = "WOOSTOREADMIN")
 public class Role implements Serializable {
-    private String pkId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8170165769391381082L;
+	private String pkId;
     private String name;
     private String number;
     private BigDecimal baseStatus;

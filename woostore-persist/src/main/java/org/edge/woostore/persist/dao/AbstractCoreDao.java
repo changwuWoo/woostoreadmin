@@ -55,7 +55,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public int deleteByPrimaryKey(String hql, Map map) {
+    public int deleteByPrimaryKey(String hql, Map<String,Object> map) {
         return 0;
     }
 
@@ -66,12 +66,12 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public int insert(String sql, Map map) {
+    public int insert(String sql, Map<String,Object> map) {
         return sqlQueryBuilder(sql, map).executeUpdate();
     }
 
     @Override
-    public Collection<T> queryForPage(int offset, int length, String hql, Map map) {
+    public Collection<T> queryForPage(int offset, int length, String hql, Map<String,Object> map) {
         Collection<T> result = null;
         Query query = hqlQueryBuilder(hql, map);
         query.setFirstResult(offset);
@@ -81,7 +81,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public boolean isExistByName(String hql, Map map) {
+    public boolean isExistByName(String hql, Map<String,Object> map) {
         T t = (T) hqlQueryBuilder(hql, map).uniqueResult();
         if (t != null) {
             return true;
@@ -91,11 +91,15 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public Query hqlQueryBuilder(String hql, Map map) {
+    public Query hqlQueryBuilder(String hql, Map<String,Object> map) {
         Query query;
         try {
             query = this.getSession().createQuery(hql);
-            Iterator it = map.keySet().iterator();
+            for(Map.Entry<String, Object> entry :map.entrySet()){
+            	entry.getValue();
+            	entry.getKey();
+            }
+            Iterator<String> it = map.keySet().iterator();
             int index = 0;
             while (it.hasNext()) {
                 Object key = it.next();
@@ -110,11 +114,11 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public Query sqlQueryBuilder(String sql, Map map) {
+    public Query sqlQueryBuilder(String sql, Map<String,Object> map) {
         Query query;
         try {
             query = this.getSession().createSQLQuery(sql);
-            Iterator it = map.keySet().iterator();
+            Iterator<String> it = map.keySet().iterator();
             int index = 0;
             while (it.hasNext()) {
                 Object key = it.next();
@@ -129,26 +133,26 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public Collection<T> selectAll(String hql, Map map) {
+    public Collection<T> selectAll(String hql, Map<String,Object> map) {
         Collection<T> tCollection = null;
         tCollection = getSession().createQuery(hql).list();
         return tCollection;
     }
 
     @Override
-    public Collection<T> selectByFiled(String hql, Map map) {
+    public Collection<T> selectByFiled(String hql, Map<String,Object> map) {
         Collection<T> tCollection = null;
         tCollection = hqlQueryBuilder(hql, map).list();
         return tCollection;
     }
 
-    public T selectByUniqueFiled(String hql, Map map) {
+    public T selectByUniqueFiled(String hql, Map<String,Object> map) {
         T t = (T) hqlQueryBuilder(hql, map).uniqueResult();
         return (T) hqlQueryBuilder(hql, map).uniqueResult();
     }
 
     @Override
-    public int updateByPrimaryKey(String sql, Map map) {
+    public int updateByPrimaryKey(String sql, Map<String,Object> map) {
         int resultFlag = sqlQueryBuilder(sql, map).executeUpdate();
         return resultFlag;
     }
