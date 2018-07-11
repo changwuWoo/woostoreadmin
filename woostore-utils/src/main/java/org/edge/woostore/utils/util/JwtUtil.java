@@ -7,7 +7,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.codec.binary.Base64;
 import org.edge.woostore.utils.constant.Constants;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -20,8 +19,6 @@ import java.util.Map;
  */
 @Component
 public class JwtUtil {
-    @Value("${spring.profiles.active}")
-    private String profiles;
 
     /**
      * 由字符串生成加密key
@@ -29,7 +26,7 @@ public class JwtUtil {
      * @return
      */
     public SecretKey generalKey() {
-        String stringKey = profiles + Constants.JWT_SECRET;
+        String stringKey = Constants.JWT_SECRET;
         byte[] encodedKey = Base64.decodeBase64(stringKey);
         SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
         return key;
