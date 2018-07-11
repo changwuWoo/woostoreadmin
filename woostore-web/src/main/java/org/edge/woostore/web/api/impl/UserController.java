@@ -31,7 +31,7 @@ public class UserController extends AbstractController {
                     @RequestParam(value = "currentPage",required = false)String currentPage){
         int ps=Integer.parseInt(pageSize);
         int cp=Integer.parseInt(currentPage);
-        Page<Master> masterPage=userService.getListByPage(ps,cp,new Master());
+        Page<Object> masterPage=userService.getListByPage(ps,cp,new Master());
         return super.resultPageUtil(masterPage);
     }
     @AccessTokenValidate

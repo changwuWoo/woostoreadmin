@@ -14,7 +14,7 @@ public interface IController<E> {
     *验证不和法的情况jose4j会抛出一个异常
     *
     */
-    Map resultPageUtil(Page<E> tPage);
-    Map resultCollectionUtil(Collection<E> eCollection);
-    Map resultEUtil(E e);
+    Map<String,Object> resultPageUtil(Page<E> tPage);
+    Map<String,Object> resultCollectionUtil(Collection<E> eCollection);
+    Map<String,Object> resultEUtil(E e);
 }

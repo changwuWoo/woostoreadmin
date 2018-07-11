@@ -28,8 +28,8 @@ public class AccessTokenAspect {
     private Log logger = LogFactory.getLog(AccessTokenAspect.class);
     @Autowired
     private ITokenService iTokenService;
-    @Autowired
-    private JwtUtil jwt;
+   
+    private JwtUtil jwt =new JwtUtil();
 
 
     @Before("@annotation(org.edge.woostore.domain.annotation.AccessTokenValidate) )")// 把定义好的切入通知注解引入，作为切点的通知函数

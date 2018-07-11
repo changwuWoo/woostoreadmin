@@ -20,6 +20,7 @@ import java.util.Map;
 @Repository
 public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICoreDao<T, PK> {
     private Class<T> entityClass;
+    @Resource
     protected SessionFactory sessionFactory;
 
     public AbstractCoreDao() {

@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2017/3/25.
  */
-public abstract class AbstractController<E> implements IController<E> {
+public abstract class AbstractController implements IController<Object> {
     /*
      *返回值-code
      */
@@ -58,6 +58,7 @@ public abstract class AbstractController<E> implements IController<E> {
         request=((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         try {
             ip=NetworkUtil.getIpAddress(request);
+            response.setContentType("");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,8 +66,8 @@ public abstract class AbstractController<E> implements IController<E> {
     }
 
     @Override
-    public Map resultPageUtil(Page<E> page) {
-        Map reMap=new HashMap();
+    public Map<String,Object> resultPageUtil(Page<Object> page) {
+        Map<String,Object> reMap=new HashMap<String,Object>();
         if(page!=null&&page.getCollection().size()>0){
             reMap.put(KEY_DATA,page.getCollection());
             reMap.put(KEY_CODE,RESCODE_SUCCESS);
@@ -80,8 +81,8 @@ public abstract class AbstractController<E> implements IController<E> {
         }
     }
     @Override
-    public Map resultCollectionUtil(Collection<E> eCollection){
-        Map reMap =new HashMap();
+    public Map<String,Object> resultCollectionUtil(Collection<Object> eCollection){
+        Map<String,Object> reMap =new HashMap<String,Object>();
         if (eCollection!=null&&eCollection.size()>0){
             reMap.put(KEY_DATA,eCollection);
             reMap.put(KEY_CODE,RESCODE_SUCCESS);
@@ -96,8 +97,8 @@ public abstract class AbstractController<E> implements IController<E> {
         }
     }
     @Override
-    public Map resultEUtil(E e){
-        Map reMap =new HashMap();
+    public Map<String,Object> resultEUtil(Object e){
+        Map<String,Object> reMap =new HashMap<String,Object>();
         if (e!=null&&!"".equals(e)){
             reMap.put(KEY_DATA,e);
             reMap.put(KEY_CODE,RESCODE_SUCCESS);

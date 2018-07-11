@@ -1,7 +1,12 @@
 package org.edge.woostore.core.service.impl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.edge.woostore.core.service.IMasterService;
 import org.edge.woostore.domain.annotation.Loggable;
 import org.edge.woostore.domain.entity.Group;
@@ -9,18 +14,18 @@ import org.edge.woostore.domain.entity.Master;
 import org.edge.woostore.domain.entity.Permission;
 import org.edge.woostore.domain.entity.Role;
 import org.edge.woostore.domain.repository.Page;
-import org.edge.woostore.persist.dao.*;
+import org.edge.woostore.persist.dao.IGroupDao;
+import org.edge.woostore.persist.dao.IMasterDao;
+import org.edge.woostore.persist.dao.IPermissionDao;
+import org.edge.woostore.persist.dao.IRoleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
 
 /**
  * Created by Administrator on 2017/4/6.
  */
 @Service
 public class MasterService implements IMasterService {
-    private Log logger = LogFactory.getLog(MasterService.class);
     @Autowired
     private IMasterDao iMasterDao;
     @Autowired
@@ -29,8 +34,6 @@ public class MasterService implements IMasterService {
     private IPermissionDao iPermissionDao;
     @Autowired
     private IGroupDao iGroupDao;
-    @Autowired
-    private IPrivilegeDao iPrivilegeDao;
 
     @Override
     public boolean updateLogOutDate(Master user) {

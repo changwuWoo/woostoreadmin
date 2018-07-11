@@ -11,5 +11,5 @@ import java.util.Map;
  */
 public interface IPermissionDao extends ICoreDao<Permission,String>{
     @Transactional
-    Collection<Permission> selectListByPrivilegeMaster(String sql, Map map);
+    Collection<Permission> selectListByPrivilegeMaster(String sql, Map<String,Object> map);
 }

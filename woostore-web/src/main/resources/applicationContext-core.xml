@@ -10,13 +10,9 @@
 		http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop
 		http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
-
-	<context:component-scan base-package="org.edge.woostore.core.service"></context:component-scan>
 	<context:component-scan base-package="org.edge.woostore.core.service.impl"></context:component-scan>
 	<context:component-scan base-package="org.edge.woostore.persist.dao"></context:component-scan>
 	<context:component-scan base-package="org.edge.woostore.persist.dao.impl"></context:component-scan>
-	<context:component-scan base-package="org.edge.woostore.utils.util"></context:component-scan>
-	<context:component-scan base-package="org.edge.woostore.core.aspect"></context:component-scan>
 	<context:annotation-config></context:annotation-config>
 	<!--aop -->
 	<!--      扫描注解bean -->
@@ -25,9 +21,9 @@
 		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:/properties/dbconfig.properties</value>
-				<value>classpath:/properties/hibernate.properties</value>
-				<value>classpath:/properties/redis.properties</value>
+				<value>classpath:dbconfig.properties</value>
+				<value>classpath:hibernate.properties</value>
+				<value>classpath:redis.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -131,32 +127,4 @@
 			</list>
 		</constructor-arg>
 	</bean>
-	<!--同步sentinel的信息，将主从信息同步到客户端来-->
-	<!--<bean class="redis.clients.jedis.JedisSentinelPool">
-		<constructor-arg index="0" value="mymaster"/>
-		<constructor-arg index="1">
-			<set>
-				<value>${redis.sentinel.host}</value>
-			</set>
-		</constructor-arg>
-		<constructor-arg index="2" ref="jedisPoolConfig"/>
-	</bean>-->
-	<!-- 分片池 end -->
-	<!-- redis服务器中心 -->
-	<bean id="connectionFactory"  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
-		<property name="poolConfig" ref="jedisPoolConfig" />
-		<property name="port" value="${redis.port}" />
-		<property name="hostName" value="${redis.host}" />
-		<!--<property name="password" value="${redis.password}" />-->
-		<property name="timeout" value="${redis.timeout}" ></property>
-	</bean >
-	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >
-		<property name="connectionFactory" ref="connectionFactory" />
-		<property name="keySerializer" >
-			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
-		</property>
-		<property name="valueSerializer" >
-			<bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
-		</property>
-	</bean >
 </beans>

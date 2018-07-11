@@ -38,8 +38,7 @@ public class UnAuthenticationController extends AbstractController{
     private IMasterService iMasterService;
     @Autowired
     private ITokenHistoryService iTokenHistoryService;
-    @Autowired
-    private JwtUtil jwt;
+    private JwtUtil jwt= new JwtUtil();
     @Autowired
     private ITokenService iTokenService;
 

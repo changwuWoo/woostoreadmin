@@ -1,80 +1,75 @@
 package org.edge.woostore.web.api.impl;
 
-import org.edge.woostore.web.api.AbstractController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2017/3/25.
  */
 @RestController
 @RequestMapping(value = "fun")
-public class FunctionController extends AbstractController{
-    @Autowired
-    @Qualifier(value = "groupService")
-    public Map getPhotoList(){
+public class FunctionController{
+   
+    public Map<String,Object> getPhotoList(){
         return null;
     }
-    public Map getPhotoItemByPkId(){
+    public Map<String,Object> getPhotoItemByPkId(){
         return null;
     }
-    public Map updatePhotoByPkID(){
+    public Map<String,Object> updatePhotoByPkID(){
         return null;
     }
-    public Map movePhotoItem(){
+    public Map<String,Object> movePhotoItem(){
         return null;
     }
-    public Map movePhotoItems(){
+    public Map<String,Object> movePhotoItems(){
         return null;
     }
-    public Map copyPhotoItem(){
+    public Map<String,Object> copyPhotoItem(){
         return null;
     }
-    public Map copyPhotoItems(){
+    public Map<String,Object> copyPhotoItems(){
         return null;
     }
-    public Map deletePhotoItem(){
+    public Map<String,Object> deletePhotoItem(){
         return null;
     }
-    public Map deletePhotoItems(){
+    public Map<String,Object> deletePhotoItems(){
         return null;
     }
     @RequestMapping(value = "get",method = RequestMethod.POST)
-    public Map getMenuItemById(@Valid String pkid){
-        Map reMap =new HashMap();
+    public Map<String,Object> getMenuItemById(@Valid String pkid){
         if(null!=pkid&&!"".equals(pkid)){
         }
         return null;
     }
-    public Map updateMenuItemById(){
+    public Map<String,Object> updateMenuItemById(){
         return null;
     }
-    public Map updateMenuItemsById(){
+    public Map<String,Object> updateMenuItemsById(){
         return null;
     }
-    public Map getRoleList(){
+    public Map<String,Object> getRoleList(){
         return null;
     }
-    public Map getRoleItemById(){
+    public Map<String,Object> getRoleItemById(){
         return null;
     }
-    public Map updateRoleItemById(){
+    public Map<String,Object> updateRoleItemById(){
         return null;
     }
 
-    public Map updateRoleItems(){
+    public Map<String,Object> updateRoleItems(){
         return null;
     }
     @RequestMapping(value = "getMenuList",method = RequestMethod.POST)
-    public Map getGroupChildList(@RequestHeader String pkId){
+    public Map<String,Object> getGroupChildList(@RequestHeader String pkId){
 
         return null;
     }
