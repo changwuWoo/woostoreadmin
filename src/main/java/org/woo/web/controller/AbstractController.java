@@ -1,4 +1,4 @@
-package org.woo.web.api;
+package org.woo.web.controller;
 
 import org.woo.domain.repository.Page;
 import org.woo.utils.util.NetworkUtil;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2017/3/25.
  */
-public abstract class AbstractController implements IController<Object> {
+public abstract class AbstractController<T> implements IController<T> {
     /*
      *返回值-code
      */
@@ -66,7 +66,7 @@ public abstract class AbstractController implements IController<Object> {
     }
 
     @Override
-    public Map<String,Object> resultPageUtil(Page<Object> page) {
+    public Map<String,Object> resultPageUtil(Page<T> page) {
         Map<String,Object> reMap=new HashMap<String,Object>();
         if(page!=null&&page.getCollection().size()>0){
             reMap.put(KEY_DATA,page.getCollection());
@@ -81,7 +81,7 @@ public abstract class AbstractController implements IController<Object> {
         }
     }
     @Override
-    public Map<String,Object> resultCollectionUtil(Collection<Object> eCollection){
+    public Map<String,Object> resultCollectionUtil(Collection<T> eCollection){
         Map<String,Object> reMap =new HashMap<String,Object>();
         if (eCollection!=null&&eCollection.size()>0){
             reMap.put(KEY_DATA,eCollection);

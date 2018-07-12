@@ -1,4 +1,4 @@
-package org.woo.core.service.impl;
+package org.woo.core.service;
 
 import org.woo.core.service.IRoleService;
 import org.woo.domain.annotation.Loggable;
@@ -24,7 +24,7 @@ public class RoleService implements IRoleService {
     private IPermissionDao iPermissionDao;
 
     @Override
-    public Page getListByPage(int pageSize, int page, Role role) {
+    public Page<Role> getListByPage(int pageSize, int page, Role role) {
         return null;
     }
 
@@ -42,7 +42,7 @@ public class RoleService implements IRoleService {
     @Override
     public Collection<Role> getRoles() {
         String hql = "from Role role";
-        return iRoleDao.selectAll(hql,new LinkedHashMap());
+        return iRoleDao.selectAll(hql,new LinkedHashMap<String,Object>());
     }
 
     @Override
@@ -50,7 +50,7 @@ public class RoleService implements IRoleService {
     public boolean updateRole(Role role) {
         StringBuffer sql = new StringBuffer();
         sql.append("UPDATE TB_ROLE ");
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         if (role.getName() != null && role.getName().length() > 0) {
             map.put("FNAME", role.getName());
             sql.append("SET FNAME = ? ,");
@@ -76,7 +76,7 @@ public class RoleService implements IRoleService {
     @Loggable(optType = "insert",describe = "插入角色信息",tableName="TB_ROLE")
     public boolean insertRole(Role role) {
         StringBuffer sql = new StringBuffer();
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         sql.append("insert into TB_ROLE(PK_ID,FNAME,FNUMBER) values(");
         if (role.getPkId() != null && role.getPkId().length() > 0) {
             map.put("PK_ID", role.getPkId());

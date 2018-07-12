@@ -1,12 +1,11 @@
-package org.woo.core.service.impl;
+package org.woo.core.service;
 
 import org.woo.core.service.ILogService;
 import org.woo.domain.entity.Log;
 import org.woo.domain.repository.Page;
-import org.woo.persist.dao.impl.LogDao;
+import org.woo.persist.dao.LogDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,7 +22,7 @@ public class LogServiceImpl implements ILogService {
 
 
     @Override
-    public Page getListByPage(int pageSize, int page, Log log) {
+    public Page<Log> getListByPage(int pageSize, int page, Log log) {
         String counthql = "select count(*) from Log log";
         int count = logDao.getCount(counthql); // 总记录数
         int totalPage = Page.countTotalPage(pageSize, count); // 总页数
@@ -31,11 +30,11 @@ public class LogServiceImpl implements ILogService {
         int length = pageSize; // 每页记录数
         int currentPage = Page.countCurrentPage(page);
         StringBuffer hql = new StringBuffer();
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         hql.append("from Log log ");
         Collection<Log> list = logDao.queryForPage(offset, length,hql.toString(),map); // 该分页的记录
         // 把分页信息保存到Bean中
-        Page Page = new Page();
+        Page<Log> Page = new Page<Log>();
         Page.setPageSize(pageSize);
         Page.setCurrentPage(currentPage);
         Page.setAllRow(count);
@@ -59,7 +58,7 @@ public class LogServiceImpl implements ILogService {
     @Override
     public boolean clearLog(String pkId) {
         StringBuffer sql = new StringBuffer();
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         sql.append("DELETE TB_LOG ");
         if(pkId!=null&&pkId.length()>0){
             map.put("PK_ID",pkId);
@@ -75,7 +74,7 @@ public class LogServiceImpl implements ILogService {
     @Override
     public boolean insertLog(Log log) throws Exception{
         StringBuffer sql = new StringBuffer();
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         sql.append("insert into TB_LOG(PK_ID, PK_MASTER_NAME, FTABLENAME, FOPTYPE,FCONTENT,FPARAMS) values(");
         if(log.getPkId()!=null&&log.getPkId().length()>0){
             map.put("PK_ID",log.getPkId());

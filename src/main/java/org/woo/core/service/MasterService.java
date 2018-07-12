@@ -1,4 +1,4 @@
-package org.woo.core.service.impl;
+package org.woo.core.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,7 +48,7 @@ public class MasterService implements IMasterService {
             Role role = new Role();
             role = iRoleDao.get(master.getFkGroupId());
             StringBuffer sql =new StringBuffer();
-            Map map = new LinkedHashMap();
+            Map<String,Object> map = new LinkedHashMap<String,Object>();
             sql.append("SELECT  tpower.PK_ID AS pkId,tpower.FNAME AS fname,tpower.FNUMBER AS fnumber from STSM2017S.TB_POWER tpower " +
                     "LEFT OUTER JOIN STSM2017S.TB_PRIVILEGE tpri ON tpower.PK_ID=tpri.PRIVILEGEACCESSVALUE " +
                     "WHERE tpri.PRIVILEGEMASTERVALUE = ?");
@@ -83,7 +83,7 @@ public class MasterService implements IMasterService {
     @Override
     public Collection<Master> getUsers() {
         String hql = "";
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         return iMasterDao.selectAll(hql,map);
     }
 
@@ -92,7 +92,7 @@ public class MasterService implements IMasterService {
         Collection<Master> masterCollection = new ArrayList<Master>();
         Master master = null;
         StringBuffer hql = new StringBuffer();
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         hql.append("from Master where 1=1 ");
         if (name != null) {
             map.put("LOGINNAME", "" + name + "");
@@ -111,7 +111,7 @@ public class MasterService implements IMasterService {
     @Loggable(optType = "update", describe = "更新用户信息", tableName = "TB_MASTER")
     public boolean updateMasterInfo(Master master) {
         StringBuffer hql = new StringBuffer();
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         hql.append("UPDATE TB_MASTER ");
         if (master != null) {
             if (master.getFkRoleId() != null && master.getFkRoleId().length() > 0) {
@@ -142,7 +142,7 @@ public class MasterService implements IMasterService {
     @Override
     public boolean insertMaster(Master master) {
         StringBuffer sql = new StringBuffer();
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         sql.append("INSERT INTO TB_MASTER(PK_ID,FNAME,FPASSWD,FK_GROUP_ID,FK_ROLE_ID) VALUES (");
         if (master.getPkId() != null && master.getPkId().length() > 0) {
             map.put("pkId", master.getPkId());
@@ -182,7 +182,7 @@ public class MasterService implements IMasterService {
     }
 
     @Override
-    public Page getListByPage(int pageSize, int page, Master master) {
+    public Page<Master> getListByPage(int pageSize, int page, Master master) {
         String counthql = "select count(*) from Master master";
         int count = iMasterDao.getCount(counthql); // 总记录数
         int totalPage = Page.countTotalPage(pageSize, count); // 总页数
@@ -190,7 +190,7 @@ public class MasterService implements IMasterService {
         int length = pageSize; // 每页记录数
         int currentPage = Page.countCurrentPage(page);
         StringBuffer hql = new StringBuffer();
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         hql.append("from Master master where 1=1 ");
         if (master != null) {
             if (master.getLoginName() != null && master.getLoginName().length() > 0) {
@@ -209,7 +209,7 @@ public class MasterService implements IMasterService {
 
         Collection<Master> list = iMasterDao.queryForPage(offset, length, hql.toString(), map); // 该分页的记录
         // 把分页信息保存到Bean中
-        Page Page = new Page();
+        Page<Master> Page = new Page<Master>();
         Page.setPageSize(pageSize);
         Page.setCurrentPage(currentPage);
         Page.setAllRow(count);

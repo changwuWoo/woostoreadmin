@@ -30,7 +30,7 @@ public class AccessPrivilegeAspect {
 
     @Around("@annotation(AccessPrivilegeValidate)")
     public void isAccessMethod(ProceedingJoinPoint joinPoint) throws Throwable {
-        Class targetClass=joinPoint.getTarget().getClass();
+        Class<?> targetClass=joinPoint.getTarget().getClass();
         String methodName=joinPoint.getSignature().getName();
         //解析访问这个资源需要的权限
         String methodAccess= PriviligeAnnotationParse.parse(targetClass,methodName);

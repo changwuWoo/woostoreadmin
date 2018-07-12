@@ -1,11 +1,10 @@
-package org.woo.web.api.impl;
+package org.woo.web.controller;
 
 
 import org.woo.core.service.IMasterService;
 import org.woo.domain.annotation.AccessTokenValidate;
 import org.woo.domain.entity.Master;
 import org.woo.domain.repository.Page;
-import org.woo.web.api.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -21,7 +20,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("auth")
-public class UserController extends AbstractController {
+public class UserController extends AbstractController<Master> {
     @Autowired
     private IMasterService userService;
     @RequestMapping(value = "/getUsers",method = RequestMethod.GET)
@@ -31,8 +30,7 @@ public class UserController extends AbstractController {
                     @RequestParam(value = "currentPage",required = false)String currentPage){
         int ps=Integer.parseInt(pageSize);
         int cp=Integer.parseInt(currentPage);
-        @SuppressWarnings("unchecked")
-        Page<Object> masterPage=userService.getListByPage(ps,cp,new Master());
+        Page<Master> masterPage=userService.getListByPage(ps,cp,new Master());
         return super.resultPageUtil(masterPage);
     }
     @AccessTokenValidate

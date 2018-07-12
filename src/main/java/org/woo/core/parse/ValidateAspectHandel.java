@@ -141,7 +141,7 @@ public class ValidateAspectHandel {
     /**
      * 根据目标方法和注解类型  得到该目标方法的指定注解
      */
-    public Annotation getAnnotationByMethod(Method method , Class annoClass){
+    public Annotation getAnnotationByMethod(Method method , Class<?> annoClass){
         Annotation all[] = method.getAnnotations();
         for (Annotation annotation : all) {
             if (annotation.annotationType() == annoClass) {
@@ -154,7 +154,7 @@ public class ValidateAspectHandel {
     /**
      * 根据类和方法名得到方法
      */
-    public Method getMethodByClassAndName(Class c , String methodName){
+    public Method getMethodByClassAndName(Class<?> c , String methodName){
         Method[] methods = c.getDeclaredMethods();
         for (Method method : methods) {
             if(method.getName().equals(methodName)){

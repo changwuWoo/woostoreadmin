@@ -1,4 +1,4 @@
-package org.woo.web.api.impl;
+package org.woo.web.controller;
 
 import java.util.Map;
 

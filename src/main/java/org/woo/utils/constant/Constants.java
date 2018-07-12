@@ -22,17 +22,6 @@ public class Constants {
     public static final int JWT_REFRESH_INTERVAL = 2*60*1000;  //millisecond  token网络延迟时间
     public static final int JWT_REFRESH_TTL = 12*60*60*1000;  //millisecond
 
-    private static final String GIVENNAME="givenname";// 用户名
-    private static final String EXPIRED="expired"; // 过期时间
-    private static final String LASTOPERATE="lastoperate"; //
-    private static final String ISS="iss";//
-    private static final String IAT="iat";//
-    private static final String AUD="aud";//
-    private static final String SUB="sub";//
-    private static final String EMAIL="email";//
-    private static final String SURNAME="surname";//
-    private static final String ROLELIST="rolelist";//
-
 
     /**
      * @fields AJAX_RESULT_SUCCESS : ajax返回成功

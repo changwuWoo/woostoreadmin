@@ -1,4 +1,4 @@
-package org.woo.core.service.impl;
+package org.woo.core.service;
 
 import org.woo.core.service.ITokenHistoryService;
 import org.woo.domain.entity.TokenHistory;
@@ -22,13 +22,12 @@ public class TokenHistoryService implements ITokenHistoryService {
     @Override
     public TokenHistory getTokenByAccessToken(String AccessToken) {
         StringBuffer sql = new StringBuffer();
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         sql.append("FROM TokenHistory tokenHistory ");
         if (AccessToken !=null&& AccessToken.length()>0){
             map.put("tokenHistory.accessToken", AccessToken);
             sql.append(" WHERE tokenHistory.accessToken = ? ");
         }
-        Object tokenHistory=iTokenHistoryDao.selectByUniqueFiled(sql.toString(),map);
         System.out.println("Kkjhdkfgjk");
         return iTokenHistoryDao.selectByUniqueFiled(sql.toString(),map);
     }
@@ -41,7 +40,7 @@ public class TokenHistoryService implements ITokenHistoryService {
     @Override
     public boolean insert(TokenHistory token) {
         StringBuffer sql = new StringBuffer();
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         sql.append("INSERT INTO TB_TOKENHISTORY(PK_ID,ACCESSTOKEN,LOGINIP,FKMASTERID) VALUES (");
         if (token.getPkId()!=null&&token.getPkId().length()>0){
             map.put("pkId",token.getPkId());
@@ -76,7 +75,7 @@ public class TokenHistoryService implements ITokenHistoryService {
     }
 
     @Override
-    public Page getListByPage(int pageSize, int page, TokenHistory tokenHistory) {
+    public Page<TokenHistory> getListByPage(int pageSize, int page, TokenHistory tokenHistory) {
         return null;
     }
 

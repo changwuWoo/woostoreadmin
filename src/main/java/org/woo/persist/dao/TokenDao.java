@@ -1,4 +1,4 @@
-package org.woo.persist.dao.impl;
+package org.woo.persist.dao;
 
 import org.woo.persist.dao.ITokenDao;
 import org.springframework.stereotype.Repository;

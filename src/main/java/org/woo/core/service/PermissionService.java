@@ -1,4 +1,4 @@
-package org.woo.core.service.impl;
+package org.woo.core.service;
 
 import org.woo.core.service.IPermissionService;
 import org.woo.domain.annotation.Loggable;
@@ -27,7 +27,7 @@ public class PermissionService implements IPermissionService {
     }
 
     @Override
-    public Page getListByPage(int pageSize, int page, String filter) {
+    public Page<Permission> getListByPage(int pageSize, int page, String filter) {
         String countSql = "select count(*) from Permission permission";
         int count = iPermissionDao.getCount(countSql); // 总记录数
         System.out.println(count);
@@ -37,14 +37,14 @@ public class PermissionService implements IPermissionService {
         int currentPage = Page.countCurrentPage(page);
         StringBuffer sql = new StringBuffer();
         sql.append("from Permission permission where 1=1 ");
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         if (filter != null && !"".equals(filter.trim())) {
             map.put("permission.fname", "%" + filter.trim() + "%");
             sql.append("and permission.fname like ? ");
         }
         Collection<Permission> list = iPermissionDao.queryForPage(offset, length, sql.toString(), map); // 该分页的记录
         // 把分页信息保存到Bean中
-        Page Page = new Page();
+        Page<Permission> Page = new Page<Permission>();
         Page.setPageSize(pageSize);
         Page.setCurrentPage(currentPage);
         Page.setAllRow(count);
@@ -58,7 +58,7 @@ public class PermissionService implements IPermissionService {
     @Loggable(optType = "update", describe = "更新权限信息", tableName = "TB_POWER")
     public boolean updatePermission(Permission permission) {
         StringBuffer sql = new StringBuffer();
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         sql.append("UPDATE TB_PERMISSION ");
         if (permission != null) {
             if (permission.getName() != null && permission.getName().length() > 0) {
@@ -89,7 +89,7 @@ public class PermissionService implements IPermissionService {
     @Loggable(optType = "insert", describe = "插入权限信息", tableName = "TB_POWER")
     public boolean insertPermission(Permission permission) {
         StringBuffer sql = new StringBuffer();
-        Map map = new LinkedHashMap();
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         sql.append("insert into TB_POWER(PK_ID,FNAME,FNUMBER) values(");
         if (permission.getPkId() != null && permission.getPkId().length() > 0) {
             map.put("PK_ID", permission.getPkId());
@@ -118,7 +118,7 @@ public class PermissionService implements IPermissionService {
 
 
     @Override
-    public Page getListByPage(int pageSize, int page, Permission permission) {
+    public Page<Permission> getListByPage(int pageSize, int page, Permission permission) {
         return null;
     }
 

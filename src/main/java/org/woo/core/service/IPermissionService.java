@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public interface IPermissionService extends ICoreService<Permission>{
     Collection<Permission> getPermissions();
-    Page getListByPage(int pageSize, int page, String filter);
+    Page<Permission> getListByPage(int pageSize, int page, String filter);
     boolean updatePermission(Permission permission);
     boolean insertPermission(Permission permission);
 }

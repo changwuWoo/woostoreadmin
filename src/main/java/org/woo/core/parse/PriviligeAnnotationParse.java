@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * Created by Administrator on 2017/3/24.
  */
 public class PriviligeAnnotationParse {
-        public static String parse(Class targetclass,String methodName) throws NoSuchMethodException {
+        public static String parse(Class<?> targetclass,String methodName) throws NoSuchMethodException {
             String methodAccess="";
             Method method=targetclass.getMethod(methodName);
             if(method.isAnnotationPresent(AccessPrivilegeValidate.class)){

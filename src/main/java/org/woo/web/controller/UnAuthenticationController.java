@@ -1,4 +1,4 @@
-package org.woo.web.api.impl;
+package org.woo.web.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +16,6 @@ import org.woo.domain.entity.Master;
 import org.woo.domain.entity.TokenHistory;
 import org.woo.utils.constant.Constants;
 import org.woo.utils.util.JwtUtil;
-import org.woo.web.api.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -38,7 +37,7 @@ import io.jsonwebtoken.Claims;
  */
 @RequestMapping("ua")
 @RestController
-public class UnAuthenticationController extends AbstractController {
+public class UnAuthenticationController extends AbstractController<Master> {
     private Log logger = LogFactory.getLog(UnAuthenticationController.class);
     @Autowired
     private IMasterService iMasterService;
