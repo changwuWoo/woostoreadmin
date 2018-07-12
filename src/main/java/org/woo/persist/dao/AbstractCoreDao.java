@@ -6,7 +6,6 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -20,8 +19,13 @@ import java.util.Map;
 @Repository
 public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICoreDao<T, PK> {
     private Class<T> entityClass;
-    @Resource
+
+    public void setEntityClass(Class<T> entityClass) {
+        this.entityClass = entityClass;
+    }
+
     protected SessionFactory sessionFactory;
+
 
     public AbstractCoreDao() {
         this.entityClass = null;
@@ -32,8 +36,6 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
             this.entityClass = (Class<T>) parameterizedType[0];
         }
     }
-
-    @Resource
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -91,8 +93,8 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public Query hqlQueryBuilder(String hql, Map<String, Object> map) {
-        Query query;
+    public Query<T> hqlQueryBuilder(String hql, Map<String, Object> map) {
+        Query<T> query;
         try {
             query = this.getSession().createQuery(hql);
             for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -114,8 +116,8 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public Query sqlQueryBuilder(String sql, Map<String, Object> map) {
-        Query query;
+    public Query<T> sqlQueryBuilder(String sql, Map<String, Object> map) {
+        Query<T> query;
         try {
             query = this.getSession().createSQLQuery(sql);
             Iterator<String> it = map.keySet().iterator();

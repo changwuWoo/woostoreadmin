@@ -1,7 +1,8 @@
 package org.woo.utils.util;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,7 +11,9 @@ import java.security.NoSuchAlgorithmException;
  * Created by Administrator on 2017/6/10.
  */
 public class GenerateKeyUtil {
-    private static final Logger log = Logger.getLogger(GenerateKeyUtil.class);
+
+    protected static final  Logger logger = LoggerFactory.getLogger(GenerateKeyUtil.class);
+
 
     /**
      * @param t
@@ -33,7 +36,7 @@ public class GenerateKeyUtil {
             Base64 encoder = new Base64();
             resultKey = encoder.encodeAsString(md5);
         } catch (NoSuchAlgorithmException e) {
-            log.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return resultKey;
     }

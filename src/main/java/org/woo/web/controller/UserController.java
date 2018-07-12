@@ -20,25 +20,24 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("auth")
-public class UserController extends AbstractController {
+public class UserController extends AbstractController<Master> {
 
     @Autowired
     private IMasterService userService;
 
-    @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "/getUsers.do", method = RequestMethod.GET)
     @AccessTokenValidate
     public @ResponseBody
     Map<String, Object> getUserList(@RequestParam(value = "pageSize", required = false) @Valid String pageSize,
                                     @RequestParam(value = "currentPage", required = false) String currentPage) {
         int ps = Integer.parseInt(pageSize);
         int cp = Integer.parseInt(currentPage);
-        @SuppressWarnings("unchecked")
         Page<Master> masterPage = userService.getListByPage(ps, cp, new Master());
         return super.resultPageUtil(masterPage);
     }
 
     @AccessTokenValidate
-    @RequestMapping(value = "/getUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/getUser.do", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> getUser(@RequestParam(value = "pkId") String pkId) {
         Map<String, Object> reMap = new HashMap<String, Object>();
@@ -52,7 +51,7 @@ public class UserController extends AbstractController {
     }
 
     @AccessTokenValidate
-    @RequestMapping(value = "/updateUsrInfo")
+    @RequestMapping(value = "/updateUsrInfo.do")
     public @ResponseBody
     Map<String, Object> updateUserInfo(@RequestBody @Valid Master master, BindingResult bindingResult) {
         Map<String, Object> reMap = new HashMap<String, Object>();
