@@ -6,7 +6,7 @@
   <!-- 实现跨域 -->
   <filter>
     <filter-name>cros</filter-name>
-    <filter-class>org.edge.woostore.web.filter.CORSFilter</filter-class>
+    <filter-class>org.woo.web.filter.CORSFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>cros</filter-name>
