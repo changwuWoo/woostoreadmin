@@ -1,19 +1,18 @@
 package org.woo.persist.dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 
 /**
  * Created by Administrator on 2017/4/12.
@@ -24,8 +23,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     @Resource
     protected SessionFactory sessionFactory;
 
-    @SuppressWarnings("unchecked")
-	public AbstractCoreDao() {
+    public AbstractCoreDao() {
         this.entityClass = null;
         Class<?> c = getClass();
         Type type = c.getGenericSuperclass();
@@ -47,11 +45,10 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     @Override
     public T get(PK id) {
         Assert.notNull(id, "id is required");
-        return getSession().get(entityClass, id);
+        return (T) getSession().get(entityClass, id);
     }
 
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public PK save(T entity) {
         Assert.notNull(entity, "entity is required");
         return (PK) getSession().save(entity);
@@ -62,8 +59,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
         return 0;
     }
 
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public int getCount(String hql) {
         Query<T> q = getSession().createQuery(hql);
         return Integer.parseInt(q.list().get(0).toString());
@@ -77,7 +73,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     @Override
     public Collection<T> queryForPage(int offset, int length, String hql, Map<String, Object> map) {
         Collection<T> result = null;
-        Query<T> query = hqlQueryBuilder(hql, map);
+        Query query = hqlQueryBuilder(hql, map);
         query.setFirstResult(offset);
         query.setMaxResults(length);
         result = query.list();
@@ -94,10 +90,9 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
         }
     }
 
-    @SuppressWarnings("unchecked")
-	@Override
-    public Query<T> hqlQueryBuilder(String hql, Map<String, Object> map) {
-        Query<T> query;
+    @Override
+    public Query hqlQueryBuilder(String hql, Map<String, Object> map) {
+        Query query;
         try {
             query = this.getSession().createQuery(hql);
             for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -118,12 +113,11 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
         return query;
     }
 
-    @SuppressWarnings("unchecked")
-	@Override
-    public Query<T> sqlQueryBuilder(String sql, Map<String, Object> map) {
-        Query<T> query;
+    @Override
+    public Query sqlQueryBuilder(String sql, Map<String, Object> map) {
+        Query query;
         try {
-            query = this.getSession().createNativeQuery(sql);
+            query = this.getSession().createSQLQuery(sql);
             Iterator<String> it = map.keySet().iterator();
             int index = 0;
             while (it.hasNext()) {
@@ -138,8 +132,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
         return query;
     }
 
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public Collection<T> selectAll(String hql, Map<String, Object> map) {
         Collection<T> tCollection = null;
         tCollection = getSession().createQuery(hql).list();
@@ -154,6 +147,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     public T selectByUniqueFiled(String hql, Map<String, Object> map) {
+        T t = (T) hqlQueryBuilder(hql, map).uniqueResult();
         return (T) hqlQueryBuilder(hql, map).uniqueResult();
     }
 
@@ -165,6 +159,6 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
 
     @Override
     public String getSeq(String sql) {
-        return getSession().createNativeQuery(sql).uniqueResult().toString();
+        return getSession().createSQLQuery(sql).uniqueResult().toString();
     }
 }

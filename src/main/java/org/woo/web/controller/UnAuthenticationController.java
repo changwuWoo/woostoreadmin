@@ -37,7 +37,7 @@ import io.jsonwebtoken.Claims;
  */
 @RequestMapping("ua")
 @RestController
-public class UnAuthenticationController extends AbstractController<Master> {
+public class UnAuthenticationController extends AbstractController {
     private Log logger = LogFactory.getLog(UnAuthenticationController.class);
     @Autowired
     private IMasterService iMasterService;

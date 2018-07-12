@@ -1,20 +1,22 @@
 package org.woo.core.aspect;
 
 import io.jsonwebtoken.Claims;
-
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.woo.core.service.ITokenService;
+import org.woo.utils.constant.Constants;
+import org.woo.utils.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.woo.core.service.ITokenService;
-import org.woo.utils.constant.Constants;
-import org.woo.utils.util.JwtUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -23,6 +25,7 @@ import org.woo.utils.util.JwtUtil;
 @Aspect
 @Component
 public class AccessTokenAspect {
+    private Log logger = LogFactory.getLog(AccessTokenAspect.class);
     @Autowired
     private ITokenService iTokenService;
    
@@ -33,6 +36,7 @@ public class AccessTokenAspect {
     @ResponseBody
     public boolean doAccessCheck(JoinPoint joinPoint)throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletResponse response = null;
         String authorization = request.getParameter(Constants.AUTHORIZATION).trim().toString();
         if(authorization!=null&&authorization.length()>0){
             //从header中得到token

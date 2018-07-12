@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +14,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MethodCacheInterceptor implements MethodInterceptor {
+    private Logger logger = Logger.getLogger(MethodCacheInterceptor.class);
     private List<String> targetNamesList; // 不加入缓存的service名称
     private List<String> methodNamesList; // 不加入缓存的方法名称
+    private Long defaultCacheExpireTime; // 缓存默认的过期时间
+    private Long xxxRecordManagerTime; //
+    private Long xxxSetRecordManagerTime; //
 
     /**
      * 初始化读取不需要加入缓存的类名和方法名称
@@ -31,6 +36,9 @@ public class MethodCacheInterceptor implements MethodInterceptor {
             String[] methodNames = p.getProperty("methodNames").split(",");
 
             // 加载过期时间设置
+            defaultCacheExpireTime = Long.valueOf(p.getProperty("defaultCacheExpireTime"));
+            xxxRecordManagerTime = Long.valueOf(p.getProperty("com.service.impl.xxxRecordManager"));
+            xxxSetRecordManagerTime = Long.valueOf(p.getProperty("com.service.impl.xxxSetRecordManager"));
             // 创建list
             targetNamesList = new ArrayList<String>(targetNames.length);
             methodNamesList = new ArrayList<String>(methodNames.length);
@@ -71,6 +79,7 @@ public class MethodCacheInterceptor implements MethodInterceptor {
             value = invocation.proceed();
             if (value != null) {
                 final String tkey = key;
+                final Object tvalue = value;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

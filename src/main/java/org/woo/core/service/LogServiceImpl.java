@@ -7,6 +7,7 @@ import org.woo.persist.dao.LogDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,7 +23,7 @@ public class LogServiceImpl implements ILogService {
 
 
     @Override
-    public Page<Log> getListByPage(int pageSize, int page, Log log) {
+    public Page getListByPage(int pageSize, int page, Log log) {
         String counthql = "select count(*) from Log log";
         int count = logDao.getCount(counthql); // 总记录数
         int totalPage = Page.countTotalPage(pageSize, count); // 总页数
@@ -30,11 +31,11 @@ public class LogServiceImpl implements ILogService {
         int length = pageSize; // 每页记录数
         int currentPage = Page.countCurrentPage(page);
         StringBuffer hql = new StringBuffer();
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map map = new HashMap();
         hql.append("from Log log ");
         Collection<Log> list = logDao.queryForPage(offset, length,hql.toString(),map); // 该分页的记录
         // 把分页信息保存到Bean中
-        Page<Log> Page = new Page<Log>();
+        Page Page = new Page();
         Page.setPageSize(pageSize);
         Page.setCurrentPage(currentPage);
         Page.setAllRow(count);
@@ -58,7 +59,7 @@ public class LogServiceImpl implements ILogService {
     @Override
     public boolean clearLog(String pkId) {
         StringBuffer sql = new StringBuffer();
-        Map<String,Object> map = new LinkedHashMap<String,Object>();
+        Map map = new LinkedHashMap();
         sql.append("DELETE TB_LOG ");
         if(pkId!=null&&pkId.length()>0){
             map.put("PK_ID",pkId);
@@ -74,7 +75,7 @@ public class LogServiceImpl implements ILogService {
     @Override
     public boolean insertLog(Log log) throws Exception{
         StringBuffer sql = new StringBuffer();
-        Map<String,Object> map = new LinkedHashMap<String,Object>();
+        Map map = new LinkedHashMap();
         sql.append("insert into TB_LOG(PK_ID, PK_MASTER_NAME, FTABLENAME, FOPTYPE,FCONTENT,FPARAMS) values(");
         if(log.getPkId()!=null&&log.getPkId().length()>0){
             map.put("PK_ID",log.getPkId());
