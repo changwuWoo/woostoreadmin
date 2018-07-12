@@ -1,11 +1,10 @@
-package org.woo.web.api.impl;
+package org.woo.web.controller;
 
 
 import org.woo.core.service.IMasterService;
 import org.woo.domain.annotation.AccessTokenValidate;
 import org.woo.domain.entity.Master;
 import org.woo.domain.repository.Page;
-import org.woo.web.api.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

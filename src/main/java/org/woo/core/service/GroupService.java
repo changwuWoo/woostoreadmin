@@ -1,8 +1,7 @@
-package org.woo.core.service.impl;
+package org.woo.core.service;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.woo.core.service.IGroupService;
 import org.woo.domain.annotation.Loggable;
 import org.woo.domain.entity.Group;
 import org.woo.domain.exception.BizException;

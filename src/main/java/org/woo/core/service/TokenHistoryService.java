@@ -1,4 +1,4 @@
-package org.woo.core.service.impl;
+package org.woo.core.service;
 
 import org.woo.core.service.ITokenHistoryService;
 import org.woo.domain.entity.TokenHistory;

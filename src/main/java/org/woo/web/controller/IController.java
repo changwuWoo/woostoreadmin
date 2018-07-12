@@ -1,4 +1,4 @@
-package org.woo.web.api;
+package org.woo.web.controller;
 
 import org.woo.domain.repository.Page;
 

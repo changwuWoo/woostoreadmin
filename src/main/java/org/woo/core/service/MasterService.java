@@ -1,4 +1,4 @@
-package org.woo.core.service.impl;
+package org.woo.core.service;
 
 import java.util.ArrayList;
 import java.util.Collection;

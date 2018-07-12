@@ -1,18 +1,18 @@
 package org.woo.persist.dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 
 /**
  * Created by Administrator on 2017/4/12.
@@ -55,23 +55,23 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public int deleteByPrimaryKey(String hql, Map<String,Object> map) {
+    public int deleteByPrimaryKey(String hql, Map<String, Object> map) {
         return 0;
     }
 
     @Override
     public int getCount(String hql) {
-        Query q = getSession().createQuery(hql);
+        Query<T> q = getSession().createQuery(hql);
         return Integer.parseInt(q.list().get(0).toString());
     }
 
     @Override
-    public int insert(String sql, Map<String,Object> map) {
+    public int insert(String sql, Map<String, Object> map) {
         return sqlQueryBuilder(sql, map).executeUpdate();
     }
 
     @Override
-    public Collection<T> queryForPage(int offset, int length, String hql, Map<String,Object> map) {
+    public Collection<T> queryForPage(int offset, int length, String hql, Map<String, Object> map) {
         Collection<T> result = null;
         Query query = hqlQueryBuilder(hql, map);
         query.setFirstResult(offset);
@@ -81,7 +81,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public boolean isExistByName(String hql, Map<String,Object> map) {
+    public boolean isExistByName(String hql, Map<String, Object> map) {
         T t = (T) hqlQueryBuilder(hql, map).uniqueResult();
         if (t != null) {
             return true;
@@ -91,13 +91,13 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public Query hqlQueryBuilder(String hql, Map<String,Object> map) {
+    public Query hqlQueryBuilder(String hql, Map<String, Object> map) {
         Query query;
         try {
             query = this.getSession().createQuery(hql);
-            for(Map.Entry<String, Object> entry :map.entrySet()){
-            	entry.getValue();
-            	entry.getKey();
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                entry.getValue();
+                entry.getKey();
             }
             Iterator<String> it = map.keySet().iterator();
             int index = 0;
@@ -114,7 +114,7 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public Query sqlQueryBuilder(String sql, Map<String,Object> map) {
+    public Query sqlQueryBuilder(String sql, Map<String, Object> map) {
         Query query;
         try {
             query = this.getSession().createSQLQuery(sql);
@@ -133,26 +133,26 @@ public abstract class AbstractCoreDao<T, PK extends Serializable> implements ICo
     }
 
     @Override
-    public Collection<T> selectAll(String hql, Map<String,Object> map) {
+    public Collection<T> selectAll(String hql, Map<String, Object> map) {
         Collection<T> tCollection = null;
         tCollection = getSession().createQuery(hql).list();
         return tCollection;
     }
 
     @Override
-    public Collection<T> selectByFiled(String hql, Map<String,Object> map) {
+    public Collection<T> selectByFiled(String hql, Map<String, Object> map) {
         Collection<T> tCollection = null;
         tCollection = hqlQueryBuilder(hql, map).list();
         return tCollection;
     }
 
-    public T selectByUniqueFiled(String hql, Map<String,Object> map) {
+    public T selectByUniqueFiled(String hql, Map<String, Object> map) {
         T t = (T) hqlQueryBuilder(hql, map).uniqueResult();
         return (T) hqlQueryBuilder(hql, map).uniqueResult();
     }
 
     @Override
-    public int updateByPrimaryKey(String sql, Map<String,Object> map) {
+    public int updateByPrimaryKey(String sql, Map<String, Object> map) {
         int resultFlag = sqlQueryBuilder(sql, map).executeUpdate();
         return resultFlag;
     }

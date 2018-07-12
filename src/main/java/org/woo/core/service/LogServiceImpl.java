@@ -1,9 +1,9 @@
-package org.woo.core.service.impl;
+package org.woo.core.service;
 
 import org.woo.core.service.ILogService;
 import org.woo.domain.entity.Log;
 import org.woo.domain.repository.Page;
-import org.woo.persist.dao.impl.LogDao;
+import org.woo.persist.dao.LogDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
