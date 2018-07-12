@@ -46,7 +46,7 @@ public class UnAuthenticationController extends AbstractController {
      * @Description: TODO
      * @time 2017年3月8日上午10:59:17
      */
-    @RequestMapping(value = "/loginRequest", method = RequestMethod.POST)
+    @RequestMapping(value = "/loginRequest.do", method = RequestMethod.POST)
     public
     @ResponseBody
     Map<String, Object> loginRequest() {
@@ -64,7 +64,7 @@ public class UnAuthenticationController extends AbstractController {
      * @Description: 对首页进行定制，推广一些东西
      * @time 2017年3月8日下午12:05:47
      */
-    @RequestMapping(value = "/indexRequest", method = RequestMethod.POST)
+    @RequestMapping(value = "/indexRequest.do", method = RequestMethod.POST)
     public
     @ResponseBody
     Map<String, Object> indexRequest() {
@@ -81,7 +81,7 @@ public class UnAuthenticationController extends AbstractController {
      * @Description: TODO
      * @time 2017年3月8日上午10:59:12
      */
-    @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
+    @RequestMapping(value = "/userLogin.do", method = RequestMethod.POST)
     public
     @ResponseBody
     Map<String, Object> userLogin(
@@ -129,7 +129,7 @@ public class UnAuthenticationController extends AbstractController {
         return reMap;
     }
 
-    @RequestMapping(value = "/tokenLogin", method = RequestMethod.GET)
+    @RequestMapping(value = "/tokenLogin.do", method = RequestMethod.GET)
     public
     @ResponseBody
     Map<String, Object> loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHistory,
@@ -195,7 +195,7 @@ public class UnAuthenticationController extends AbstractController {
      * @time 2017年3月8日上午10:59:08
      */
     @ResponseBody
-    @RequestMapping(value = "/registerRequest", method = RequestMethod.POST)
+    @RequestMapping(value = "/registerRequest.do", method = RequestMethod.POST)
     public Map<String, Object> registerRequest() {
         Map<String, Object> reMap = new HashMap<String, Object>();
         reMap.put("code", 200);
@@ -211,11 +211,11 @@ public class UnAuthenticationController extends AbstractController {
      * @time 2017年3月8日上午10:55:57
      */
     @ResponseBody
-    @RequestMapping(value = "/password", method = RequestMethod.POST)
+    @RequestMapping(value = "/password.do", method = RequestMethod.POST)
     public void modifyPassWord(String userName) {
     }
 
-    @RequestMapping(value = "/loginOut", method = RequestMethod.GET)
+    @RequestMapping(value = "/loginOut.do", method = RequestMethod.GET)
     public Map<String, Object> loginOut() {
         return null;
     }

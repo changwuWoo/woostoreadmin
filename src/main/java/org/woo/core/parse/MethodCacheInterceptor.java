@@ -1,20 +1,21 @@
 package org.woo.core.parse;
 
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by Administrator on 2017/6/12.
  */
 @Component
 public class MethodCacheInterceptor implements MethodInterceptor {
-    private Logger logger = Logger.getLogger(MethodCacheInterceptor.class);
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private List<String> targetNamesList; // 不加入缓存的service名称
     private List<String> methodNamesList; // 不加入缓存的方法名称
     private Long defaultCacheExpireTime; // 缓存默认的过期时间

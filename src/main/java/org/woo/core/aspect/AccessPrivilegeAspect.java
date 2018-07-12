@@ -1,12 +1,12 @@
 package org.woo.core.aspect;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.woo.core.parse.PriviligeAnnotationParse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.woo.core.parse.PriviligeAnnotationParse;
 import org.woo.domain.entity.Privilege;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 @Aspect
 @Component
 public class AccessPrivilegeAspect {
-    private Log logger = LogFactory.getLog(AccessPrivilegeAspect.class);
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private List<Privilege> privileges;
 
     public List<Privilege> getPrivileges() {
@@ -35,7 +35,7 @@ public class AccessPrivilegeAspect {
         //解析访问这个资源需要的权限
         String methodAccess= PriviligeAnnotationParse.parse(targetClass,methodName);
         boolean isAccessed=false;
-        logger.debug(joinPoint);
+        logger.debug(joinPoint.toLongString());
         for (Privilege frimPrivilege:privileges) {
             if("".equals(methodAccess)){
                 isAccessed=true;
