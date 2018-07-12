@@ -1,13 +1,9 @@
 package org.woo.core.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.woo.core.service.IMasterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.woo.domain.annotation.Loggable;
 import org.woo.domain.entity.Group;
 import org.woo.domain.entity.Master;
@@ -18,14 +14,15 @@ import org.woo.persist.dao.IGroupDao;
 import org.woo.persist.dao.IMasterDao;
 import org.woo.persist.dao.IPermissionDao;
 import org.woo.persist.dao.IRoleDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/4/6.
  */
 @Service
 public class MasterService implements IMasterService {
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private IMasterDao iMasterDao;
     @Autowired
@@ -47,7 +44,7 @@ public class MasterService implements IMasterService {
         if (master != null && (master.getFkGroupId() != null || master.getFkGroupId() != null)) {
             Role role = new Role();
             role = iRoleDao.get(master.getFkGroupId());
-            StringBuffer sql =new StringBuffer();
+            StringBuffer sql = new StringBuffer();
             Map map = new LinkedHashMap();
             sql.append("SELECT  tpower.PK_ID AS pkId,tpower.FNAME AS fname,tpower.FNUMBER AS fnumber from STSM2017S.TB_POWER tpower " +
                     "LEFT OUTER JOIN STSM2017S.TB_PRIVILEGE tpri ON tpower.PK_ID=tpri.PRIVILEGEACCESSVALUE " +
@@ -57,7 +54,7 @@ public class MasterService implements IMasterService {
                 master.setRole(role);
             }
             Collection<Permission> powerCollection = new ArrayList<>();
-            powerCollection = iPermissionDao.selectListByPrivilegeMaster(sql.toString(),map);
+            powerCollection = iPermissionDao.selectListByPrivilegeMaster(sql.toString(), map);
             if (powerCollection != null && powerCollection.size() > 0) {
                 master.setPowerCollection(powerCollection);
             }
@@ -84,7 +81,7 @@ public class MasterService implements IMasterService {
     public Collection<Master> getUsers() {
         String hql = "";
         Map map = new LinkedHashMap();
-        return iMasterDao.selectAll(hql,map);
+        return iMasterDao.selectAll(hql, map);
     }
 
     @Override

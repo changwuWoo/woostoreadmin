@@ -1,9 +1,11 @@
 package org.woo.web.controller;
 
-import org.woo.domain.repository.Page;
-import org.woo.utils.util.NetworkUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.woo.domain.repository.Page;
+import org.woo.utils.util.NetworkUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +18,7 @@ import java.util.Map;
  * Created by Administrator on 2017/3/25.
  */
 public abstract class AbstractController<T> implements IController<T> {
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     /*
      *返回值-code
      */

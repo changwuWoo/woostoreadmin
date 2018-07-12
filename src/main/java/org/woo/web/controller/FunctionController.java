@@ -1,13 +1,13 @@
 package org.woo.web.controller;
 
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/3/25.
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "fun")
 public class FunctionController{
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
    
     public Map<String,Object> getPhotoList(){
         return null;
@@ -44,7 +45,7 @@ public class FunctionController{
         return null;
     }
     @RequestMapping(value = "get",method = RequestMethod.POST)
-    public Map<String,Object> getMenuItemById(@Valid String pkid){
+    public Map<String,Object> getMenuItemById(String pkid){
         if(null!=pkid&&!"".equals(pkid)){
         }
         return null;

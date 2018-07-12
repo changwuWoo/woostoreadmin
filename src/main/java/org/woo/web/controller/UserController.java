@@ -21,6 +21,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("auth")
 public class UserController extends AbstractController {
+
     @Autowired
     private IMasterService userService;
 

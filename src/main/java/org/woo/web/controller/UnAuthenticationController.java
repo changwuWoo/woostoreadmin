@@ -1,14 +1,13 @@
 package org.woo.web.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.alibaba.fastjson.JSONObject;
+import io.jsonwebtoken.Claims;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.*;
 import org.woo.core.service.IMasterService;
 import org.woo.core.service.ITokenHistoryService;
 import org.woo.core.service.ITokenService;
@@ -16,19 +15,11 @@ import org.woo.domain.entity.Master;
 import org.woo.domain.entity.TokenHistory;
 import org.woo.utils.constant.Constants;
 import org.woo.utils.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONObject;
-
-import io.jsonwebtoken.Claims;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -38,12 +29,12 @@ import io.jsonwebtoken.Claims;
 @RequestMapping("ua")
 @RestController
 public class UnAuthenticationController extends AbstractController {
-    private Log logger = LogFactory.getLog(UnAuthenticationController.class);
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private IMasterService iMasterService;
     @Autowired
     private ITokenHistoryService iTokenHistoryService;
-    private JwtUtil jwt= new JwtUtil();
+    private JwtUtil jwt = new JwtUtil();
     @Autowired
     private ITokenService iTokenService;
 
@@ -94,7 +85,7 @@ public class UnAuthenticationController extends AbstractController {
     public
     @ResponseBody
     Map<String, Object> userLogin(
-            @Valid @RequestBody Master master,
+            @RequestBody Master master,
             BindingResult bindingResult) throws Exception {
         Map<String, Object> reMap = new HashMap<String, Object>();
         List<ObjectError> errorList = bindingResult.getAllErrors();
@@ -114,7 +105,7 @@ public class UnAuthenticationController extends AbstractController {
                 reMap.put(KEY_DATA, reMaster);
                 reMap.put(KEY_MSG, LOGIN_SUCCESS);
                 //修改登录逻辑变化，如果用户名和用户信息验证通过直接替换掉服务器端保存的IP和loginTokenHistory字符串
-                Map<String,Object> map = new HashMap<String,Object>();
+                Map<String, Object> map = new HashMap<String, Object>();
                 map.put("pkId", reMaster.getPkId());
                 String subject = JwtUtil.generalSubject(map);
                 String loginTokenHistory = jwt.createJWT(Constants.JWT_ID, subject, Constants.JWT_TTL);
@@ -138,62 +129,62 @@ public class UnAuthenticationController extends AbstractController {
         return reMap;
     }
 
-@RequestMapping(value = "/tokenLogin", method = RequestMethod.GET)
-public
-@ResponseBody
-Map<String,Object> loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHistory,
-                    HttpServletRequest httpRequest) {
-    Map<String,Object> reMap = new HashMap<String,Object>();
-    TokenHistory serverTokenHistory = new TokenHistory();
-    Claims claims = null;   //解析loginTokenHistory结构
-    String refushToken = null;
-    try {
-        claims = jwt.parseJWT(loginTokenHistory);//解析loginTokenHistory结构
-    } catch (Exception e) {
-        e.printStackTrace();
-        e.getMessage();
-        reMap.put(KEY_EXCEPTION, e.getMessage());
-        reMap.put(KEY_CODE, RESCODE_EXCEPTION);
-        reMap.put(KEY_MSG, AUTH_FAILD_EXP);
+    @RequestMapping(value = "/tokenLogin", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map<String, Object> loginTokenLogin(@RequestParam(value = "authorization") String loginTokenHistory,
+                                        HttpServletRequest httpRequest) {
+        Map<String, Object> reMap = new HashMap<String, Object>();
+        TokenHistory serverTokenHistory = new TokenHistory();
+        Claims claims = null;   //解析loginTokenHistory结构
+        String refushToken = null;
+        try {
+            claims = jwt.parseJWT(loginTokenHistory);//解析loginTokenHistory结构
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getMessage();
+            reMap.put(KEY_EXCEPTION, e.getMessage());
+            reMap.put(KEY_CODE, RESCODE_EXCEPTION);
+            reMap.put(KEY_MSG, AUTH_FAILD_EXP);
+            return reMap;
+        }
+        if (claims != null) {
+            String json = claims.getSubject();
+            Master master = JSONObject.parseObject(json, Master.class);
+            String accessToken = (String) iTokenService.getTokenByMaterId(master.getPkId());
+            TokenHistory tokenHistory = null;
+            tokenHistory = iTokenHistoryService.getTokenByAccessToken(accessToken);
+            if (loginTokenHistory.equals(accessToken)) {
+                if (tokenHistory != null && tokenHistory.getLoginIp() != null && tokenHistory.getLoginIp().length() > 0 && super.getIpV4().equals(tokenHistory.getLoginIp())) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("pkId", master.getPkId());
+                    String subject = JwtUtil.generalSubject(map);
+                    try {
+                        refushToken = jwt.createJWT(Constants.JWT_ID, subject, Constants.JWT_TTL);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (iTokenService.updateToken(master.getPkId(), refushToken)) {
+                        serverTokenHistory.setPkId(iTokenHistoryService.getSeq());
+                        serverTokenHistory.setFkMasterId(master.getPkId());
+                        serverTokenHistory.setLoginIp(super.getIpV4());
+                        serverTokenHistory.setAccessToken(refushToken);
+                        iTokenHistoryService.insert(serverTokenHistory);
+                    }
+                    reMap.put(KEY_CODE, RESCODE_SUCCESS);
+                    reMap.put(KEY_AUTH, refushToken);
+                    reMap.put(KEY_MSG, AUTH_SUCCESS_MSG);
+                } else {
+                    reMap.put(KEY_CODE, RESCODE_FAILD);
+                    reMap.put(KEY_MSG, AUTH_FAILD_IP);
+                }
+            } else {
+                reMap.put(KEY_CODE, RESCODE_FAILD);
+                reMap.put(KEY_MSG, LOGIN_OTHERDEC);
+            }
+        }
         return reMap;
     }
-    if (claims != null) {
-        String json = claims.getSubject();
-        Master master = JSONObject.parseObject(json, Master.class);
-        String accessToken = (String) iTokenService.getTokenByMaterId(master.getPkId());
-        TokenHistory tokenHistory = null;
-        tokenHistory = iTokenHistoryService.getTokenByAccessToken(accessToken);
-        if (loginTokenHistory.equals(accessToken)) {
-            if (tokenHistory != null && tokenHistory.getLoginIp() != null && tokenHistory.getLoginIp().length() > 0 && super.getIpV4().equals(tokenHistory.getLoginIp())) {
-                Map<String,Object> map = new HashMap<String,Object>();
-                map.put("pkId", master.getPkId());
-                String subject = JwtUtil.generalSubject(map);
-                try {
-                    refushToken = jwt.createJWT(Constants.JWT_ID, subject, Constants.JWT_TTL);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (iTokenService.updateToken(master.getPkId(), refushToken)) {
-                    serverTokenHistory.setPkId(iTokenHistoryService.getSeq());
-                    serverTokenHistory.setFkMasterId(master.getPkId());
-                    serverTokenHistory.setLoginIp(super.getIpV4());
-                    serverTokenHistory.setAccessToken(refushToken);
-                    iTokenHistoryService.insert(serverTokenHistory);
-                }
-                reMap.put(KEY_CODE, RESCODE_SUCCESS);
-                reMap.put(KEY_AUTH, refushToken);
-                reMap.put(KEY_MSG, AUTH_SUCCESS_MSG);
-            } else {
-                reMap.put(KEY_CODE,RESCODE_FAILD);
-                reMap.put(KEY_MSG,AUTH_FAILD_IP);
-            }
-        } else {
-            reMap.put(KEY_CODE,RESCODE_FAILD);
-            reMap.put(KEY_MSG,LOGIN_OTHERDEC);
-        }
-    }
-    return reMap;
-}
 
     /**
      * @param @return
@@ -225,7 +216,7 @@ Map<String,Object> loginTokenLogin(@RequestParam(value = "authorization") String
     }
 
     @RequestMapping(value = "/loginOut", method = RequestMethod.GET)
-    public Map<String,Object> loginOut() {
+    public Map<String, Object> loginOut() {
         return null;
     }
 }

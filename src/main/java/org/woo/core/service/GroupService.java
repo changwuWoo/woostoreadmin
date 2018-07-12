@@ -1,15 +1,15 @@
 package org.woo.core.service;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.woo.domain.annotation.Loggable;
 import org.woo.domain.entity.Group;
 import org.woo.domain.exception.BizException;
 import org.woo.domain.repository.Page;
 import org.woo.persist.dao.IGroupDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @Service
 public class GroupService implements IGroupService {
-    private Log logger = LogFactory.getLog(GroupService.class);
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private IGroupDao iGroupDao;
     @Override

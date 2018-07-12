@@ -1,12 +1,11 @@
 package org.woo.core.service;
 
-import org.woo.core.service.IPermissionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.woo.domain.annotation.Loggable;
 import org.woo.domain.entity.Permission;
 import org.woo.domain.repository.Page;
 import org.woo.persist.dao.IPermissionDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

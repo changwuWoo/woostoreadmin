@@ -1,12 +1,12 @@
 package org.woo.core.service;
 
-import org.woo.core.service.ILogService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.woo.domain.entity.Log;
 import org.woo.domain.repository.Page;
 import org.woo.persist.dao.LogDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,6 +18,7 @@ import java.util.Map;
  */
 @Service
 public class LogServiceImpl implements ILogService {
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private LogDao logDao;
 
@@ -33,7 +34,7 @@ public class LogServiceImpl implements ILogService {
         StringBuffer hql = new StringBuffer();
         Map map = new HashMap();
         hql.append("from Log log ");
-        Collection<Log> list = logDao.queryForPage(offset, length,hql.toString(),map); // 该分页的记录
+        Collection<Log> list = logDao.queryForPage(offset, length, hql.toString(), map); // 该分页的记录
         // 把分页信息保存到Bean中
         Page Page = new Page();
         Page.setPageSize(pageSize);
@@ -47,7 +48,7 @@ public class LogServiceImpl implements ILogService {
 
     @Override
     public String getSeq() {
-        String sql="SELECT SEQ_LOG.nextval FROM dual";
+        String sql = "SELECT SEQ_LOG.nextval FROM dual";
         return logDao.getSeq(sql);
     }
 
@@ -61,62 +62,62 @@ public class LogServiceImpl implements ILogService {
         StringBuffer sql = new StringBuffer();
         Map map = new LinkedHashMap();
         sql.append("DELETE TB_LOG ");
-        if(pkId!=null&&pkId.length()>0){
-            map.put("PK_ID",pkId);
+        if (pkId != null && pkId.length() > 0) {
+            map.put("PK_ID", pkId);
             sql.append("WHERE PK_ID = ? ");
         }
-        if (logDao.updateByPrimaryKey(sql.toString(),map)>=0){
+        if (logDao.updateByPrimaryKey(sql.toString(), map) >= 0) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     @Override
-    public boolean insertLog(Log log) throws Exception{
+    public boolean insertLog(Log log) throws Exception {
         StringBuffer sql = new StringBuffer();
         Map map = new LinkedHashMap();
         sql.append("insert into TB_LOG(PK_ID, PK_MASTER_NAME, FTABLENAME, FOPTYPE,FCONTENT,FPARAMS) values(");
-        if(log.getPkId()!=null&&log.getPkId().length()>0){
-            map.put("PK_ID",log.getPkId());
+        if (log.getPkId() != null && log.getPkId().length() > 0) {
+            map.put("PK_ID", log.getPkId());
             sql.append("?,");
-        }else {
-            return  false;
-        }
-        if(log.getFkMasterName()!=null&&log.getFkMasterName().length()>0){
-            map.put("PK_MASTER_NAME",log.getFkMasterName());
-            sql.append("?,");
-        }else {
+        } else {
             return false;
         }
-        if (log.getTableName()!=null&&log.getTableName().length()>0){
-            map.put("FTABLENAME",log.getTableName());
+        if (log.getFkMasterName() != null && log.getFkMasterName().length() > 0) {
+            map.put("PK_MASTER_NAME", log.getFkMasterName());
             sql.append("?,");
-        }else {
+        } else {
             return false;
         }
-        if(log.getOpType()!=null&&log.getOpType().length()>0){
-            map.put("FOPTYPE",log.getOpType());
+        if (log.getTableName() != null && log.getTableName().length() > 0) {
+            map.put("FTABLENAME", log.getTableName());
             sql.append("?,");
-        }else {
+        } else {
             return false;
         }
-        if(log.getContentNote()!=null&&log.getContentNote().length()>0){
-            map.put("FCONTENT",log.getContentNote());
+        if (log.getOpType() != null && log.getOpType().length() > 0) {
+            map.put("FOPTYPE", log.getOpType());
             sql.append("?,");
-        }else {
+        } else {
             return false;
         }
-        if(log.getParams()!=null&&log.getParams().length()>0){
-            map.put("FPARAMS",log.getParams());
+        if (log.getContentNote() != null && log.getContentNote().length() > 0) {
+            map.put("FCONTENT", log.getContentNote());
+            sql.append("?,");
+        } else {
+            return false;
+        }
+        if (log.getParams() != null && log.getParams().length() > 0) {
+            map.put("FPARAMS", log.getParams());
             sql.append("?)");
-        }else {
+        } else {
             return false;
         }
         System.out.println(map);
-        if(logDao.insert(sql.toString(),map)>=0){
+        if (logDao.insert(sql.toString(), map) >= 0) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }

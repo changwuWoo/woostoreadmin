@@ -1,13 +1,14 @@
 package org.woo.core.service;
 
-import org.woo.core.service.IRoleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.woo.domain.annotation.Loggable;
 import org.woo.domain.entity.Role;
 import org.woo.domain.repository.Page;
 import org.woo.persist.dao.IPermissionDao;
 import org.woo.persist.dao.IRoleDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 @Service
 public class RoleService implements IRoleService {
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private IRoleDao iRoleDao;
     @Autowired
