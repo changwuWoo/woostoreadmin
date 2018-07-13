@@ -21,6 +21,27 @@
     <context:component-scan base-package="org.woo.web.controller"></context:component-scan>
 
     <!-- 解决@ResponseBody 的实现类其默认的编码是 iso-8859-1的问题 -->
+<<<<<<< HEAD
     <mvc:annotation-driven>
+=======
+    <mvc:annotation-driven validator="validator">
+        <mvc:message-converters>
+            <!-- default StringHttpMessageConverter, solve encoding problem -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+                <property name="writeAcceptCharset" value="false"/>
+            </bean>
+            <!--&lt;!&ndash; XMl及JSON视图解析器配置 &ndash;&gt;-->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <!--<property name="objectMapper" value="#{jsonUtil.mapper}"/>-->
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=utf-8</value>
+                        <value>text/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+>>>>>>> branch 'master' of https://github.com/valiantwu/woostoreadmin.git
     </mvc:annotation-driven>
 </beans>
