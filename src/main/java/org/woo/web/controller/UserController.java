@@ -1,18 +1,22 @@
 package org.woo.web.controller;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.woo.core.service.IMasterService;
 import org.woo.domain.annotation.AccessTokenValidate;
 import org.woo.domain.entity.Master;
 import org.woo.domain.repository.Page;
-
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -22,7 +26,6 @@ import java.util.Map;
 @RequestMapping("auth")
 public class UserController extends AbstractController<Master> {
 
-    @Autowired
     private IMasterService userService;
 
     @RequestMapping(value = "/getUsers.do", method = RequestMethod.GET)

@@ -1,13 +1,23 @@
 package org.woo.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Claims;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.woo.core.service.IMasterService;
 import org.woo.core.service.ITokenHistoryService;
 import org.woo.core.service.ITokenService;
@@ -16,10 +26,7 @@ import org.woo.domain.entity.TokenHistory;
 import org.woo.utils.constant.Constants;
 import org.woo.utils.util.JwtUtil;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * @author Administrator
@@ -30,12 +37,9 @@ import java.util.Map;
 @RestController
 public class UnAuthenticationController extends AbstractController<Master> {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
     private IMasterService iMasterService;
-    @Autowired
     private ITokenHistoryService iTokenHistoryService;
     private JwtUtil jwt = new JwtUtil();
-    @Autowired
     private ITokenService iTokenService;
 
     /**
@@ -43,10 +47,10 @@ public class UnAuthenticationController extends AbstractController<Master> {
      * @return Map<String,Object>
      * @throws
      * @Title: loginRequest
-     * @Description: TODO
+     * @Description: TODO  
      * @time 2017年3月8日上午10:59:17
      */
-    @RequestMapping(value = "/loginRequest.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/loginRequest.do", method = RequestMethod.GET)
     public
     @ResponseBody
     Map<String, Object> loginRequest() {
@@ -81,7 +85,7 @@ public class UnAuthenticationController extends AbstractController<Master> {
      * @Description: TODO
      * @time 2017年3月8日上午10:59:12
      */
-    @RequestMapping(value = "/userLogin.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/userLogin.do", method = RequestMethod.GET)
     public
     @ResponseBody
     Map<String, Object> userLogin(
