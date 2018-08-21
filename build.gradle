@@ -19,8 +19,8 @@ targetCompatibility = 1.8
 repositories {
     mavenCentral()
 }
-def corelib = 'C:/evn-dev/corelib'
-def trd = 'C:/evn-dev/trd'
+def corelib = 'C:/evn-dev/mservice/corelib'
+def trd = 'C:/evn-dev/mservice/trd'
 sourceSets {
     main {
         java {
